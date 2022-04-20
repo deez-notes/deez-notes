@@ -1,13 +1,12 @@
 import './App.css';
-import
+import Home from './components/Home'
 
-  function App() {
-    return (
-      <div className="App">
-        Deez Notes
-        <Home />
-      </div>
-    );
-  }
+function App() {
+  return (
+    <div className="App">
+      <Home />
+    </div>
+  );
+}
 
 export default App;
