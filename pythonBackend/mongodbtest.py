@@ -2,7 +2,9 @@
 import pymongo
 from pymongo import MongoClient
 from random import randint
-# connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
+from pprint import pprint #makes printing the data from server look nicer
+
+# connect to MongoDB
 client = MongoClient(host = "mongodb+srv://deeznotes:myrxsy7idiEvZCkE@cluster0.widrv.mongodb.net/database?retryWrites=true&w=majority", 
                             port = 4000, tz_aware=True)
 print("Connection Successful!")
@@ -32,8 +34,18 @@ fivestarcount = db.reviews.count_documents({'rating' : 5})
 # be wary, the link in backend documentation says to use db.reviews.find({'rating':5}).count() THIS DOES NOT WORK
 print("Num fivestars: ", fivestarcount)
 
-#MANIPULATION
-aRewview = db.reviews.find_one({})
+#MANIPULATION/UPDATING
+aReview = db.reviews.find_one({})
+print("sample document: ")
+pprint(aReview)
 
+result = db.reviews.update_one({'_id' : aReview.get('_id') }, {'$inc': {'likes': 1}})
+print('Number of documents modified : ' + str(result.modified_count))
+
+print()
+
+UpdatedDocument = db.reviews.find_one({'_id':aReview.get('_id')})
+print('The updated document:')
+pprint(UpdatedDocument)
 
 client.close()
