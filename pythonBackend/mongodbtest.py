@@ -12,6 +12,9 @@ print()
 
 db = client.business
 # SET UP
+
+# this is commented because if you run it again it will add another 500 entries to the database 
+
 # names = ['Kitchen','Animal','State', 'Tastey', 'Big','City','Fish', 'Pizza','Goat', 'Salty','Sandwich','Lazy', 'Fun']
 # company_type = ['LLC','Inc','Company','Corporation']
 # company_cuisine = ['Pizza', 'Bar Food', 'Fast Food', 'Italian', 'Mexican', 'American', 'Sushi Bar', 'Vegetarian']
@@ -47,5 +50,10 @@ print()
 UpdatedDocument = db.reviews.find_one({'_id':aReview.get('_id')})
 print('The updated document:')
 pprint(UpdatedDocument)
+
+#DELETION
+result = db.restaurants.delete_one({'_id': aReview.get('_id')})
+print(result)
+
 
 client.close()
