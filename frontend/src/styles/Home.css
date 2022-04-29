@@ -1,0 +1,24 @@
+#Home {
+  background-color: #A5DEF1;
+}
+
+#signIn-form-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding-top: 3em;
+}
+
+#signIn-form {
+  -ms-grid-column-align: center;
+      justify-self: center;
+  font-size: 2em;
+}
+
+TextField {
+  margin-top: 10em;
+}
+/*# sourceMappingURL=Home.css.map */
