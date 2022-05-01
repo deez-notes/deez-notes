@@ -6,7 +6,7 @@ function Home() {
     return (
         <div id='Home'>
             <div id="logo-container">
-                <img src="musical-note.webp" />
+                <img src="musical-note.webp" alt="" />
             </div>
             <Typography variant="h3">Deez Notes</Typography>
             <div id="signIn-form-container">
