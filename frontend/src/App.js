@@ -1,5 +1,6 @@
 import React from "react";
 import './App.css';
+import NavBar from './components/NavBar';
 import Home from './components/Home';
 import Create from './components/Create';
 import Error from './components/Error';
@@ -11,6 +12,7 @@ function App() {
   return (
     <div className="App">
       <StyledEngineProvider injectFirst>
+      <NavBar/>
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
