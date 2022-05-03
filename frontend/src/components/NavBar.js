@@ -1,7 +1,8 @@
-import React from 'react'
-import { AppBar, Toolbar, IconButton, Typography, Stack, Button, InputBase } from "@mui/material"
-import { MusicNote, Search} from "@material-ui/icons";
-import '../styles/NavBar.css'
+import { React, useState} from 'react';
+import { AppBar, Toolbar, IconButton, Typography, Stack, Button } from "@mui/material";
+import { MusicNote, Search, Close } from "@material-ui/icons";
+import TestData from '../TestData.json';
+import css from '../styles/NavBar.module.scss';
 
 
 function NavBar() {
@@ -12,10 +13,14 @@ function NavBar() {
                     <MusicNote />
                 </IconButton>
 
-                <Typography variant='h6' component='div' sx={{ flexGrow:1}}>
+                <Typography variant='h6' component='div'>
                     Deez-Notes
                 </Typography>
-                <SearchBox/>
+                
+                <div id={css.searchSpacing}>
+                    <SearchBar placeholder="Search..." data={TestData}/>
+                </div>
+                
                 
 
                 <Stack direction='row' spacing = {2}>
@@ -31,22 +36,62 @@ function NavBar() {
 }
 
 
-function SearchBox() {
+function SearchBar({ placeholder, data }) {
+    const [filteredData, setFilteredData] = useState([]);
+    const [wordEntered, setWordEntered] = useState("");
+  
+    const handleFilter = (event) => {
+      const searchWord = event.target.value;
+      setWordEntered(searchWord);
+      const newFilter = data.filter((value) => {
+        return value.username.toLowerCase().includes(searchWord.toLowerCase());
+      });
+  
+      if (searchWord === "") {
+        setFilteredData([]);
+      } else {
+        setFilteredData(newFilter);
+      }
+    };
+  
+    const clearInput = () => {
+      setFilteredData([]);
+      setWordEntered("");
+    };
+  
     return (
-        <>
-            <div class="searchBar">
-            <input id="searchQueryInput" type="text" name="searchQueryInput" placeholder="Search" value="" />
-            <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit">
-            </button>
-            </div>
-        
-        </>
-
-
-
-    )
-
-
+      <div className={css.search}>
+        <div className={css.searchInputs}>
+          <input
+            type="text"
+            placeholder={placeholder}
+            value={wordEntered}
+            onChange={handleFilter}
+          />
+          <div className={css.searchIcon}>
+            {filteredData.length === 0 ? (
+              <Search />
+            ) : (
+              <Close id="clearBtn" onClick={clearInput} />
+            )}
+          </div>
+        </div>
+        {filteredData.length !== 0 && (
+          <div className={css.dataResult}>
+            {filteredData.slice(0, 10).map((value, key) => {
+              return (
+                <a className={css.dataItem} href={value.link} target="_blank">
+                  <p>{value.username} </p>
+                </a>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
 }
+
+
+
 
 export default NavBar
