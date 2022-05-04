@@ -10,12 +10,12 @@ function NavBar() {
         <AppBar position='static' style={{textAlign: 'left', paddingTop: '.5em', paddingBottom: '.5em'}}>
             <Toolbar>
                 <IconButton size='large' edge='start' color='inherit' aria-label='logo'>
-                    <MusicNote />
+                    <img src="dnlogo_w.png" height="42em"/>
                 </IconButton>
 
-                <Typography variant='h6' component='div'>
+                {/* <Typography variant='h6' component='div' white-space="nowrap" >
                     Deez-Notes
-                </Typography>
+                </Typography> */}
                 
                 <div id={css.searchSpacing}>
                     <SearchBar placeholder="Search..." data={TestData}/>

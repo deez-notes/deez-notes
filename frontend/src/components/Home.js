@@ -6,7 +6,7 @@ function Home() {
     return (
         <div id='Home'>
             <div id="logo-container">
-                <img src="musical-note.webp" alt="" />
+                <img src="dn.svg" alt="" width="220vw"/>
             </div>
             <Typography variant="h3">Deez Notes</Typography>
             <div className={css.signInContainer}>
