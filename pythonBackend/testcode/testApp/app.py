@@ -86,10 +86,10 @@ async def list_restaurants():
     "/{id}", response_description="Get a single restaurant", response_model=RestaurantModel
 )
 async def show_restaurant(id: str):
-    if (restaurant := await db.reviews.find_one({"_id": id})) is not None:
+    if (restaurant := await db.reviews.find_one({"_id": ObjectId(id)})) is not None:
         return restaurant
 
-    raise HTTPException(status_code=404, detail=f"restaurant {id} not found")
+    raise HTTPException(status_code=404, detail=f"restaurant {ObjectId(id)} not found")
 
 
 @app.put("/{id}", response_description="Update a restaurant", response_model=RestaurantModel)
@@ -97,25 +97,25 @@ async def update_restaurant(id: str, restaurant: UpdateRestaurantModel = Body(..
     restaurant = {k: v for k, v in restaurant.dict().items() if v is not None}
 
     if len(restaurant) >= 1:
-        update_result = await db.reviews.update_one({"_id": id}, {"$set": restaurant})
+        update_result = await db.reviews.update_one({"_id": ObjectId(id)}, {"$set": restaurant})
 
         if update_result.modified_count == 1:
             if (
-                updated_restaurant := await db.reviews.find_one({"_id": id})
+                updated_restaurant := await db.reviews.find_one({"_id": ObjectId(id)})
             ) is not None:
                 return updated_restaurant
 
-    if (existing_restaurant := await db.reviews.find_one({"_id": id})) is not None:
+    if (existing_restaurant := await db.reviews.find_one({"_id": ObjectId(id)})) is not None:
         return existing_restaurant
 
-    raise HTTPException(status_code=404, detail=f"Restaurant {id} not found")
+    raise HTTPException(status_code=404, detail=f"Restaurant {ObjectId(id)} not found")
 
 
 @app.delete("/{id}", response_description="Delete a restaurant")
 async def delete_restaurant(id: str):
-    delete_result = await db.reviews.delete_one({"_id": id})
+    delete_result = await db.reviews.delete_one({"_id": ObjectId(id)})
 
     if delete_result.deleted_count == 1:
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
 
-    raise HTTPException(status_code=404, detail=f"Restaurant {id} not found")
+    raise HTTPException(status_code=404, detail=f"Restaurant {ObjectId(id)} not found")
