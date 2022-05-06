@@ -1,5 +1,6 @@
 import React from "react";
 import './App.css';
+import UploadFile from './components/UploadFile'
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import Create from './components/Create';
@@ -21,6 +22,7 @@ function App() {
           </Routes>
         </Router>
       </StyledEngineProvider>
+      <UploadFile/>
     </div>
   );
 }
