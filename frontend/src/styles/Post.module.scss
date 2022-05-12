@@ -1,0 +1,16 @@
+// https://mui.com/material-ui/guides/interoperability/#global-css
+$background: #2A3950;
+
+.card {
+    background-color: $background;
+    padding: 0.5em 1em 0.5em;
+}
+
+.cardHeader {
+
+}
+.cardHeader :global .MuiCardHeader-title {
+    justify-content: left; 
+    align-items: left;
+}
+
