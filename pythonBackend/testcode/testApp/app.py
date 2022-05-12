@@ -6,12 +6,30 @@ from pydantic import BaseModel, Field, EmailStr
 from bson import ObjectId
 from typing import Optional, List
 import motor.motor_asyncio
+from fastapi.middleware.cors import CORSMiddleware
+
 
 hostname = "mongodb+srv://deeznotes:myrxsy7idiEvZCkE@cluster0.widrv.mongodb.net/database?retryWrites=true&w=majority"
 
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(hostname)
 restaurantsDB = client.business
+
+origins = [
+    "http://localhost:3000",
+    "http://localhost",
+    "http://localhost:8000",
+    "http://localhost:8080"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 class PyObjectId(ObjectId):
     @classmethod
