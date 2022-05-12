@@ -17,9 +17,9 @@ origins = [
     "http://localhost:3000",
     "http://localhost",
     "http://localhost:8000",
-    "http://localhost:8080"
+    "http://localhost:8000/docs#"
 ]
-
+#allow any of the origins listed above to send requests to the backend
 backend.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -29,9 +29,7 @@ backend.add_middleware(
 )
 
 client = motor.motor_asyncio.AsyncIOMotorClient(hostname)
-
 userDataDB = client.accountData
-
 
 class PyObjectId(ObjectId):
     @classmethod
@@ -78,19 +76,18 @@ class UpdateUserModel(BaseModel):
             }
         }
 
-
-@backend.post("/", response_description="Add new user", response_model=UserModel)
+@backend.post("/", response_description="Create a new user", response_model=UserModel)
 async def create_user(user: UserModel = Body(...)):
     user = jsonable_encoder(user)
     new_user = await userDataDB.users.insert_one(user)
     created_user = await userDataDB.users.find_one({"_id": new_user.inserted_id})
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
 
+
 @backend.get("/", response_description="List all users", response_model=List[UserModel])
 async def list_users():
     users = await userDataDB.users.find().to_list(1000)
     return users
-
 
 @backend.get("/{id}", response_description="Get a single user by ObjectID", response_model=UserModel)
 async def show_user(id: str):
@@ -98,7 +95,6 @@ async def show_user(id: str):
         return user
 
     raise HTTPException(status_code=404, detail=f"user {ObjectId(id)} not found")
-
 
 @backend.get("/users/{username}", response_description="Get a single user by username", response_model=UserModel)
 async def show_user_by_username(username: str):
@@ -108,7 +104,7 @@ async def show_user_by_username(username: str):
     raise HTTPException(status_code=404, detail=f"user {username} not found")
 
 
-@backend.put("/{id}", response_description="Update a user", response_model=UserModel)
+@backend.put("/{id}", response_description="Update a user (username, password, or both)", response_model=UserModel)
 async def update_user(id: str, user: UpdateUserModel = Body(...)):
     user = {k: v for k, v in user.dict().items() if v is not None}
 
