@@ -1,0 +1,2 @@
+random-username==1.0.2
+pymongo[srv]==3.11.1
