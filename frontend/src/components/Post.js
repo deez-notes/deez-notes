@@ -6,6 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
@@ -50,22 +51,26 @@ return {
 // function will at some point need to have a Post class passed in containing data
 function Post () {
     return (
-        <Card className={css.card} variant="outlined" elevation="24" sx={{ minWidth: "50vw", maxWidth: "80vw", borderRadius: 2 }}>
+        <Card className={css.card} variant="outlined" elevation="24" sx={{borderRadius: 2 }}>
             <CardHeader 
-            classes={css.cardHeader}
+            className={css.cardHeader}
+            avatar={<Avatar {...stringAvatar('Deez Notes')} />}
             action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               }
             title="User Name"
-            subheader="Time Stamp"
-            avatar={<Avatar {...stringAvatar('Deez Notes')} />}
+            subheader="April 20, 2022"
             />
-            <Typography variant="body2" color="text.secondary">
-            Something something deez notes go hard.
-            </Typography>
-            <Spotify wide link="https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT?si=be4a59344f8f4188" />
+            <CardContent>
+              <Typography variant="body2" color="text.secondary">
+              Something something deez notes go hard.
+              </Typography>
+            </CardContent>
+            <CardMedia>
+              <Spotify wide link="https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT?si=be4a59344f8f4188" />
+            </CardMedia>
         </Card>
     )
 

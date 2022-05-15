@@ -5,13 +5,14 @@ $background: #FFF;
 .card {
     background-color: $background;
     padding: 0.5em 1em 0.5em;
+    width: 20em;
+    justify-content: left; 
+    align-items: left;
+    text-align: left;
 }
 
 .cardHeader {
+    text-align: left;
+}
 
-}
-.cardHeader :global .MuiCardHeader-title {
-    justify-content: left; 
-    align-items: left;
-}
 
