@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Rating from '@mui/material/Rating';
-
+import Chip from '@mui/material/Chip';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -79,7 +79,7 @@ function Post () {
             titleTypographyProps={{variant:'h6'}}
             subheader="April 20, 2022"
             />
-            <CardContent>
+            <CardContent className={css.cardContent}>
               <Typography variant="body2" color="text.secondary">
               Something something deez notes go hard.
               </Typography>
@@ -102,9 +102,14 @@ function Post () {
                 }}
                 emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
               />
-              {(
-                <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
-              )}
+              {<Box sx={{ ml: 2, mr: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+              }{
+                <Typography variant="body2" color="text.secondary" >
+                 | &nbsp; Rating
+                </Typography>
+              }{
+                <Chip label="2.2" variant="outlined" />
+              }
             </CardActions>
         </Card>
     )

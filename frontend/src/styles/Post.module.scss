@@ -4,7 +4,7 @@ $background: #FFF;
 
 .card {
     background-color: $background;
-    padding: 0.5em 1em 0.5em;
+    padding: 1em;
     width: 20em;
     justify-content: left; 
     align-items: left;
@@ -13,10 +13,18 @@ $background: #FFF;
 
 .cardHeader {
     text-align: left;
+    padding: 0px;
+}
+
+.cardContent {
+    text-align: left;
+    padding: 1em 0em 1em ;
 }
 
 .cardActions {
     justify-content: center; 
     align-items: center;
+    padding: 0px;
+    padding-top: 0.5em;
 }
 
