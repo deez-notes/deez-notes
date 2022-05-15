@@ -76,6 +76,7 @@ function Post () {
                 </IconButton>
               }
             title="Rick Astley"
+            titleTypographyProps={{variant:'h6'}}
             subheader="April 20, 2022"
             />
             <CardContent>
