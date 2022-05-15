@@ -15,6 +15,8 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+import Spotify from 'react-spotify-embed';
+
 // Helper Functions to generate String Avatars
 // from https://mui.com/material-ui/react-avatar/
 function stringToColor(string) {
@@ -63,8 +65,7 @@ function Post () {
             <Typography variant="body2" color="text.secondary">
             Something something deez notes go hard.
             </Typography>
-        {/* Maybe have song embed here? https://mui.com/material-ui/react-card/#ui-controls
-        https://www.npmjs.com/package/react-spotify-embed */}
+            <Spotify wide link="https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT?si=be4a59344f8f4188" />
         </Card>
     )
 
