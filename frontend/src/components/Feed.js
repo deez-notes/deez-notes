@@ -15,7 +15,7 @@ const u1 = {
     'tags': ["rickroll","Rick Astley","meme"],
     'spotifylink': "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT?si=be4a59344f8f4188",
     'userrating': null,
-    'ratingscore': "5.0"}
+    'ratingscore': "4.2"}
 
 const u2 = {
     'username': "Smash Mouth",
@@ -32,10 +32,19 @@ function Feed () {
         <div id={css.Profile}>
             <NavBar /> {/* REMOVE, for testing only*/}
             <Box sx={{ width: '100%', display:"flex", justifyContent:"center", alignItems:"center" }}>
-                <Stack spacing={2} mt={2} mb={2}>
-                    <Post post={u1} />
-                    <Post post={u2}/>
-                    {/* Figure out how display dynamic number of posts */}
+                <Stack direction="row" spacing={2} mt={2}>
+                    <Stack spacing={2} mb={2}>
+                        <Post post={u1} />
+                        <Post post={u1}/>
+                    </Stack>
+                    <Stack spacing={2} mb={2}>
+                        <Post post={u2} />
+                        <Post post={u2}/>
+                    </Stack>
+                    <Stack spacing={2} mb={2}>
+                        <Post post={u1} />
+                        <Post post={u2}/>
+                    </Stack>
                 </Stack>
             </Box>
         </div> 
