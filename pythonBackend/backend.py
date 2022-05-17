@@ -1,4 +1,5 @@
 import os
+from urllib import response
 from fastapi import FastAPI, Body, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -30,6 +31,7 @@ backend.add_middleware(
 
 client = motor.motor_asyncio.AsyncIOMotorClient(hostname)
 userDataDB = client.accountData
+postDataDB = client.postData
 
 class PyObjectId(ObjectId):
     @classmethod
@@ -75,6 +77,31 @@ class UpdateUserModel(BaseModel):
                 "password" : '1234'
             }
         }
+
+class PostModel(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    link: str = Field(...)
+    desc: str = Field(...)
+    tags: List = Field(...)
+
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+           "example": {
+                "link": "[MNI]Red",
+                "desk" : '1234',
+                "tags" : ["tag1", "tag2", "etc"]
+            }
+        }
+
+@backend.post("/createpost", response_description="Create a new post", response_model=PostModel)
+async def create_post(post: PostModel = Body(...)):
+    post = jsonable_encoder(post)
+    new_post = await postDataDB.posts.insert_one(post)
+    created_post = await postDataDB.posts.find_one({"_id": new_post.inserted_id})
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_post)
+    
 
 @backend.post("/", response_description="Create a new user", response_model=UserModel)
 async def create_user(user: UserModel = Body(...)):
