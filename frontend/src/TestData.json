@@ -1,32 +1,51 @@
 [
     {
-        "username": "Giang Pham",
-        "title": "5th Underlord",
+        "username": "GiangPappi",
+        "name": "Giang",
+        "bio": "5th Underlord",
+        "following": ["Tommy","Andy"],
+        "followers": ["Carl_Junior","Car_Marx"],
         "link": "https://www.instagram.com/giang_pappi/"
+        
     },
     {
         "username": "Giang's Girlfriend",
-        "title": "Nonexistent",
+        "name": "Shay",
+        "bio": "Nonexistent",
+        "following": ["a","2"],
+        "followers": ["1","c"],
         "link": "https://www.instagram.com/eajpark/"
     },
     {
         "username": "Tommy",
-        "title": "no fun :(",
+        "name": "Tommy Nguyen",
+        "bio": "no fun :(",
+        "following": ["1","2"],
+        "followers": ["1","2"],
         "link": "https://www.instagram.com/tummy.nguyen/"
     },
     {
-        "username": "Andy Ngo",
-        "title": "Loves Airheads",
+        "username": "Asian panda",
+        "name": "Andy Ngo",
+        "bio": "Loves Airheads",
+        "following": ["p","2"],
+        "followers": ["1","r"],
         "link": "https://www.instagram.com/airheadscandy/"
     },
     {
         "username": "Alex",
-        "title": "Just Alex",
+        "name": "Alex man",
+        "bio": "Just Alex",
+        "following": ["a","a"],
+        "followers": ["a","a"],
         "link": "https://www.instagram.com/tyler1_alpha/"
     },
     {
-        "username": "James",
-        "title": "UPE",
+        "username": "James the man",
+        "name": "James Tseng",
+        "bio": "UPE",
+        "following": ["t","2"],
+        "followers": ["t","2"],
         "link": "https://www.instagram.com/tseng_onthetrain_/"
     }
 ]
