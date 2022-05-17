@@ -1,5 +1,5 @@
 // Create a post page
-import React from "react";
+import React, {useState} from "react";
 import {Button, Paper, TextField, Typography} from "@mui/material";
 import TagBox from "./TagBox";
 import css from '../styles/Create.module.scss';
@@ -7,9 +7,19 @@ import SendIcon from "@mui/icons-material/Send";
 import { Cancel } from "@mui/icons-material";
 function Create()
 {
+
+    const [songTitle, setSongTitle] = useState('');
+    const [songArtist, setSongArtist] = useState('');
+    const [link, setLink] = useState('');
+    const [postDesc, setPostDesc] = useState('');
+
     const handleOnSubmit = (e) => {
         e.preventDefault();
         // send stuff to the backend
+        console.log("Title: " + songTitle);
+        console.log("Artist: " + songArtist);
+        console.log("Link: " + link);
+        console.log("Desc: " + postDesc);
     };
 
     return <div>
@@ -24,14 +34,14 @@ function Create()
             <Typography variant="h3">Create a Post</Typography>
             
             <div className={css.song}>
-                <TextField fullWidth id="song-title" label="Song Title" variant="outlined"/>
-                <TextField fullWidth id="song-title" label="Artist" variant="outlined"/>
+                <TextField value={songTitle} onChange={(e) => {setSongTitle(e.target.value)}} fullWidth id="song-title" label="Song Title" variant="outlined"/>
+                <TextField value={songArtist} onChange={(e) => {setSongArtist(e.target.value)}} fullWidth id="song-title" label="Artist" variant="outlined"/>
             </div>
             <div className={css.descriptionBox}>
-                <TextField fullWidth multiline id="link" label="Spotify Link" variant="outlined"/>
+                <TextField value={link} onChange={(e) => {setLink(e.target.value)}} fullWidth multiline id="link" label="Spotify Link" variant="outlined"/>
             </div>
             <div className={css.descriptionBox}>
-                <TextField fullWidth multiline id="description" label="Post Description" variant="outlined"/>
+                <TextField value={postDesc} onChange={(e) => {setPostDesc(e.target.value)}} fullWidth multiline id="description" label="Post Description" variant="outlined"/>
             </div>
             {/* Tags */}
             <div className={css.tagbox}>
@@ -39,7 +49,7 @@ function Create()
             </div>
             <br/>
             <br/>
-            <Button variant="contained" className={css.postbutton} endIcon={<SendIcon fontSize="larger"/>}>Post</Button>
+            <Button onClick={handleOnSubmit} variant="contained" className={css.postbutton} endIcon={<SendIcon fontSize="larger"/>}>Post</Button>
             <br/>
             <br/>
 
