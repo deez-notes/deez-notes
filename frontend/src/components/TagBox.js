@@ -30,7 +30,7 @@ function TagBox()
     };
 
     const handleDelete = (value) => {
-        const newtags = tags.filter((val) => val != value);
+        const newtags = tags.filter((val) => val !== value);
         setTags(newtags);
     }
 
@@ -43,7 +43,7 @@ function TagBox()
     <Box className={css.box}>
         <form className={box.descriptionBox} onSubmit={handleOnSubmit}>
         <TextField inputRef={tagRef} fullWidth variant="standard" className={css.textbox}
-        placeholder="Enter tags hereee"></TextField>
+        placeholder="Enter tags here!"></TextField>
         </form>
     </Box>
     </div>);
