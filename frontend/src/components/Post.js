@@ -60,6 +60,8 @@ function getLabelText(value) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
 }
 
+const tags = ["Rickroll","Rick Astley","Meme"];
+
 // function will at some point need to have a Post class passed in containing data
 function Post () {
   // rating
@@ -83,6 +85,17 @@ function Post () {
               <Typography variant="body2" color="text.secondary">
               Something something deez notes go hard.
               </Typography>
+            </CardContent>
+            <CardContent className={css.cardTagsContent}>
+              {tags.map(function(t,i){
+                return (<Chip label={t} 
+                              variant="outlined" 
+                              component="a" 
+                              href=""
+                              size="small"
+                              sx={{ mr: 0.3, mb: 0.5 }}
+                              clickable />)
+              })}
             </CardContent>
             <CardMedia>
               <Spotify wide link="https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT?si=be4a59344f8f4188" />
