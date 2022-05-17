@@ -1,6 +1,7 @@
 // Create a post page
 import React from "react";
 import {TextField, Typography} from "@mui/material";
+import TagBox from "./TagBox";
 import css from '../styles/Create.module.scss';
 function Create()
 {
@@ -15,6 +16,10 @@ function Create()
         </div>
         <div className={css.descriptionBox}>
             <TextField fullWidth multiline id="description" label="Post Description" variant="outlined"/>
+        </div>
+        {/* Tags */}
+        <div className={css.tagbox}>
+            <TagBox></TagBox>
         </div>
     </div>
 }

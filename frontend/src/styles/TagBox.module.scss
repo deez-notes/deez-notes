@@ -1,0 +1,32 @@
+.box {
+    flex-grow: 1;
+}
+
+.textbox {
+    margin: 0 0;    
+}
+
+.boxoftags {
+    background: #90c1d1;
+    height: 100%;
+    width: auto;
+    display: flex;
+    margin: 0 0.5rem 0.3rem 0;
+    padding: 0.5rem;
+    justify-content: center;
+    align-content: center;
+    color: black;
+    border-radius: 2rem;
+}
+
+.tag {
+    margin: 0 0.2rem 0 0;
+    display: flex;
+}
+.tags {
+    display: flex;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
