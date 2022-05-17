@@ -1,25 +1,46 @@
 // Create a post page
-import React, {useState} from "react";
-import {Button, Paper, TextField, Typography} from "@mui/material";
-import TagBox from "./TagBox";
+import React, {useRef, useState} from "react";
+import {Button, Chip, Paper, Stack, TextField, Typography} from "@mui/material";
+import { Box } from "@mui/system";
 import css from '../styles/Create.module.scss';
 import SendIcon from "@mui/icons-material/Send";
 import { Cancel } from "@mui/icons-material";
 function Create()
 {
 
-    const [songTitle, setSongTitle] = useState('');
-    const [songArtist, setSongArtist] = useState('');
-    const [link, setLink] = useState('');
-    const [postDesc, setPostDesc] = useState('');
+    const titleRef = useRef();
+    const artistRef = useRef();
+    const linkRef = useRef();
+    const descRef = useRef();
+
+    const [tags, setTags] = useState([]);
+    const tagRef = useRef();
+    
+
+    const handleTagSubmit = (e) => {
+        e.preventDefault();
+        if (tags.length < 11)
+        {
+            setTags([...tags, tagRef.current.value]);
+            tagRef.current.value = "";
+        }
+    };
+
+    const handleTagDelete = (value) => {
+        const newTags = tags.filter((val) => val !== value);
+        setTags(newTags);
+    }
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
         // send stuff to the backend
-        console.log("Title: " + songTitle);
-        console.log("Artist: " + songArtist);
-        console.log("Link: " + link);
-        console.log("Desc: " + postDesc);
+        console.log("Title: " + titleRef.current.value);
+        console.log("Artist: " + artistRef.current.value);
+        console.log("Link: " + linkRef.current.value);
+        console.log("Desc: " + descRef.current.value);
+        console.log(tags);
+
+        // reset form?
     };
 
     return <div>
@@ -34,18 +55,27 @@ function Create()
             <Typography variant="h3">Create a Post</Typography>
             
             <div className={css.song}>
-                <TextField value={songTitle} onChange={(e) => {setSongTitle(e.target.value)}} fullWidth id="song-title" label="Song Title" variant="outlined"/>
-                <TextField value={songArtist} onChange={(e) => {setSongArtist(e.target.value)}} fullWidth id="song-title" label="Artist" variant="outlined"/>
+                <TextField inputRef={titleRef} fullWidth id="song-title" label="Song Title" variant="outlined"/>
+                <TextField inputRef={artistRef} fullWidth id="song-artist" label="Artist" variant="outlined"/>
             </div>
             <div className={css.descriptionBox}>
-                <TextField value={link} onChange={(e) => {setLink(e.target.value)}} fullWidth multiline id="link" label="Spotify Link" variant="outlined"/>
+                <TextField inputRef={linkRef} fullWidth multiline id="link" label="Spotify Link" variant="outlined"/>
             </div>
             <div className={css.descriptionBox}>
-                <TextField value={postDesc} onChange={(e) => {setPostDesc(e.target.value)}} fullWidth multiline id="description" label="Post Description" variant="outlined"/>
+                <TextField inputRef={descRef} fullWidth multiline id="description" label="Post Description" variant="outlined"/>
             </div>
             {/* Tags */}
             <div className={css.tagbox}>
-                <TagBox></TagBox>
+                <Stack direction="row" spacing={2} className={css.tags}>
+                    {tags.map((data, index) => {
+                        return <Chip label={data} onDelete={() => {handleTagDelete(data)}}/>
+                    })}
+                </Stack>
+                <Box className={css.box}>
+                    <form className={css.descriptionBox} onSubmit={handleTagSubmit}>
+                        <TextField inputRef={tagRef} fullWidth variant="standard" className={css.textbox} placeholder="Enter tags here!"></TextField>
+                    </form>
+                </Box>
             </div>
             <br/>
             <br/>
