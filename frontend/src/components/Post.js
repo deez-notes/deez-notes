@@ -60,10 +60,8 @@ function getLabelText(value) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
 }
 
-const tags = ["Rickroll","Rick Astley","Meme"];
-
 // function will at some point need to have a Post class passed in containing data
-function Post () {
+function Post(props) {
   // rating
   const [value, setValue] = React.useState(null);
   const [hover, setHover] = React.useState(-1);
@@ -71,23 +69,23 @@ function Post () {
         <Card className={css.card} variant="outlined" elevation="24" sx={{borderRadius: 2 }}>
             <CardHeader 
             className={css.cardHeader}
-            avatar={<Avatar {...stringAvatar('Rick Astley')} />}
+            avatar={<Avatar {...stringAvatar(props.post.username)} />}
             action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               }
-            title="Rick Astley"
+            title={props.post.username}
             titleTypographyProps={{variant:'h6'}}
-            subheader="April 20, 2022"
+            subheader={props.post.timestamp}
             />
             <CardContent className={css.cardContent}>
               <Typography variant="body2" color="text.secondary">
-              Something something deez notes go hard.
+              {props.post.caption}
               </Typography>
             </CardContent>
             <CardContent className={css.cardTagsContent}>
-              {tags.map(function(t,i){
+              {props.post.tags.map(function(t,i){
                 return (<Chip label={t} 
                               variant="outlined" 
                               component="a" 
@@ -98,7 +96,7 @@ function Post () {
               })}
             </CardContent>
             <CardMedia>
-              <Spotify wide link="https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT?si=be4a59344f8f4188" />
+              <Spotify wide link={props.post.spotifylink} />
             </CardMedia>
             <CardActions className={css.cardActions}>
               <Rating
@@ -121,7 +119,7 @@ function Post () {
                  | &nbsp; Rating
                 </Typography>
               }{
-                <Chip label="2.2" variant="outlined" />
+                <Chip label={props.post.rating} variant="outlined" />
               }
             </CardActions>
         </Card>
