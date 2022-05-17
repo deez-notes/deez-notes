@@ -39,7 +39,26 @@ function Create()
         console.log("Link: " + linkRef.current.value);
         console.log("Desc: " + descRef.current.value);
         console.log(tags);
+        let date = new Date();
+        let time = date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0') + ":" +  date.getSeconds().toString().padStart(2, '0');
+        console.log(time);
 
+        let postData = {
+            "title" : titleRef.current.value,
+            "artist" : artistRef.current.value,
+            "link" : linkRef.current.value,
+            "desc" : descRef.current.value,
+            "tags" : tags,
+            "user" : "amusedCheese1",
+            "timestamp" : time
+        };
+
+        console.log(postData);
+        fetch('http://localhost:8000/createpost', postData)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            });
         // reset form?
     };
 
