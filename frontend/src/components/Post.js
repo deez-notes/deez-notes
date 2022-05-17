@@ -12,6 +12,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 import Rating from '@mui/material/Rating';
 import Chip from '@mui/material/Chip';
 
@@ -63,19 +64,21 @@ function getLabelText(value) {
 // function will at some point need to have a Post class passed in containing data
 function Post(props) {
   // rating
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = React.useState(Number(props.post.userrating));
   const [hover, setHover] = React.useState(-1);
     return (
         <Card className={css.card} variant="outlined" elevation="24" sx={{borderRadius: 2 }}>
             <CardHeader 
             className={css.cardHeader}
-            avatar={<Avatar {...stringAvatar(props.post.username)} />}
+            avatar={<IconButton href={props.post.profilelink} size="small"> <Avatar {...stringAvatar(props.post.username)} /></IconButton>}
             action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               }
-            title={props.post.username}
+            title={<Link href={props.post.profilelink} underline="none" color="inherit">
+            {props.post.username}
+          </Link>}
             titleTypographyProps={{variant:'h6'}}
             subheader={props.post.timestamp}
             />
@@ -119,7 +122,7 @@ function Post(props) {
                  | &nbsp; Rating
                 </Typography>
               }{
-                <Chip label={props.post.rating} variant="outlined" />
+                <Chip label={props.post.ratingscore} variant="outlined" />
               }
             </CardActions>
         </Card>
