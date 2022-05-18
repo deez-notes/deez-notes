@@ -5,6 +5,8 @@ import { Box } from "@mui/system";
 import css from '../styles/Create.module.scss';
 import SendIcon from "@mui/icons-material/Send";
 import { Cancel } from "@mui/icons-material";
+import axios from "axios";
+
 function Create()
 {
 
@@ -54,11 +56,8 @@ function Create()
         };
 
         console.log(postData);
-        fetch('http://localhost:8000/createpost', postData)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-            });
+        axios.post('http://localhost:8000/createpost', postData)
+      .then(res => console.log(res))
         // reset form?
     };
 
