@@ -13,6 +13,12 @@ hostname = "mongodb+srv://deeznotes:myrxsy7idiEvZCkE@cluster0.widrv.mongodb.net/
 
 backend = FastAPI()
 
+#I'm not quite sure what this get is used for but the browser does it by default
+@backend.get('/favicon.ico')
+async def favicon():
+    # print("ABHJFDHDS")
+    return 1
+
 origins = [
     "http://localhost:3000",
     "http://localhost",
