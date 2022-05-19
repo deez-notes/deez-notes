@@ -5,7 +5,10 @@ import NavBar from "./NavBar"
 
 function Home() {
     return (
-        <div id='Home'>
+
+
+
+        <div id={css.Home}>
             <div id="logo-container">
                 <img src="dn.svg" alt="" width="220vw" />
             </div>
