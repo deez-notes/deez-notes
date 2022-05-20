@@ -21,3 +21,8 @@ toml==0.10.2
 typed-ast==1.4.1
 typing-extensions==3.7.4.3
 uvicorn==0.12.3touch 
+aiofiles==0.8.0
+fastapi-security==0.5.0
+passlib==1.7.4
+bcrypt==3.2.2
+python-jose==3.3.0
