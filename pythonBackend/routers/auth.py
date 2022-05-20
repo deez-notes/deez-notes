@@ -6,7 +6,6 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import Union
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
-from bson import ObjectId
 
 from models.userModel import UserModel
 from models.tokenModel import Token, TokenData

@@ -53,7 +53,7 @@ db = client.accountData
 
 #Hashing all passwords
 import sys
-from .hash import get_password_hash
+from ...hash import get_password_hash
 
 collection = db.users
 cursor = collection.find({})
