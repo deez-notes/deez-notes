@@ -1,3 +1,4 @@
+from platform import python_branch
 import pymongo
 from pymongo import MongoClient
 from random import randint
@@ -28,26 +29,35 @@ db = client.accountData
 #     print('Created {0} of 500 as {1}'.format(x,result.inserted_id))
 
 #ACCESSING
-aUser = db.users.find_one({})
-pprint(aUser)
-userCount = db.users.count_documents({}) 
-print("Num users: ", userCount, "\n")
+# aUser = db.users.find_one({})
+# pprint(aUser)
+# userCount = db.users.count_documents({}) 
+# print("Num users: ", userCount, "\n")
 
-#MANIPULATION/UPDATING
-aUser = db.users.find_one({})
-print("sample document: ")
-pprint(aUser)
-result = db.users.update_one({'_id' : aUser.get('_id')}, {'$set': {'password': '5678'}})
-print('Number of documents modified : ' + str(result.modified_count))
-print()
+# #MANIPULATION/UPDATING
+# aUser = db.users.find_one({})
+# print("sample document: ")
+# pprint(aUser)
+# result = db.users.update_one({'_id' : aUser.get('_id')}, {'$set': {'password': '5678'}})
+# print('Number of documents modified : ' + str(result.modified_count))
+# print()
 
-UpdatedDocument = db.users.find_one({'_id':aUser.get('_id')})
-print('The updated document:')
-pprint(UpdatedDocument)
+# UpdatedDocument = db.users.find_one({'_id':aUser.get('_id')})
+# print('The updated document:')
+# pprint(UpdatedDocument)
 
 # #DELETION
-result = db.users.delete_one({'_id': aUser.get('_id')})
-print(result)
+# result = db.users.delete_one({'_id': aUser.get('_id')})
+# print(result)
 
+
+#Hashing all passwords
+import sys
+from .hash import get_password_hash
+
+collection = db.users
+cursor = collection.find({})
+for document in cursor:
+    collection.update_one({"_id":document["_id"]}, {'$set': {'hashed_password': get_password_hash(document["password"])}})
 
 client.close()
