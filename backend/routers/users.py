@@ -1,10 +1,10 @@
-from fastapi import APIRouter, status, Body, HTTPException
+from fastapi import APIRouter, status, Body, HTTPException, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, HTMLResponse
-from typing import List
+from typing import List, Union
 
 from bson import ObjectId
-
+from models.general import idAndUsernameDependency
 from models.userModel import UserModel, UpdateUserModel
 from hash import get_password_hash
 from settings import client
@@ -23,75 +23,53 @@ async def create_user(user: UserModel = Body(...)):
     created_user = await userDataDB.users.find_one({"_id": new_user.inserted_id})
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
 
-@router.get("/", response_description="List all users", response_model=List[UserModel])
-async def list_users():
-    users = await userDataDB.users.find().to_list(1000)
-    return users
+@router.get("/", response_description="Get Users", response_model=Union[List[UserModel], UserModel])
+async def get_user(commons: idAndUsernameDependency = Depends()):
+    # print(commons.objId, commons.user)
+    if(commons.objId):
+        # print("Searching by ID")
+        if (user := await userDataDB.users.find_one({"_id": ObjectId(commons.objId)})) is not None:
+            return user
+        raise HTTPException(status_code=404, detail=f"user {ObjectId(commons.objId)} not found")
+    elif(commons.user):
+        # print("searching by name")
+        if (user := await userDataDB.users.find_one({"username": commons.user})) is not None:
+            return user
+        raise HTTPException(status_code=404, detail=f"user {commons.user} not found")
+    else:
+        print("no input")
+        users = await userDataDB.users.find().to_list(None)
+        return users
 
-@router.get("/{id}", response_description="Get a single user by ObjectID", response_model=UserModel)
-async def show_user(id: str):
-    if (user := await userDataDB.users.find_one({"_id": ObjectId(id)})) is not None:
-        return user
+@router.put("/", response_description="Update a user (username, password, or both)", response_model=UserModel)
+async def update_user(commons: idAndUsernameDependency = Depends(), user: UpdateUserModel = Body(...)):
+    if(not commons.objId and not commons.user):
+        return HTTPException(status_code=400, detail=f"no input given")
 
-    raise HTTPException(status_code=404, detail=f"user {ObjectId(id)} not found")
-
-@router.get("/{username}", response_description="Get a single user by username", response_model=UserModel)
-async def show_user_by_username(username: str):
-    if (user := await userDataDB.users.find_one({"username": username})) is not None:
-        return user
-
-    raise HTTPException(status_code=404, detail=f"user {username} not found")
-
-@router.put("/{id}", response_description="Update a user (username, password, or both)", response_model=UserModel)
-async def update_user(id: str, user: UpdateUserModel = Body(...)):
+    filter = {"_id": ObjectId(commons.objId)} if commons.objId else {"username": commons.user}
     user = {k: v for k, v in user.dict().items() if v is not None}
-
     if len(user) >= 1:
-        update_result = await userDataDB.users.update_one({"_id": ObjectId(id)}, {"$set": user})
+        update_result = await userDataDB.users.update_one(filter, {"$set": user})
 
         if update_result.modified_count == 1:
             if (
-                updated_user := await userDataDB.users.find_one({"_id": ObjectId(id)})
+                updated_user := await userDataDB.users.find_one(filter)
             ) is not None:
                 return updated_user
 
-    if (existing_user := await userDataDB.users.find_one({"_id": ObjectId(id)})) is not None:
+    if (existing_user := await userDataDB.users.find_one(filter)) is not None:
         return existing_user
 
-    raise HTTPException(status_code=404, detail=f"user {ObjectId(id)} not found")
+    raise HTTPException(status_code=404, detail=f"user {filter} not found")
 
-@router.put("/{username}", response_description="Update a user by username", response_model=UserModel)
-async def update_user_by_username(username: str, user: UpdateUserModel = Body(...)):
-    user = {k: v for k, v in user.dict().items() if v is not None}
-
-    if len(user) >= 1:
-        update_result = await userDataDB.users.update_one({"username": username}, {"$set": user})
-
-        if update_result.modified_count == 1:
-            if (
-                updated_user := await userDataDB.users.find_one({"username": username})
-            ) is not None:
-                return updated_user
-
-    if (existing_user := await userDataDB.users.find_one({"name": username})) is not None:
-        return existing_user
-
-    raise HTTPException(status_code=404, detail=f"user {username} not found")
-
-@router.delete("/{id}", response_description="Delete a user")
-async def delete_user(id: str):
-    delete_result = await userDataDB.users.delete_one({"_id": ObjectId(id)})
+@router.delete("/", response_description="Delete a user")
+async def delete_user(commons: idAndUsernameDependency = Depends()):
+    if(not commons.objId and not commons.user):
+        return HTTPException(status_code=400, detail=f"no input given")
+    filter = {"_id": ObjectId(commons.objId)} if commons.objId else {"username": commons.user}
+    delete_result = await userDataDB.users.delete_one(filter)
 
     if delete_result.deleted_count == 1:
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
 
-    raise HTTPException(status_code=404, detail=f"user {ObjectId(id)} not found")
-
-@router.delete("/{username}", response_description="Delete a user by username")
-async def delete_user_by_username(username: str):
-    delete_result = await userDataDB.users.delete_one({"username": username})
-
-    if delete_result.deleted_count == 1:
-        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
-
-    raise HTTPException(status_code=404, detail=f"user {username} not found")
+    raise HTTPException(status_code=404, detail=f"user {filter} not found")

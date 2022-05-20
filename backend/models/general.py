@@ -14,3 +14,8 @@ class PyObjectId(ObjectId):
     @classmethod
     def __modify_schema__(cls, field_schema):
         field_schema.update(type="string")
+
+class idAndUsernameDependency:
+    def __init__(self, objId: str = None, user: str = None):
+        self.objId = objId
+        self.user = user
