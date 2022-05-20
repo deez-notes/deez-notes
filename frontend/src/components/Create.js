@@ -5,6 +5,8 @@ import { Box } from "@mui/system";
 import css from '../styles/Create.module.scss';
 import SendIcon from "@mui/icons-material/Send";
 import { Cancel } from "@mui/icons-material";
+import axios from "axios";
+
 function Create()
 {
 
@@ -39,7 +41,23 @@ function Create()
         console.log("Link: " + linkRef.current.value);
         console.log("Desc: " + descRef.current.value);
         console.log(tags);
+        let date = new Date();
+        let time = date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0') + ":" +  date.getSeconds().toString().padStart(2, '0');
+        console.log(time);
 
+        let postData = {
+            "title" : titleRef.current.value,
+            "artist" : artistRef.current.value,
+            "link" : linkRef.current.value,
+            "desc" : descRef.current.value,
+            "tags" : tags,
+            "user" : "amusedCheese1",
+            "timestamp" : time
+        };
+
+        console.log(postData);
+        axios.post('http://localhost:8000/createpost', postData)
+      .then(res => console.log(res))
         // reset form?
     };
 
