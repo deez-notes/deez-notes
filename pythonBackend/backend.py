@@ -1,4 +1,5 @@
 import os
+from urllib import response
 from fastapi import FastAPI, Body, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -15,6 +16,7 @@ backend = FastAPI()
 
 origins = [
     "http://localhost:3000",
+    "http://localhost:3001",
     "http://localhost",
     "http://localhost:8000",
     "http://localhost:8000/docs#"
@@ -30,6 +32,7 @@ backend.add_middleware(
 
 client = motor.motor_asyncio.AsyncIOMotorClient(hostname)
 userDataDB = client.accountData
+postDataDB = client.postData
 
 class PyObjectId(ObjectId):
     @classmethod
@@ -76,13 +79,46 @@ class UpdateUserModel(BaseModel):
             }
         }
 
+class PostModel(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    title: str = Field(...)
+    artist: str = Field(...)
+    link: str = Field(...)
+    desc: str = Field(...)
+    tags: List = Field(...)
+    user: str = Field(...)
+    timestamp: str
+
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+           "example": {
+                "title": "Title",
+                "artist": "Post Malone",
+                "link": "www.google.com",
+                "desc" : '1234',
+                "tags" : ["tag1", "tag2", "etc"],
+                "user" : "amusedCheese1",
+                "timestamp" : "08:10:43"
+            }
+        }
+
+@backend.post("/createpost", response_description="Create a new post", response_model=PostModel)
+async def create_post(post: PostModel = Body(...)):
+    post = jsonable_encoder(post)
+    new_post = await postDataDB.posts.insert_one(post)
+    created_post = await postDataDB.posts.find_one({"_id": new_post.inserted_id})
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_post)
+
+# still need to fetch those posts
+
 @backend.post("/", response_description="Create a new user", response_model=UserModel)
 async def create_user(user: UserModel = Body(...)):
     user = jsonable_encoder(user)
     new_user = await userDataDB.users.insert_one(user)
     created_user = await userDataDB.users.find_one({"_id": new_user.inserted_id})
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
-
 
 @backend.get("/", response_description="List all users", response_model=List[UserModel])
 async def list_users():
