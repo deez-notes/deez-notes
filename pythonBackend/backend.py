@@ -13,11 +13,11 @@ hostname = "mongodb+srv://deeznotes:myrxsy7idiEvZCkE@cluster0.widrv.mongodb.net/
 
 backend = FastAPI()
 
-#I'm not quite sure what this get is used for but the browser does it by default
-@backend.get('/favicon.ico')
+from starlette.responses import FileResponse
+#Set the icon for the tab localhost:8000
+@backend.get('/favicon.ico', include_in_schema=False)
 async def favicon():
-    # print("ABHJFDHDS")
-    return 1
+    return FileResponse('dn.ico')
 
 origins = [
     "http://localhost:3000",
@@ -36,6 +36,10 @@ backend.add_middleware(
 
 client = motor.motor_asyncio.AsyncIOMotorClient(hostname)
 userDataDB = client.accountData
+
+@backend.on_event("shutdown")
+async def shutdown_db_client():
+    userDataDB.close()
 
 class PyObjectId(ObjectId):
     @classmethod
@@ -89,7 +93,6 @@ async def create_user(user: UserModel = Body(...)):
     created_user = await userDataDB.users.find_one({"_id": new_user.inserted_id})
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
 
-
 @backend.get("/", response_description="List all users", response_model=List[UserModel])
 async def list_users():
     users = await userDataDB.users.find().to_list(1000)
@@ -108,7 +111,6 @@ async def show_user_by_username(username: str):
         return user
 
     raise HTTPException(status_code=404, detail=f"user {username} not found")
-
 
 @backend.put("/{id}", response_description="Update a user (username, password, or both)", response_model=UserModel)
 async def update_user(id: str, user: UpdateUserModel = Body(...)):
@@ -145,7 +147,6 @@ async def update_user_by_username(username: str, user: UpdateUserModel = Body(..
         return existing_user
 
     raise HTTPException(status_code=404, detail=f"user {username} not found")
-
 
 @backend.delete("/{id}", response_description="Delete a user")
 async def delete_user(id: str):
