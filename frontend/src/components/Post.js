@@ -16,10 +16,23 @@ import Link from '@mui/material/Link';
 import Rating from '@mui/material/Rating';
 import Chip from '@mui/material/Chip';
 
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import StarIcon from '@material-ui/icons/Star';
 
+import { styled } from '@mui/material/styles';
+import { IconButtonProps } from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
+
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+
+import TextField from '@mui/material/TextField';
+import Send from '@material-ui/icons/Send';
 
 import Spotify from 'react-spotify-embed';
 
@@ -55,17 +68,39 @@ return {
 
 // Helper Functions to generate Rating System
 // https://mui.com/material-ui/react-rating/
-const labels = {  null: '🔈', 1: '🔇',  2: '🔈',  3: '🔉',  4: '🔊',};
+const labels = {  null: '🔈', 0: '🔈', 1: '🔇',  2: '🔈',  3: '🔉',  4: '🔊',};
 
 function getLabelText(value) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
 }
+
+// Helper Functions to expand Comment Section
+// https://mui.com/material-ui/react-card/#complex-interaction
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
+// Helper Functions to show comments
+// https://mui.com/material-ui/react-list/#align-list-items
 
 // function will at some point need to have a Post class passed in containing data
 function Post(props) {
   // rating
   const [value, setValue] = React.useState(Number(props.post.userrating));
   const [hover, setHover] = React.useState(-1);
+  // comments
+  const [expanded, setExpanded] = React.useState(false);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
     return (
         <Card className={css.card} variant="outlined" elevation="24" sx={{borderRadius: 2 }}>
             <CardHeader 
@@ -116,15 +151,71 @@ function Post(props) {
                 }}
                 emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
               />
-              {<Box sx={{ ml: 2, mr: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
-              }{
-                <Typography variant="body2" color="text.secondary" >
-                 | &nbsp; Rating
-                </Typography>
-              }{
-                <Chip label={props.post.ratingscore} variant="outlined" />
+              {<Box sx={{ ml: 2, mr: 1 }}>{labels[hover !== -1 ? hover : value]}</Box>
               }
+              {<Chip label={props.post.ratingscore} variant="outlined" />}
+              {<ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                <ChatBubbleOutline />
+              </ExpandMore>}
             </CardActions>
+            {/* Comments Section */}
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                <Divider sx={{mb:1}} component="li" />
+                {/* for loop the comments */}
+                <ListItem alignItems="flex-start" sx={{padding: 0}}>
+                  <ListItemAvatar>
+                    {<IconButton href={props.post.profilelink} size="small"> <Avatar {...stringAvatar(props.post.username)} /></IconButton>}
+                  </ListItemAvatar>
+                  <ListItemText
+                    secondary={
+                      <React.Fragment>
+                        {<Link sx={{ display: 'inline', mr: 1 }} href={props.post.profilelink} underline="none" color="inherit" variant="h8" color="text.primary">
+                          {props.post.username}
+                        </Link>}
+                        {"We're no strangers to love You know the rules and so do I"}
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <Divider variant="inset" component="li" />
+                <ListItem alignItems="flex-start" sx={{padding: 0}}>
+                  <ListItemAvatar>
+                    {<IconButton href={props.post.profilelink} size="small"> <Avatar {...stringAvatar(props.post.username)} /></IconButton>}
+                  </ListItemAvatar>
+                  <ListItemText
+                    secondary={
+                      <React.Fragment>
+                        {<Link sx={{ display: 'inline', mr: 1 }} href={props.post.profilelink} underline="none" color="inherit" variant="h8" color="text.primary">
+                          {props.post.username}
+                        </Link>}
+                        {"We're no strangers to love You know the rules and so do I"}
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                {/* <Divider variant="inset" component="li" /> */}
+                {/*  */}
+                <Divider sx={{mt:1, mb:0.5}} component="li" />
+                <Box sx={{ display: 'flex', alignItems: 'flex-end'}}>
+                  <TextField  id="input-comment" 
+                              label="Enter your comment bro." 
+                              size="small" 
+                              variant="standard"
+                              fullWidth
+                              InputProps={{fontVariant: "caption"}}
+                               />
+                  <IconButton aria-label="send-comment" size="small" sx={{ml: 1}}>
+                      <Send />
+                  </IconButton>
+                </Box>
+              </List>
+            </Collapse>
         </Card>
     )
 
