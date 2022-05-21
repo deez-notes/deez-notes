@@ -168,40 +168,29 @@ function Post(props) {
               <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 <Divider sx={{mb:1}} component="li" />
                 {/* for loop the comments */}
-                <ListItem alignItems="flex-start" sx={{padding: 0}}>
-                  <ListItemAvatar>
-                    {<IconButton href={props.post.profilelink} size="small"> <Avatar {...stringAvatar(props.post.username)} /></IconButton>}
-                  </ListItemAvatar>
-                  <ListItemText
-                    secondary={
-                      <React.Fragment>
-                        {<Link sx={{ display: 'inline', mr: 1 }} href={props.post.profilelink} underline="none" color="inherit" variant="h8" color="text.primary">
-                          {props.post.username}
-                        </Link>}
-                        {"We're no strangers to love You know the rules and so do I"}
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-                <ListItem alignItems="flex-start" sx={{padding: 0}}>
-                  <ListItemAvatar>
-                    {<IconButton href={props.post.profilelink} size="small"> <Avatar {...stringAvatar(props.post.username)} /></IconButton>}
-                  </ListItemAvatar>
-                  <ListItemText
-                    secondary={
-                      <React.Fragment>
-                        {<Link sx={{ display: 'inline', mr: 1 }} href={props.post.profilelink} underline="none" color="inherit" variant="h8" color="text.primary">
-                          {props.post.username}
-                        </Link>}
-                        {"We're no strangers to love You know the rules and so do I"}
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-                {/* <Divider variant="inset" component="li" /> */}
+                {props.post.comments.map(function({username,profilelink,comment},i){
+                  return (
+                  <React.Fragment>
+                    {i>0 && <Divider variant="inset" component="li" />}
+                    <ListItem alignItems="center" sx={{padding: 0}}>
+                      <ListItemAvatar>
+                        {<IconButton href={profilelink} size="small"> <Avatar {...stringAvatar(username)} /></IconButton>}
+                      </ListItemAvatar>
+                      <ListItemText
+                        secondary={
+                          <React.Fragment>
+                            {<Link sx={{ display: 'inline', mr: 1 }} href={profilelink} underline="none" color="inherit" variant="h6">
+                              {username}
+                            </Link>}
+                            {comment}
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                  </React.Fragment>
+                );})}
                 {/*  */}
-                <Divider sx={{mt:1, mb:0.5}} component="li" />
+                {props.post.comments.length > 0 && <Divider sx={{mt:1, mb:0.5}} component="li" />}
                 <Box sx={{ display: 'flex', alignItems: 'flex-end'}}>
                   <TextField  id="input-comment" 
                               label="Enter your comment bro." 
