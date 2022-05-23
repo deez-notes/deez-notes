@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import {useRef, useState} from 'react';
 import css from "../styles/Post.module.scss";
 
 import Avatar from '@mui/material/Avatar';
@@ -87,7 +87,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-// Helper Functions to show comments
+// List to show comments
 // https://mui.com/material-ui/react-list/#align-list-items
 
 // function will at some point need to have a Post class passed in containing data
@@ -95,10 +95,23 @@ function Post(props) {
   // rating
   const [value, setValue] = React.useState(Number(props.post.userrating));
   const [hover, setHover] = React.useState(-1);
-  // comments
+  // comment section expand
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+  // comments
+  const commentRef = useRef();
+  const [comments,setComments] = React.useState(props.post.comments);
+  const handleCommentEnter = (e) => {
+    e.preventDefault();
+    if (commentRef.current.value.length > 0)
+    {
+      console.log("Comment: " + commentRef.current.value);
+      setComments([...comments, {'username':"TEST COMMENT",'profilelink':'#','comment':commentRef.current.value}]);
+      commentRef.current.value = "";
+      // send to backend
+    }
   };
 
     return (
@@ -168,7 +181,7 @@ function Post(props) {
               <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 <Divider sx={{mb:1}} component="li" />
                 {/* for loop the comments */}
-                {props.post.comments.map(function({username,profilelink,comment},i){
+                {comments.map(function({username,profilelink,comment},i){
                   return (
                   <React.Fragment>
                     {i>0 && <Divider variant="inset" component="li" />}
@@ -192,14 +205,16 @@ function Post(props) {
                 {/*  */}
                 {props.post.comments.length > 0 && <Divider sx={{mt:1, mb:0.5}} component="li" />}
                 <Box sx={{ display: 'flex', alignItems: 'flex-end'}}>
-                  <TextField  id="input-comment" 
+                  <TextField  inputRef={commentRef}
+                              id="input-comment" 
                               label="Enter your comment bro." 
                               size="small" 
                               variant="standard"
+                              defaultValue=""
                               fullWidth
                               InputProps={{fontVariant: "caption"}}
                                />
-                  <IconButton aria-label="send-comment" size="small" sx={{ml: 1}}>
+                  <IconButton onClick={handleCommentEnter} aria-label="send-comment" size="small" sx={{ml: 1}}>
                       <Send />
                   </IconButton>
                 </Box>
