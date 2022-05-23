@@ -20,13 +20,9 @@ starlette==0.13.6
 toml==0.10.2
 typed-ast==1.4.1
 typing-extensions==3.7.4.3
-<<<<<<< HEAD
-uvicorn==0.12.3touch 
+uvicorn==0.12.3
 aiofiles==0.8.0
 fastapi-security==0.5.0
 passlib==1.7.4
 bcrypt==3.2.2
 python-jose==3.3.0
-=======
-uvicorn==0.12.3
->>>>>>> main
