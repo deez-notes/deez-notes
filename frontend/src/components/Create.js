@@ -56,7 +56,7 @@ function Create()
         };
 
         console.log(postData);
-        axios.post('http://localhost:8000/createpost', postData)
+        axios.post('http://localhost:8000/posts/createpost', postData)
       .then(res => console.log(res))
         // reset form?
     };
