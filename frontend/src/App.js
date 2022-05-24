@@ -4,7 +4,7 @@ import NavBar from './components/NavBar';
 import Home from './components/Home';
 import Create from './components/Create';
 import Error from './components/Error';
-import Profile from './components/Profile';
+import Profile from './components/Profile2';
 import Feed from './components/Feed';
 import Account from './components/Account'
 
