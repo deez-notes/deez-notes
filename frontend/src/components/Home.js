@@ -21,7 +21,7 @@ function Home() {
             password: password,
         }
 
-        fetch("http://localhost:8000/users", {
+        fetch(`http://localhost:8000/users/?users=${user}`, {
             method: "POST",
             body: JSON.stringify(data),
             header: {
