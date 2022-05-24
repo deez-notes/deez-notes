@@ -1,7 +1,7 @@
-from fastapi import APIRouter, status, Body, HTTPException, Depends
+from fastapi import APIRouter, status, Body, HTTPException, Depends, Query
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-# from bson import ObjectId
+from bson import ObjectId
 from typing import List, Union
 # from pydantic import Field
 
@@ -9,11 +9,17 @@ from models.general import idAndUsernameDependency
 from models.postModel import PostModel, UpdatePostModel
 from settings import client
 
-
 postDataDB = client.postData
 
 router = APIRouter(prefix="/posts",
     tags=["posts"],)
+
+class PostDependency():
+    def __init__(self, objId: str = None, user: str = None, tags: list = None):
+        self.objId = objId
+        self.user = user
+        self.tags = tags
+        
 
 @router.post("/createpost", response_description="Create a new post", response_model=PostModel)
 async def create_post(post: PostModel = Body(...)):
@@ -22,8 +28,8 @@ async def create_post(post: PostModel = Body(...)):
     created_post = await postDataDB.posts.find_one({"_id": new_post.inserted_id})
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_post)
 
-@router.get("/", response_description="List posts", response_model=Union[List[PostModel], PostModel])
-async def get_post(commons: idAndUsernameDependency = Depends()):
+@router.get("/", response_description="Get/list posts", response_model=Union[List[PostModel], PostModel])
+async def get_post(commons: idAndUsernameDependency = Depends(), q: Union[List[str], None] = Query(default=None)):
     # print(commons.objId, commons.user)
     if(commons.objId):
         # print("searching by id")
@@ -34,6 +40,11 @@ async def get_post(commons: idAndUsernameDependency = Depends()):
     elif(commons.user):
         # print("searching by user")
         posts = await postDataDB.posts.find({"user": commons.user}).to_list(None)
+        return posts
+    elif (q):
+        print("searching by tags")
+        print(q)
+        posts = await postDataDB.posts.find({"tags": {"$all": q}}).to_list(None)
         return posts
     else:
         # print("list all")
