@@ -1,8 +1,10 @@
 [
     {
         "username": "GiangPappi",
-        "name": "Giang",
+        "fname": "Giang",
+        "lname": "Pham",
         "bio": "5th Underlord",
+        "password": "7777",
         "following": ["Tommy","Andy"],
         "followers": ["Carl_Junior","Car_Marx"],
         "link": "https://www.instagram.com/giang_pappi/"
@@ -10,23 +12,29 @@
     },
     {
         "username": "Giang's Girlfriend",
-        "name": "Shay",
+        "fname": "Shay",
+        "lname": "Tran",
         "bio": "Nonexistent",
+        "password": "9999",
         "following": ["a","2"],
         "followers": ["1","c"],
         "link": "https://www.instagram.com/eajpark/"
     },
     {
         "username": "Tommy",
-        "name": "Tommy Nguyen",
+        "fname": "Tommy",
+        "lname": "Nguyen",
         "bio": "no fun :(",
+        "password": "1111",
         "following": ["1","2"],
         "followers": ["1","2"],
         "link": "https://www.instagram.com/tummy.nguyen/"
     },
     {
         "username": "Asian panda",
-        "name": "Andy Ngo",
+        "fname": "Andy",
+        "lname": "Ngo",
+        "password": "2222",
         "bio": "Loves Airheads",
         "following": ["p","2"],
         "followers": ["1","r"],
@@ -34,7 +42,9 @@
     },
     {
         "username": "Alex",
-        "name": "Alex man",
+        "fname": "Alex",
+        "lname": "Sry, idk",
+        "password": "12324",
         "bio": "Just Alex",
         "following": ["a","a"],
         "followers": ["a","a"],
@@ -42,8 +52,10 @@
     },
     {
         "username": "James the man",
-        "name": "James Tseng",
-        "bio": "UPE",
+        "fname": "James",
+        "lname": "Tseng?",
+        "password": "123",
+        "bio": "UAS",
         "following": ["t","2"],
         "followers": ["t","2"],
         "link": "https://www.instagram.com/tseng_onthetrain_/"
