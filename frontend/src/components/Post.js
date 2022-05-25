@@ -68,11 +68,6 @@ return {
 
 // Helper Functions to generate Rating System
 // https://mui.com/material-ui/react-rating/
-const labels = {  null: '🔈', 0: '🔈', 1: '🔇',  2: '🔈',  3: '🔉',  4: '🔊',};
-
-function getLabelText(value) {
-  return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
-}
 
 // Helper Functions to expand Comment Section
 // https://mui.com/material-ui/react-card/#complex-interaction
@@ -153,9 +148,8 @@ function Post(props) {
               <Rating
                 name="hover-feedback"
                 value={value}
-                max={4}
+                max={5}
                 precision={1}
-                getLabelText={getLabelText}
                 onChange={(event, newValue) => {
                   setValue(newValue);
                 }}
@@ -164,9 +158,9 @@ function Post(props) {
                 }}
                 emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
               />
-              {<Box sx={{ ml: 2, mr: 1 }}>{labels[hover !== -1 ? hover : value]}</Box>
-              }
-              {<Chip label={props.post.ratingscore} variant="outlined" />}
+              {/* {<Box sx={{ ml: 2, mr: 1 }}>{labels[hover !== -1 ? hover : value]}</Box>
+              } */}
+              {<Chip sx={{ml:1}} label={props.post.ratingscore} variant="outlined" />}
               {<ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
