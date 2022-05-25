@@ -1,5 +1,5 @@
 from fastapi import Depends, APIRouter, status, Body, HTTPException
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 
 from typing import Union
 from jose import JWTError, jwt
@@ -38,8 +38,8 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     return encoded_jwt
 
 @router.post("/token", response_model=Token)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = await authenticate_user(userDataDB.users, form_data.username, form_data.password)
+async def login_for_access_token(user: UserModel):
+    user = await authenticate_user(userDataDB.users, user.username, user.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
