@@ -16,6 +16,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Image1 from '../GiangTestImg.jpg'
 import TestData from '../TestData.json'; 
 import NavBar from "./NavBar"
+import Feed from "./Feed.js"
+import Spotify from 'react-spotify-embed';
 
 
 
@@ -31,6 +33,7 @@ export default function SignInSide() {
     const [TempUser, changeTempUser] = useState('default username');
     const [TempPass, changeTempPass] = useState('default password');
     const [TempBio, changeTempBio ] = useState('default biography');
+    const [TempSong, changeTempSong] = useState('https://open.spotify.com/track/5ihDGnhQgMA0F0tk9fNLlA?si=4472348a63dd4f83');
     const [TempFollowing, changeTempFollowing ] = useState([]);
     const [TempFollowers, changeTempFollowers ] = useState([]);
 
@@ -41,6 +44,7 @@ export default function SignInSide() {
     const [User, changeUser] = useState('default username');
     const [Pass, changePass] = useState('default password');
     const [Bio, changeBio ] = useState('default biography');
+    const [Song, changeSong] = useState('https://open.spotify.com/track/5ihDGnhQgMA0F0tk9fNLlA?si=4472348a63dd4f83');
     const [Following, changeFollowing ] = useState([]);
     const [Followers, changeFollowers ] = useState([]);
 
@@ -50,6 +54,7 @@ export default function SignInSide() {
         changeBio(TempBio);
         changeUser(TempUser);
         changePass(TempPass);
+        changeSong(TempSong);
         changeFollowers(TempFollowers);
         changeFollowing(TempFollowing);
 
@@ -63,6 +68,7 @@ export default function SignInSide() {
         changeTempBio(Bio);
         changeTempUser(User);
         changeTempPass(Pass);
+        changeTempSong(Song)
         changeTempFollowers(Followers);
         changeTempFollowing(Following);
         SetEditProfile(true);
@@ -83,7 +89,8 @@ export default function SignInSide() {
                 changeLName(user.lname);
                 changeUser(user.username);
                 changeBio(user.bio);
-                changePass(user.password)
+                changePass(user.password);
+                changeSong(user.fav);
                 changeFollowing(user.following.join(' '));
                 changeFollowers(user.followers.join(' '));
                 return;
@@ -119,7 +126,27 @@ export default function SignInSide() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
-        />
+        >
+        <Grid item md={9} ml={13} component={Paper} elevation = {6} square>
+        <Box
+  
+            sx={{
+              my: 10,
+              mx: 30,
+              
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+
+            {/* <Feed/> */}
+          </Box>
+
+
+        </Grid>
+        
+        </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
@@ -154,15 +181,25 @@ export default function SignInSide() {
 
             <Typography sx={{fontSize: 35, color:"#222222", mt:1, mb:1}}>&#10165;</Typography>
 
-            <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26}} component="h1">
+            <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26, mb:7}} component="h1">
               Username: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>{User}</Box>
             </Typography>
 
-            <Typography sx={{fontSize: 35,color:"#222222", mt:1, mb:1}}>&#10165;</Typography>
+              
+            {/* <Typography sx={{fontSize: 35,color:"#222222", mt:1, mb:1}}> </Typography> */}
 
-            <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26}} component="h1">
+            {/* <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26}} component="h1">
               Password: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>{Pass}</Box>
+            </Typography> */}
+
+            <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26, mb:3}} component="h1">
+              Favorite Song
             </Typography>
+
+            <Spotify link={Song} />
+
+
+
 
             <TextField
                 sx={{mt:6}}
@@ -182,7 +219,7 @@ export default function SignInSide() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 10, mb: 2 }}
+                sx={{ mt: 4, mb: 2 }}
                 onClick={HandleProfileChange}
               >
                 Edit
@@ -222,6 +259,15 @@ export default function SignInSide() {
                 helperText='Password'
                 onChange={event => {changeTempPass(event.target.value)}}
 
+              />
+
+                <TextField
+                margin="normal"
+                fullWidth
+                label={Song}
+                helperText='Song Link'
+                onChange={event => {changeTempSong(event.target.value)}}
+      
               />
               <TextField 
                 margin="normal"

@@ -19,6 +19,7 @@ async def favicon():
 origins = [
     "http://localhost:3000",
     "http://localhost:3001",
+    "http://localhost:3001/create",
     "http://localhost",
     "http://localhost:8000",
     "http://localhost:8000/docs#"
