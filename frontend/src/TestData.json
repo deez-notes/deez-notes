@@ -6,6 +6,7 @@
         "bio": "5th Underlord",
         "password": "7777",
         "following": ["Tommy","Andy"],
+        "fav": "https://open.spotify.com/track/18uXUUPFfj6XF4hsmp65gB?si=221ff6a7c2744eaa",
         "followers": ["Carl_Junior","Car_Marx"],
         "link": "https://www.instagram.com/giang_pappi/"
         
@@ -17,6 +18,7 @@
         "bio": "Nonexistent",
         "password": "9999",
         "following": ["a","2"],
+        "fav": "https://open.spotify.com/track/4Dq2FjRkOTHcssggMdYK8J?si=fd775c7741eb4c61",
         "followers": ["1","c"],
         "link": "https://www.instagram.com/eajpark/"
     },
@@ -27,6 +29,7 @@
         "bio": "no fun :(",
         "password": "1111",
         "following": ["1","2"],
+        "fav": "https://open.spotify.com/track/1SxqqC1aQ8JiLyfMrHYmnF?si=130203840b1344fa",
         "followers": ["1","2"],
         "link": "https://www.instagram.com/tummy.nguyen/"
     },
@@ -37,6 +40,7 @@
         "password": "2222",
         "bio": "Loves Airheads",
         "following": ["p","2"],
+        "fav": "https://open.spotify.com/track/09QE4VI4P2ZIFHmVxeUSKd?si=2805ae62c7ce4a30",
         "followers": ["1","r"],
         "link": "https://www.instagram.com/airheadscandy/"
     },
@@ -47,6 +51,7 @@
         "password": "12324",
         "bio": "Just Alex",
         "following": ["a","a"],
+        "fav": "https://open.spotify.com/track/6YFzL1910P0fRFh865HmI3?si=9bbc656c40c14600",
         "followers": ["a","a"],
         "link": "https://www.instagram.com/tyler1_alpha/"
     },
@@ -57,6 +62,7 @@
         "password": "123",
         "bio": "UAS",
         "following": ["t","2"],
+        "fav": "https://open.spotify.com/track/782NR6j9LjIfZg4BbCcJdl?si=507be2d36e04433a",
         "followers": ["t","2"],
         "link": "https://www.instagram.com/tseng_onthetrain_/"
     }
