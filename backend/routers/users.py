@@ -37,7 +37,7 @@ async def get_user(commons: idAndUsernameDependency = Depends()):
             return user
         raise HTTPException(status_code=404, detail=f"user {commons.user} not found")
     else:
-        print("no input")
+        # print("no input")
         users = await userDataDB.users.find().to_list(None)
         return users
 
