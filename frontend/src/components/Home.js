@@ -3,6 +3,7 @@ import { Button, Grid, FormControl, Paper, TextField, Typography } from "@mui/ma
 import css from '../styles/Home.module.scss';
 import { useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react";
+import { axios } from 'axios';
 
 function Home() {
 
@@ -16,40 +17,32 @@ function Home() {
             return;
         }
 
-        let data = {
+        let userData = {
             username: user,
             password: password,
         }
 
-        fetch(`http://localhost:8000/users/?users=${user}`, {
-            method: "POST",
-            body: JSON.stringify(data),
-            header: {
-                "Content-type": "application/json"
-            },
-        })
+        try {
+            const response = await axios.post('http://localhost:8000/auth/token', userData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                withCredentials: true
+            });
+            console.log(response);
+            setUser("");
+            setPassword("");
+        } catch (err) {
+            console.log("boo");
+        }
 
-        // try {
-        //     const config = {
-        //         headers: {
-        //             "Content-type": "application/json"
-        //         }
+        localStorage.setItem('userData', JSON.stringify(userData));
+        // navigate("/feed", {
+        //     state: {
+        //         username: user
         //     }
-
-
-        //     const { data } =
-        //         await fetch(`http://localhost:8000/`, {
-        //             username: user,
-        //             password: password
-        //         })
-        // }
-
-        localStorage.setItem('userData', JSON.stringify(data));
-        navigate("/feed", {
-            state: {
-                username: user
-            }
-        });
+        // });
     }
 
     const HandleAccountNavigate = (event) => {
@@ -64,18 +57,6 @@ function Home() {
 
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
-
-    const fetchUser = (id) => {
-        console.log("yay");
-        console.log({ user });
-        console.log({ password });
-        fetch(`http://localhost:8000/627d613737bbc64a60d62568`)
-            .then(res => res.json())
-            .then(data => console.log(data))
-        // fetch(`http://localhost:8000/users/${id}`)
-        //     .then(res => res.json())
-        //     .then(data => console.log(data))
-    };
 
 
     return (
@@ -98,10 +79,7 @@ function Home() {
                         <Button onClick={HandleAccountNavigate} color='primary'>Create Account </Button>
                     </FormControl>
                 </Paper>
-            </div><Button onClick={() => {
-                fetchUser("fun");
-            }}
-            >Hi</Button>
+            </div>
         </div >
     )
 }
