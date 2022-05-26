@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from bson import ObjectId
-from .general import PyObjectId
-from typing import Optional
+from typing import Optional, List
+
 
 class BasicUserModel(BaseModel):
     username: str = Field(...)
@@ -25,6 +25,9 @@ class UserModel(BaseModel):
     hashed_password: str = Field(default=None)
     first_name: str = Field(default=None)
     last_name: str = Field(default=None)
+    followers: List = Field(default=None)
+    following: List = Field(default=None)
+
 
     class Config:
         allow_population_by_field_name = True
@@ -44,6 +47,8 @@ class UpdateUserModel(BaseModel):
     password: Optional[str]
     first_name: Optional[str]
     last_name: Optional[str]
+    followers: Optional[List]
+    following: Optional[List]
 
     class Config:
         arbitrary_types_allowed = True
@@ -61,10 +66,11 @@ class UpdateUserModel(BaseModel):
 User Model
 
 username str
-firstname str
-lastName str
 pass str
 hashedPass str
+firstname str
+lastName str
+
 following []
 followers []
 
