@@ -47,7 +47,7 @@ async def get_user(commons: idAndUsernameDependency = Depends()):
         return users
 
 @router.put("/", response_description="Update a user (username, password, or both)", response_model=UserModel)
-async def update_user(commons: idAndUsernameDependency = Depends()):
+async def update_user(commons: idAndUsernameDependency = Depends(), user: UpdateUserModel = Body(...)):
     if(not commons.objId and not commons.user):
         return HTTPException(status_code=400, detail=f"no input given")
 
