@@ -3,10 +3,26 @@ from bson import ObjectId
 from .general import PyObjectId
 from typing import Optional
 
-class UserModel(BaseModel):
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+class BasicUserModel(BaseModel):
     username: str = Field(...)
     password: str = Field(...)
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "username": "[MNI]Red",
+                "password" : '1234'
+            }
+        }
+
+class UserModel(BasicUserModel):
+    id: str = Field(default=None, alias="_id")
+    username: str = Field(...)
+    password: str = Field(...)
+    hashed_password: str = Field(default=None)
 
     class Config:
         allow_population_by_field_name = True
@@ -32,3 +48,16 @@ class UpdateUserModel(BaseModel):
                 "password" : '1234'
             }
         }
+
+"""
+User Model
+
+username str
+firstname str
+lastName str
+pass str
+hashedPass str
+following []
+followers []
+
+"""
