@@ -9,6 +9,7 @@ function Account() {
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
 
 
     const handleOnSubmit = async (event) => {
@@ -17,6 +18,8 @@ function Account() {
         let userData = {
             "username": user,
             "password": password,
+            "first_name": firstName,
+            "last_name": lastName,
         };
 
         let existing = null;
@@ -57,10 +60,10 @@ function Account() {
                     onChange={(e) => setUser(e.target.value)} fullWidth required />
                 <TextField className={css.input} label="Password" placeholder='Enter your password!' type="password"
                     value={password} onChange={(e) => setPassword(e.target.value)} fullWidth required />
-                {/* <TextField className={css.input} label="First Name" placeholder='Enter your password!'
-                    value={password} onChange={(e) => setPassword(e.target.value)} fullWidth required />
-                <TextField className={css.input} label="Last Name" placeholder='Enter your password!'
-                    value={password} onChange={(e) => setPassword(e.target.value)} fullWidth required /> */}
+                <TextField className={css.input} label="First Name" placeholder='Enter your first name!'
+                    value={firstName} onChange={(e) => setFirstName(e.target.value)} fullWidth required />
+                <TextField className={css.input} label="Last Name" placeholder='Enter your last name!'
+                    value={lastName} onChange={(e) => setLastName(e.target.value)} fullWidth required />
                 <Button onClick={handleOnSubmit}>Create</Button>
             </Paper>
         </div>
