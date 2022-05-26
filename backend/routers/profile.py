@@ -18,7 +18,6 @@ router = APIRouter(prefix="/profiles",
 async def create_profile(profile: ProfileModel = Body(...)):
     if (not profile.id):
         profile.id = str(ObjectId())
-        
 
     profile = jsonable_encoder(profile)
     new_profile = await profileDataDB.profiles.insert_one(profile)

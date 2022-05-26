@@ -5,8 +5,8 @@ from typing import Optional
 class ProfileModel(BaseModel):
     id: str = Field(default=None, alias="_id")
     username: str = Field(...)
-    bio: str = Field(...)
-    favorite_song: str = Field(default=None)
+    bio: str = Field(default="")
+    favorite_song: str = Field(default="")
     
     class Config:
         allow_population_by_field_name = True
