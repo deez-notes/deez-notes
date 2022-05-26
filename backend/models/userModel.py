@@ -70,7 +70,6 @@ pass str
 hashedPass str
 firstname str
 lastName str
-
 following []
 followers []
 
