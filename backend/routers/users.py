@@ -51,7 +51,7 @@ async def update_user(commons: idAndUsernameDependency = Depends(), user: Update
     if(not commons.objId and not commons.user):
         return HTTPException(status_code=400, detail=f"no input given")
 
-    filter = {"_id": ObjectId(commons.objId)} if commons.objId else {"username": commons.user}
+    filter = {"_id": commons.objId} if commons.objId else {"username": commons.user}
     user = {k: v for k, v in user.dict().items() if v is not None}
     if len(user) >= 1:
         update_result = await userDataDB.users.update_one(filter, {"$set": user})
