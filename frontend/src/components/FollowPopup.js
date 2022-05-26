@@ -7,16 +7,27 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import ProfileBar from './ProfileBar';
 import { Stack } from '@mui/material';
+import axios from 'axios';
+import UserList from './UserList';
 
 
 // the idea is to pass an array of usernames into this badboy
 function FollowPopup(props) {
   const [open, setOpen] = useState(false);
   const [scroll, setScroll] = useState('paper');
+  const [following, setFollowing] = useState([]);
+  const [follower, setFollowers] = useState([]);
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
     setScroll(scrollType);
+    
+    axios.get('http://localhost:8000/users/?user=' + props.username)
+    .then((res) => {
+      let data = res.data;
+      setFollowing(data.following);
+      setFollowers(data.followers);
+    });
   };
 
   const handleClose = () => {
@@ -50,35 +61,7 @@ function FollowPopup(props) {
             ref={descriptionElementRef}
             tabIndex={-1}
           >
-            {/* {props.data.join('\n')} */}
-            <Stack direction="column" spacing={2}>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-                <ProfileBar username="amusedCheese1" fullname="Sir Amused Cheese III" src="https://cdn.vox-cdn.com/thumbor/GRUqJHYcBtuPVj1o9yaySECxpQI=/0x0:711x400/1200x800/filters:focal(337x95:449x207)/cdn.vox-cdn.com/uploads/chorus_image/image/66129639/pokemon_piplup.0.png"></ProfileBar>
-                <ProfileBar username="laughingDairy2" fullname="Chuckling Cow" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2019/12/pokemon-charmander-change.jpg"></ProfileBar>
-            </Stack>
+            <UserList following={following} followers={follower} data={props.title}/>
           </DialogContentText>
         </DialogContent>
         {/* <DialogActions>

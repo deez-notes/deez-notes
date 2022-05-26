@@ -11,10 +11,10 @@ function ProfileBar(props)
     */
     return <div>
         <Stack direction="row" spacing={1}>
-            <Avatar src={props.src}/>
+            {/* <Avatar src={props.src}/> */}
             <Stack direction="column" spacing={-0.5}>
                 <Typography variant="body1">{props.username}</Typography>
-                <Typography variant="caption">{props.fullname}</Typography>
+                {/* <Typography variant="caption">{props.fullname}</Typography> */}
             </Stack>
             
         </Stack>
