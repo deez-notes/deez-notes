@@ -37,9 +37,8 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-@router.post("/login", response_model=Token)
-# async def login_for_access_token(user: BasicUserModel):
-async def login_for_access_token(user: OAuth2PasswordRequestForm = Depends()):
+@router.post("/login", response_description="Login with username and password, returns personal token for getting current user", response_model=Token)
+async def login_for_access_token(user: BasicUserModel):
     user = await authenticate_user(userDataDB.users, user.username, user.password)
     if not user:
         raise HTTPException(
@@ -53,7 +52,7 @@ async def login_for_access_token(user: OAuth2PasswordRequestForm = Depends()):
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(token: str):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -75,6 +74,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 async def get_current_active_user(current_user: UserModel = Depends(get_current_user)):
     return current_user
 
-@router.get("/me", response_model=UserModel)
-async def read_users_me(current_user: UserModel = Depends(get_current_active_user)):
+@router.get("/me", response_description="Given token that was generated from login, return the current user", response_model=UserModel)
+async def read_users_me(token: str):
+    current_user = await get_current_user(token)
     return current_user
