@@ -4,11 +4,10 @@ from fastapi.responses import JSONResponse, HTMLResponse
 from typing import List, Union
 
 from bson import ObjectId
-from models.general import idAndUsernameDependency, PyObjectId
-from models.userModel import BasicUserModel, UserModel, UpdateUserModel
+from models.general import idAndUsernameDependency
+from models.userModel import UserModel, UpdateUserModel
 from hash import get_password_hash
 from settings import client
-
 
 userDataDB = client.accountData
 
@@ -25,7 +24,7 @@ async def create_user(user: UserModel = Body(...)):
     user = jsonable_encoder(user)
     new_user = await userDataDB.users.insert_one(user)
     created_user = await userDataDB.users.find_one({"_id": new_user.inserted_id})
-   
+ 
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
 
 @router.get("/", response_description="Get Users", response_model=Union[List[UserModel], UserModel])
@@ -66,6 +65,32 @@ async def update_user(commons: idAndUsernameDependency = Depends(), user: Update
         return existing_user
 
     raise HTTPException(status_code=404, detail=f"user {filter} not found")
+
+@router.put("/follow", response_description="Make a user follow another")
+async def follow_another_user(current_username: str, to_follow: str):
+    current_user = await userDataDB.users.find_one({"username": current_username})
+    if not current_user:
+        raise HTTPException(status_code=404, detail=f"user {current_username} not found")
+    user_to_follow = await userDataDB.users.find_one({"username": to_follow})
+    if not user_to_follow:
+        raise HTTPException(status_code=404, detail=f"user {to_follow} not found")
+
+    userDataDB.users.update_one({"username": current_username}, {"$push": {"following": to_follow}})
+    userDataDB.users.update_one({"username": to_follow}, {"$push": {"followers": current_username}})
+
+    
+
+@router.put("/unfollow", response_description="Make a user follow another")
+async def follow_another_user(current_username: str, to_unfollow: str):
+    current_user = await userDataDB.users.find_one({"username": current_username})
+    if not current_user:
+        raise HTTPException(status_code=404, detail=f"user {current_username} not found")
+    user_to_follow = await userDataDB.users.find_one({"username": to_unfollow})
+    if not user_to_follow:
+        raise HTTPException(status_code=404, detail=f"user {to_unfollow} not found")
+
+    userDataDB.users.update_one({"username": current_username}, {"$pull": {"following": to_unfollow}})
+    userDataDB.users.update_one({"username": to_unfollow}, {"$pull": {"followers": current_username}})
 
 @router.delete("/", response_description="Delete a user")
 async def delete_user(commons: idAndUsernameDependency = Depends()):

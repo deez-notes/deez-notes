@@ -25,8 +25,8 @@ class UserModel(BaseModel):
     hashed_password: str = Field(default=None)
     first_name: str = Field(default=None)
     last_name: str = Field(default=None)
-    followers: List = Field(default=None)
-    following: List = Field(default=None)
+    followers: List = Field(default=[])
+    following: List = Field(default=[])
 
 
     class Config:
@@ -70,7 +70,6 @@ pass str
 hashedPass str
 firstname str
 lastName str
-
 following []
 followers []
 

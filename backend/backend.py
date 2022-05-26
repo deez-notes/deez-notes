@@ -4,12 +4,13 @@ from fastapi import Depends, FastAPI
 from fastapi import FastAPI, Body, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import FileResponse
-from routers import users, auth, post
+from routers import users, auth, post, profile
 
 app = FastAPI()
 app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(post.router)
+app.include_router(profile.router)
 
 #Set the icon for the tab localhost:8000
 @app.get('/favicon.ico', include_in_schema=False)

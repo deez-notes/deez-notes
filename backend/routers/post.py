@@ -52,7 +52,7 @@ async def get_post(commons: idAndUsernameDependency = Depends(), q: Union[List[s
         return posts
 
 @router.put("/{id}", response_description="Update a post by id", response_model=PostModel)
-async def update_user(id: str, post: UpdatePostModel = Body(...)):
+async def update_post(id: str, post: UpdatePostModel = Body(...)):
     post = {k: v for k, v in post.dict().items() if v is not None}
     
     if len(post) >= 1:
