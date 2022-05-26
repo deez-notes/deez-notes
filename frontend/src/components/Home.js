@@ -3,7 +3,7 @@ import { Button, Grid, FormControl, Paper, TextField, Typography } from "@mui/ma
 import css from '../styles/Home.module.scss';
 import { useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react";
-import { axios } from 'axios';
+import axios from 'axios';
 
 function Home() {
 
@@ -23,26 +23,36 @@ function Home() {
         }
 
         try {
-            const response = await axios.post('http://localhost:8000/auth/token', userData, {
+            const response = await axios.post('http://localhost:8000/auth/login', userData, {
                 headers: {
                     "Content-Type": "application/json",
-                    "Accept": "application/json"
+                    "accept": "application/json"
                 },
                 withCredentials: true
             });
             console.log(response);
             setUser("");
             setPassword("");
+            localStorage.setItem('userData', user);
+            navigate("/feed", {
+                state: {
+                    username: user
+                }
+            });
         } catch (err) {
-            console.log("boo");
+            console.log("failure to login");
+            alert("Invalid username or password!");
         }
 
-        localStorage.setItem('userData', JSON.stringify(userData));
-        // navigate("/feed", {
-        //     state: {
-        //         username: user
-        //     }
+
+        // const response = await axios.post('http://localhost:8000/auth/login', userData, {
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Accept": "application/json"
+        //     },
+        //     withCredentials: true
         // });
+        // console.log(response);
     }
 
     const HandleAccountNavigate = (event) => {

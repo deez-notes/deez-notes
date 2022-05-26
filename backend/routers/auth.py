@@ -37,8 +37,10 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-@router.post("/login", response_description="Login with username and password, returns personal token for getting current user", response_model=Token)
+@router.post("/login", response_model=Token)
 async def login_for_access_token(user: BasicUserModel):
+#async def login_for_access_token(user: OAuth2PasswordRequestForm = Depends()):
+
     user = await authenticate_user(userDataDB.users, user.username, user.password)
     if not user:
         raise HTTPException(

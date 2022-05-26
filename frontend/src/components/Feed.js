@@ -6,6 +6,7 @@ import NavBar from "./NavBar";
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import { Button } from '@mui/material'
 
 const u1 = {
     'username': "Rick Astley",
@@ -27,6 +28,12 @@ const u2 = {
 
 function Feed() {
 
+    const HandleSubmit = (e) => {
+        e.preventDefault();
+        const response = localStorage.getItem("userData");
+        console.log(response);
+    }
+
     return (
         <div id={css.Profile}>
             <NavBar /> {/* REMOVE, for testing only*/}
@@ -37,6 +44,7 @@ function Feed() {
                     {/* Figure out how display dynamic number of posts */}
                 </Stack>
             </Box>
+            <Button onClick={HandleSubmit}>Hi</Button>
         </div>
     )
 }
