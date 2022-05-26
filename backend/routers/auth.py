@@ -1,11 +1,11 @@
 from fastapi import Depends, APIRouter, status, Body, HTTPException
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from typing import Union
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 
-from models.userModel import UserModel
+from models.userModel import BasicUserModel, UserModel
 from models.tokenModel import Token, TokenData
 from hash import get_password_hash, verify_password, ALGORITHM
 from settings import client, SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
@@ -15,7 +15,7 @@ userDataDB = client.accountData
 router = APIRouter(prefix="/auth",
     tags=["auth"],)
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
     
 
 async def authenticate_user(db, username: str, password: str):
@@ -37,8 +37,9 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-@router.post("/token", response_model=Token)
-async def login_for_access_token(user: UserModel):
+@router.post("/login", response_model=Token)
+# async def login_for_access_token(user: BasicUserModel):
+async def login_for_access_token(user: OAuth2PasswordRequestForm = Depends()):
     user = await authenticate_user(userDataDB.users, user.username, user.password)
     if not user:
         raise HTTPException(
