@@ -23,7 +23,7 @@ origins = [
     "http://localhost:3001/create",
     "http://localhost",
     "http://localhost:8000",
-    "http://localhost:8000/docs#"
+    "http://localhost:8000/docs#",
 ]
 #allow any of the origins listed above to send requests to the backend
 app.add_middleware(
