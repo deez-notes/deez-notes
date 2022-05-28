@@ -15,6 +15,12 @@ function Account() {
     const handleOnSubmit = async (event) => {
         event.preventDefault();
 
+        if (user === "" || password === "" || firstName === "" || lastName === "") {
+            alert("No input was provided!");
+            return;
+        }
+
+
         let userData = {
             "username": user,
             "password": password,
@@ -30,12 +36,12 @@ function Account() {
                 alert("This username already exists!");
                 return;
             }).catch(() => {
-                console.log("ERROR");
+                console.log("This user doesn't exist!");
             })
 
         if (existing === null) {
             try {
-                const response = await axios.post('http://localhost:8000/users', userData, {
+                const response = await axios.post('http://localhost:8000/users/', userData, {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json"

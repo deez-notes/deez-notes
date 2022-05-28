@@ -35,12 +35,6 @@ const p2 = {
 
 function Feed() {
 
-    const HandleSubmit = (e) => {
-        e.preventDefault();
-        const response = localStorage.getItem("userData");
-        console.log(response);
-    }
-
     return (
         <div id={css.Profile}>
             <NavBar /> {/* REMOVE, for testing only*/}
@@ -60,7 +54,6 @@ function Feed() {
                     </Stack>
                 </Stack>
             </Box>
-            <Button onClick={HandleSubmit}>Hi</Button>
         </div>
     )
 }
