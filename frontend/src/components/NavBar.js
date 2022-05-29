@@ -26,27 +26,34 @@ function NavBar() {
     navigate("/profile");
   }
 
+  const HandleLogOut = (event) => {
+    event.preventDefault();
+    localStorage.setItem('userData', null);
+    navigate("/");
+  }
+
   return (
-      <AppBar position='sticky' sx={{ textAlign: 'center', paddingTop: '.25em', paddingBottom: '.25em', alignItems:'center' }}>
-        <Toolbar>
-          <IconButton size='small' color='inherit' aria-label='logo'>
-            <img src="dnlogo_w.png" height="42em" onClick={HandleHomeNavigate} />
+    <AppBar position='sticky' sx={{ textAlign: 'center', paddingTop: '.25em', paddingBottom: '.25em', alignItems: 'center' }}>
+      <Toolbar>
+        <IconButton size='small' color='inherit' aria-label='logo'>
+          <img src="dnlogo_w.png" height="42em" onClick={HandleHomeNavigate} />
+        </IconButton>
+
+        <div id={css.searchSpacing}>
+          <SearchBar placeholder="Search..." data={TestData} />
+        </div>
+
+        <Stack direction='row' spacing={2}>
+          <Button color='inherit' onClick={HandleCreateNavigate}>Create</Button>
+          {/* <Button color='inherit'>Favorites</Button> */}
+          <Button color='inherit' onClick={HandleProfileNavigate}>Profile</Button>
+          <Button color='inherit' onClick={HandleLogOut}>Log out</Button>
+          <IconButton size='small' edge='start' color='inherit' aria-label='avatar' onClick={HandleProfileNavigate}>
+            <StringAvatar name={localStorage.getItem('userData')} />
           </IconButton>
-
-          <div id={css.searchSpacing}>
-            <SearchBar placeholder="Search..." data={TestData} />
-          </div>
-
-          <Stack direction='row' spacing={2}>
-            <Button color='inherit' onClick={HandleCreateNavigate}>Create</Button>
-            {/* <Button color='inherit'>Favorites</Button> */}
-            <Button color='inherit' onClick={HandleProfileNavigate}>Profile</Button>
-            <IconButton size='small' edge='start' color='inherit' aria-label='avatar' onClick={HandleProfileNavigate}>
-              <StringAvatar name={localStorage.getItem('userData')} />
-            </IconButton>
-          </Stack>
-        </Toolbar>
-      </AppBar>
+        </Stack>
+      </Toolbar>
+    </AppBar>
   )
 }
 
