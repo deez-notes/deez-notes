@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material'
 
 
+
 const p1 = {
     'username': "Rick Astley",
     'profilelink': "#",
@@ -32,25 +33,45 @@ const p2 = {
     'comments':[]
 }
 
+const pp = [p1,p2,p1,p1,p2,p2];
+
 class PostStack extends Component {
+    constructor(props)
+    {
+        super(props);
+        this.state = {
+            posts: this.getPosts(),
+            numCols: this.props.numCols,
+            numPosts: this.props.numPosts,
+            show: this.props.show,
+        };
+        
+    }
+
+    getPosts() // fetch posts from backend based on type
+    {
+        // test
+        return pp;
+    }
+
     render() {
+        let stackContent = [];
+        for (let i=0; i<this.state.numCols; i++)
+        {
+            let postContent = [];
+            for (let j=0; j<this.state.posts.length; j+=this.state.numCols)
+            {
+                if (j+i < this.state.posts.length)
+                    postContent.push(<Post post={this.state.posts[j+i]} />);
+            }
+            stackContent.push(<Stack spacing={2} mb={2}> {postContent} </Stack>);
+        }
         return (
             <Box sx={{ width: '100%', display:"flex", justifyContent:"center", alignItems:"center" }}>
-                    <Stack direction="row" spacing={2} mt={2}>
-                        <Stack spacing={2} mb={2}>
-                            <Post post={p1} />
-                            <Post post={p1}/>
-                        </Stack>
-                        <Stack spacing={2} mb={2}>
-                            <Post post={p2} />
-                            <Post post={p2}/>
-                        </Stack>
-                        <Stack spacing={2} mb={2}>
-                            <Post post={p1} />
-                            <Post post={p2}/>
-                        </Stack>
-                    </Stack>
-                </Box>
+                <Stack direction="row" spacing={2} mt={2}>
+                    {stackContent}
+                </Stack>
+            </Box>
         )
     }
 }
@@ -58,7 +79,7 @@ class PostStack extends Component {
 PostStack.defaultProps = {
     numCols: 3,
     numPosts: 12,
-    show: "feed" // "feed" (following), "user", "tag"
+    show: "feed", // "feed" (following), "user", "tag"
   }
 
 export default PostStack
