@@ -4,24 +4,21 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Image1 from '../GiangTestImg.jpg'
-import TestData from '../TestData.json'; 
+import Image1 from '../GiangTestImg.jpg' 
 import NavBar from "./NavBar"
-import Feed from "./Feed.js"
+import PostStack from "./PostStack.js"
 import Spotify from 'react-spotify-embed';
 import axios from "axios";
-
-
-
+import css from '../styles/Profile.module.scss';
+import '../styles/scrollBar.css'
+import PostPopper from './PostPopper.js'
+import FollowersDialog from './FollowersDialog.js'
 
 const theme = createTheme();
 
@@ -29,7 +26,14 @@ const theme = createTheme();
 
 export default function Profile() {
 
+
+    // other
+    
+
     // Data
+    const show = "SHOW POSTS";
+    const hide = "HIDE POSTS"
+    const [showPost, updateShow ] = useState(false);
     const [TempFName, changeTempFName ] = useState('');
     const [TempLName, changeTempLName ] = useState('');
     const [TempUser, changeTempUser] = useState('');
@@ -92,7 +96,10 @@ export default function Profile() {
         SetEditProfile(false);
     };
     
+    const updateShowPost =() => {
 
+      updateShow(!showPost);
+    }
     const HandleProfileChange = () => {
         changeTempFName(FName);
         changeTempLName(LName);
@@ -122,7 +129,7 @@ export default function Profile() {
       changeBio(res.data.bio);
       changeSong(res.data.favorite_song);
     });
-  });
+  }, []);
   return (
       <>
     {/* <NavBar /> */}
@@ -145,24 +152,85 @@ export default function Profile() {
             backgroundPosition: 'center',
           }}
         >
-        <Grid item md={9} ml={13} component={Paper} elevation = {6} square>
-        <Box
+        <Grid item md={9} ml={13}  elevation = {6} square>
+        <Box className = "scrollbar-hidden"
+
   
             sx={{
-              my: 10,
+              my: 15, // 10
               mx: 30,
-              //position: 'fixed',
+              backgroundColor: 'transparent',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
-          >
+          > 
 
-            {/* <Feed/> */}
-            For Feed
+
+            
+            <Button className= "button" variant="outlined"  onClick={updateShowPost}
+            sx={{
+              width: '20em',
+              borderColor: '#f3f7f9',
+              color: '#f3f7f9',
+              borderWidth: '3px',
+              
+            }}
+            >
+              {showPost? hide : show}
+            </Button>
+            <br/>
+            <br/>
+
+            
+            <Box className = "scrollbar-hidden"
+              sx={{
+                
+                height: '680px',
+                overflowY: 'auto',
+            }}
+            
+            >
+              {
+              showPost ? (
+                <div class="style fade-in">
+                  <PostStack numCols={2} numPosts={3} show="user" user={localStorage.getItem('userData')}/>
+                </div>
+                ) : (
+                  <div class="style fade-out">
+                    <PostStack numCols={2} numPosts={3} show="user" user={localStorage.getItem('userData')}/>
+                  </div>
+                )
+                }
+
+            </Box>
+            
+            
+            
           </Box>
-
-
+          <Box sx={{
+            
+            marginTop: '17em',
+            
+          }}>
+          {/* <Button className= "button" variant="outlined"
+          sx={{
+            width: '13em',
+            borderColor: '#f3f7f9',
+            color: '#f3f7f9',
+            borderWidth: '3px',
+            display: 'inline',
+            margin: '4em',
+            
+          }}
+          > Hi </Button> */}
+      
+            
+          
+          <FollowersDialog/>
+          
+          
+          </Box>
         </Grid>
         
         </Grid>
@@ -205,11 +273,6 @@ export default function Profile() {
             </Typography>
 
               
-            {/* <Typography sx={{fontSize: 35,color:"#222222", mt:1, mb:1}}> </Typography> */}
-
-            {/* <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26}} component="h1">
-              Password: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>{Pass}</Box>
-            </Typography> */}
 
             <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26, mb:3}} component="h1">
               Favorite Song

@@ -49,6 +49,7 @@ class PostStack extends Component {
             {
                 if (j+i < this.state.posts.length)
                     postContent.push(<Post post={this.state.posts[j+i]} />);
+
             }
             stackContent.push(<Stack spacing={2} mb={2}> {postContent} </Stack>);
         }
