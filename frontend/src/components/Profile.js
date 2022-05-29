@@ -22,35 +22,48 @@ import axios from "axios";
 
 
 
+
 const theme = createTheme();
 
-var RealData = "http://localhost:8000/users/";
 
 
 export default function Profile() {
 
     // Data
-    const [TempFName, changeTempFName ] = useState('default first name');
-    const [TempLName, changeTempLName ] = useState('default last name');
-    const [TempUser, changeTempUser] = useState('default username');
-    const [TempPass, changeTempPass] = useState('default password');
-    const [TempBio, changeTempBio ] = useState('default biography');
-    const [TempSong, changeTempSong] = useState('https://open.spotify.com/track/5ihDGnhQgMA0F0tk9fNLlA?si=4472348a63dd4f83');
+    const [TempFName, changeTempFName ] = useState('');
+    const [TempLName, changeTempLName ] = useState('');
+    const [TempUser, changeTempUser] = useState('');
+    const [TempPass, changeTempPass] = useState('');
+    const [TempBio, changeTempBio ] = useState('');
+    const [TempSong, changeTempSong] = useState('');
     const [TempFollowing, changeTempFollowing ] = useState([]);
     const [TempFollowers, changeTempFollowers ] = useState([]);
 
 
     const [EditProfile, SetEditProfile] = useState(false);
-    const [FName, changeFName ] = useState('default first name');
-    const [LName, changeLName ] = useState('default first name');
-    const [User, changeUser] = useState('default username');
-    const [Pass, changePass] = useState('default password');
-    const [Bio, changeBio ] = useState('default biography');
+    const [FName, changeFName ] = useState('');
+    const [LName, changeLName ] = useState('');
+    const [User, changeUser] = useState('');
+    const [Pass, changePass] = useState('');
+    const [Bio, changeBio ] = useState('');
     const [Song, changeSong] = useState('https://open.spotify.com/track/5ihDGnhQgMA0F0tk9fNLlA?si=4472348a63dd4f83');
     const [Following, changeFollowing ] = useState([]);
     const [Followers, changeFollowers ] = useState([]);
 
-    const UpdateProfile= () => {
+    
+
+    const UpdateProfile= (e) => {
+        
+      e.preventDefault();
+        axios.get("http://localhost:8000/users/?user=" + String(TempUser)).then(res => {
+          if (String(TempUser) !== String(localStorage.getItem('userData')))
+          {
+            alert("This username already exists!");
+            return;
+            
+          }
+        });  
+        
         changeFName(TempFName);
         changeLName(TempLName);
         changeBio(TempBio);
@@ -59,6 +72,22 @@ export default function Profile() {
         changeSong(TempSong);
         changeFollowers(TempFollowers);
         changeFollowing(TempFollowing);
+        
+
+        axios.put("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData')),
+        {first_name : TempFName,
+         last_name  : TempLName,
+         username   : TempUser,
+         password   : TempPass,
+         following  : TempFollowing,
+         followers  : TempFollowers
+        })
+        axios.put("http://localhost:8000/profiles/?user=" + String(localStorage.getItem('userData')),
+        {bio : TempBio,
+         favorite_song : TempSong
+        })
+
+        localStorage.setItem('userData', TempUser);
 
         SetEditProfile(false);
     };
@@ -74,44 +103,30 @@ export default function Profile() {
         changeTempFollowers(Followers);
         changeTempFollowing(Following);
         SetEditProfile(true);
-    };
 
-    const [Username, changeUsername] = useState('enter in valid usr');
-
-    
-    const TempLogin = event => {
-        event.preventDefault();
-        var stringThing = JSON.stringify(Username);
-        for (var i = 0; i < TestData.length; i++)
-        {
-            var user = TestData[i];
-            if (JSON.stringify(user.username) === stringThing)
-            {
-                alert('This is valid bro');
-                changeFName(user.fname);
-                changeLName(user.lname);
-                changeUser(user.username);
-                changeBio(user.bio);
-                changePass(user.password);
-                changeSong(user.fav);
-                changeFollowing(user.following.join(' '));
-                changeFollowers(user.followers.join(' '));
-                return;
-            }
-        }
-        alert('This is invalid bro');
 
 
     };
-    const handleUserChange = event => {
-        changeUsername(event.target.value)
-    };
 
-
-
+  useEffect(() => {
+    axios.get("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData'))).then(res => {
+      changeFName(res.data.first_name);
+      changeLName(res.data.last_name);
+      changeUser(res.data.username)
+      changePass(res.data.password);
+      changeFollowing(res.data.following);
+      changeFollowers(res.data.followers);
+      
+    });
+    axios.get("http://localhost:8000/profiles/?user=" + String(localStorage.getItem('userData'))).then(res => {
+      changeBio(res.data.bio);
+      changeSong(res.data.favorite_song);
+    });
+  });
   return (
       <>
     {/* <NavBar /> */}
+    
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
@@ -136,7 +151,7 @@ export default function Profile() {
             sx={{
               my: 10,
               mx: 30,
-              
+              //position: 'fixed',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -144,6 +159,7 @@ export default function Profile() {
           >
 
             {/* <Feed/> */}
+            For Feed
           </Box>
 
 
@@ -211,7 +227,6 @@ export default function Profile() {
                 defaultValue={Bio}
                 multiline
                 rows={5}
-                maxRows={8}
                 helperText='Biography'
                 disabled='true'
                 
@@ -278,7 +293,6 @@ export default function Profile() {
                 defaultValue={Bio}
                 multiline
                 rows={5}
-                maxRows={8}
                 helperText='Biography'
                 onChange={event => {changeTempBio(event.target.value)}}
                 
@@ -289,7 +303,6 @@ export default function Profile() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                //onSubmit={UpdateProfile}
               >
                 Update
               </Button>
@@ -302,11 +315,6 @@ export default function Profile() {
         </Grid>
       </Grid>
     </ThemeProvider>
-    {/* TO BE REMOVED */}
-    <form onSubmit={TempLogin}>
-        <input type="text" value={Username} onChange={handleUserChange}/>
-        <button type="submit">Temp Login</button>
-    </form>
 </>
   );
 }
