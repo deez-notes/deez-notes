@@ -70,6 +70,9 @@ return {
 // Helper Functions to generate Rating System
 // https://mui.com/material-ui/react-rating/
 
+// Send Rating
+
+
 // Helper Functions to expand Comment Section
 // https://mui.com/material-ui/react-card/#complex-interaction
 const ExpandMore = styled((props) => {
@@ -83,12 +86,17 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-// List to show comments
-// https://mui.com/material-ui/react-list/#align-list-items
+// Send comments
+
+
+
+
+
+
 
 // function will at some point need to have a Post class passed in containing data
 function Post(props) {
-  // console.log(props.post.link)
+  // console.log(props.post)
   // rating
   // const [value, setValue] = React.useState(Number(props.post.userrating));
   const [value, setValue] = React.useState(0);
@@ -114,6 +122,10 @@ function Post(props) {
     }
   };
 
+  // Date
+  const postDate = new Date(props.post.date);
+  let timestamp = postDate.toString();
+  timestamp = timestamp.substring(0,timestamp.lastIndexOf(':'));
     return (
         <Card className={css.card} variant="outlined" sx={{borderRadius: 2 }}>
             <CardHeader 
@@ -128,7 +140,7 @@ function Post(props) {
             {props.post.user}
           </Link>}
             titleTypographyProps={{variant:'h6'}}
-            subheader={props.post.timestamp}
+            subheader={timestamp}
             />
             <CardContent className={css.cardContent}>
               <Typography variant="body2" color="text.secondary">
@@ -175,7 +187,7 @@ function Post(props) {
               />
               {/* {<Box sx={{ ml: 2, mr: 1 }}>{labels[hover !== -1 ? hover : value]}</Box>
               } */}
-              {<Chip sx={{ml:1}} label={(rScore/rLikes).toFixed(1)} variant="outlined" />}
+              {<Chip sx={{ml:1}} label={(rScore/rLikes)?(rScore/rLikes).toFixed(1):'0.0'} variant="outlined" />}
               {<ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
