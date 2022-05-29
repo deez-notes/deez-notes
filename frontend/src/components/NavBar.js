@@ -1,10 +1,11 @@
 import { React, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Stack, Button } from "@mui/material";
-import { MusicNote, Search, Close } from "@material-ui/icons";
+import { Search, Close } from "@material-ui/icons";
 import TestData from '../TestData.json';
 import css from '../styles/NavBar.module.scss';
 import { useNavigate } from "react-router-dom"
 
+import StringAvatar from './StringAvatar';
 
 function NavBar() {
 
@@ -12,7 +13,12 @@ function NavBar() {
 
   const HandleHomeNavigate = (event) => {
     event.preventDefault();
-    navigate("/");
+    navigate("/feed");
+  }
+
+  const HandleCreateNavigate = (event) => {
+    event.preventDefault();
+    navigate("/create");
   }
 
   const HandleProfileNavigate = (event) => {
@@ -21,30 +27,26 @@ function NavBar() {
   }
 
   return (
-    <AppBar position='static' style={{ textAlign: 'left', paddingTop: '.5em', paddingBottom: '.5em' }}>
-      <Toolbar>
-        <IconButton size='large' edge='start' color='inherit' aria-label='logo'>
-          <img src="dnlogo_w.png" height="42em" onClick={HandleHomeNavigate} />
-        </IconButton>
+      <AppBar position='sticky' sx={{ textAlign: 'center', paddingTop: '.25em', paddingBottom: '.25em', alignItems:'center' }}>
+        <Toolbar>
+          <IconButton size='small' color='inherit' aria-label='logo'>
+            <img src="dnlogo_w.png" height="42em" onClick={HandleHomeNavigate} />
+          </IconButton>
 
-        {/* <Typography variant='h6' component='div' white-space="nowrap" >
-                    Deez-Notes
-                </Typography> */}
+          <div id={css.searchSpacing}>
+            <SearchBar placeholder="Search..." data={TestData} />
+          </div>
 
-        <div id={css.searchSpacing}>
-          <SearchBar placeholder="Search..." data={TestData} />
-        </div>
-
-
-
-        <Stack direction='row' spacing={2}>
-          <Button color='inherit'>Create</Button>
-          <Button color='inherit'>Favorites</Button>
-          <Button color='inherit' onClick={HandleProfileNavigate}>Profile</Button>
-        </Stack>
-
-      </Toolbar>
-    </AppBar>
+          <Stack direction='row' spacing={2}>
+            <Button color='inherit' onClick={HandleCreateNavigate}>Create</Button>
+            {/* <Button color='inherit'>Favorites</Button> */}
+            <Button color='inherit' onClick={HandleProfileNavigate}>Profile</Button>
+            <IconButton size='small' edge='start' color='inherit' aria-label='avatar' onClick={HandleProfileNavigate}>
+              <StringAvatar name={localStorage.getItem('userData')} />
+            </IconButton>
+          </Stack>
+        </Toolbar>
+      </AppBar>
   )
 }
 
