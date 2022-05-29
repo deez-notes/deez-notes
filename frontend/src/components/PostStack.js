@@ -40,6 +40,7 @@ class PostStack extends Component {
 
     render() {
         console.log(this.state.posts)
+        // console.log();
         let stackContent = [];
         for (let i=0; i<this.state.numCols; i++)
         {

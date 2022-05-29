@@ -1,5 +1,6 @@
 import React from 'react';
 import {useRef, useState} from 'react';
+import axios from 'axios'
 import css from "../styles/Post.module.scss";
 
 import Avatar from '@mui/material/Avatar';
@@ -70,9 +71,6 @@ return {
 // Helper Functions to generate Rating System
 // https://mui.com/material-ui/react-rating/
 
-// Send Rating
-
-
 // Helper Functions to expand Comment Section
 // https://mui.com/material-ui/react-card/#complex-interaction
 const ExpandMore = styled((props) => {
@@ -86,10 +84,6 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-// Send comments
-
-
-
 
 
 
@@ -97,6 +91,7 @@ const ExpandMore = styled((props) => {
 // function will at some point need to have a Post class passed in containing data
 function Post(props) {
   // console.log(props.post)
+  const loggedInUser = localStorage.getItem('userData');
   // rating
   // const [value, setValue] = React.useState(Number(props.post.userrating));
   const [value, setValue] = React.useState(0);
@@ -111,14 +106,19 @@ function Post(props) {
   // comments
   const commentRef = useRef();
   const [comments,setComments] = React.useState(props.post.comments);
+  // handle Comment Enter
   const handleCommentEnter = (e) => {
     e.preventDefault();
     if (commentRef.current.value.length > 0)
     {
       console.log("Comment: " + commentRef.current.value);
-      setComments([...comments, ["TEST_USER",commentRef.current.value]]);
-      commentRef.current.value = "";
+      setComments([...comments, [loggedInUser,commentRef.current.value]]);
       // send to backend
+      axios.put('http://localhost:8000/posts/comment/'+props.post._id+
+                  '?current_user='+loggedInUser+
+                  '&comment='+commentRef.current.value)
+        .then(res => console.log(res));
+      commentRef.current.value = "";
     }
   };
 
@@ -179,6 +179,11 @@ function Post(props) {
                     setRLikes(rLikes+1);
                   }
                   setValue(newValue);
+                  // send to backend
+                  axios.put('http://localhost:8000/posts/rate/'+props.post._id+
+                            '?current_user='+loggedInUser+
+                            '&score='+(newValue?newValue:0))
+                  .then(res => console.log(res));
                 }}
                 onChangeActive={(event, newHover) => {
                   setHover(newHover);
