@@ -1,9 +1,10 @@
 import React from 'react';
 import {useRef, useState} from 'react';
 import axios from 'axios'
+
+import StringAvatar from './StringAvatar'
 import css from "../styles/Post.module.scss";
 
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -36,37 +37,6 @@ import TextField from '@mui/material/TextField';
 import Send from '@material-ui/icons/Send';
 
 import Spotify from 'react-spotify-embed';
-
-// Helper Functions to generate String Avatars
-// from https://mui.com/material-ui/react-avatar/
-function stringToColor(string) {
-    let hash = 0;
-    let i;
-  
-    /* eslint-disable no-bitwise */
-    for (i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-  
-    let color = '#';
-  
-    for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.slice(-2);
-    }
-    /* eslint-enable no-bitwise */
-  
-    return color;
-  }
-function stringAvatar(name) {
-  name = String(name);
-return {
-    sx: {
-    bgcolor: stringToColor(name),
-    },
-    children: name[0]+name[name.length-1],
-};
-}
 
 // Helper Functions to generate Rating System
 // https://mui.com/material-ui/react-rating/
@@ -130,7 +100,7 @@ function Post(props) {
         <Card className={css.card} variant="outlined" sx={{borderRadius: 2 }}>
             <CardHeader 
             className={css.cardHeader}
-            avatar={<IconButton href="" size="small"> <Avatar {...stringAvatar(props.post.user)} /></IconButton>}
+            avatar={<IconButton href="" size="small"> <StringAvatar name={props.post.user}/></IconButton>}
             action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
@@ -213,7 +183,7 @@ function Post(props) {
                     {i>0 && <Divider variant="inset" component="li" />}
                     <ListItem alignItems="center" sx={{padding: 0}}>
                       <ListItemAvatar>
-                        {<IconButton href="" size="small"> <Avatar {...stringAvatar(user)} /></IconButton>}
+                        {<IconButton href="" size="small"> <StringAvatar name={user} /></IconButton>}
                       </ListItemAvatar>
                       <ListItemText
                         secondary={
