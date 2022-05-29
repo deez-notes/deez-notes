@@ -1,8 +1,10 @@
 import React from 'react';
 import {useRef, useState} from 'react';
+import axios from 'axios'
+
+import StringAvatar from './StringAvatar'
 import css from "../styles/Post.module.scss";
 
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -36,36 +38,6 @@ import Send from '@material-ui/icons/Send';
 
 import Spotify from 'react-spotify-embed';
 
-// Helper Functions to generate String Avatars
-// from https://mui.com/material-ui/react-avatar/
-function stringToColor(string) {
-    let hash = 0;
-    let i;
-  
-    /* eslint-disable no-bitwise */
-    for (i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-  
-    let color = '#';
-  
-    for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.slice(-2);
-    }
-    /* eslint-enable no-bitwise */
-  
-    return color;
-  }
-function stringAvatar(name) {
-return {
-    sx: {
-    bgcolor: stringToColor(name),
-    },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
-};
-}
-
 // Helper Functions to generate Rating System
 // https://mui.com/material-ui/react-rating/
 
@@ -82,14 +54,20 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-// List to show comments
-// https://mui.com/material-ui/react-list/#align-list-items
+
+
+
 
 // function will at some point need to have a Post class passed in containing data
 function Post(props) {
+  // console.log(props.post)
+  const loggedInUser = localStorage.getItem('userData');
   // rating
-  const [value, setValue] = React.useState(Number(props.post.userrating));
+  // const [value, setValue] = React.useState(Number(props.post.userrating));
+  const [value, setValue] = React.useState(0);
   const [hover, setHover] = React.useState(-1);
+  const [rScore, setRSCore] = React.useState(props.post.score);
+  const [rLikes, setRLikes] = React.useState(props.post.likes);
   // comment section expand
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
@@ -98,36 +76,45 @@ function Post(props) {
   // comments
   const commentRef = useRef();
   const [comments,setComments] = React.useState(props.post.comments);
+  // handle Comment Enter
   const handleCommentEnter = (e) => {
     e.preventDefault();
     if (commentRef.current.value.length > 0)
     {
       console.log("Comment: " + commentRef.current.value);
-      setComments([...comments, {'username':"TEST COMMENT",'profilelink':'#','comment':commentRef.current.value}]);
-      commentRef.current.value = "";
+      setComments([...comments, [loggedInUser,commentRef.current.value]]);
       // send to backend
+      axios.put('http://localhost:8000/posts/comment/'+props.post._id+
+                  '?current_user='+loggedInUser+
+                  '&comment='+commentRef.current.value)
+        .then(res => console.log(res));
+      commentRef.current.value = "";
     }
   };
 
+  // Date
+  const postDate = new Date(props.post.date);
+  let timestamp = postDate.toString();
+  timestamp = timestamp.substring(0,timestamp.lastIndexOf(':'));
     return (
-        <Card className={css.card} variant="outlined" elevation="24" sx={{borderRadius: 2 }}>
+        <Card className={css.card} variant="outlined" sx={{borderRadius: 2 }}>
             <CardHeader 
             className={css.cardHeader}
-            avatar={<IconButton href={props.post.profilelink} size="small"> <Avatar {...stringAvatar(props.post.username)} /></IconButton>}
+            avatar={<IconButton href="" size="small"> <StringAvatar name={props.post.user}/></IconButton>}
             action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               }
-            title={<Link href={props.post.profilelink} underline="none" color="inherit">
-            {props.post.username}
+            title={<Link href="" underline="none" color="inherit">
+            {props.post.user}
           </Link>}
             titleTypographyProps={{variant:'h6'}}
-            subheader={props.post.timestamp}
+            subheader={timestamp}
             />
             <CardContent className={css.cardContent}>
               <Typography variant="body2" color="text.secondary">
-              {props.post.caption}
+              {props.post.desc}
               </Typography>
             </CardContent>
             <CardContent className={css.cardTagsContent}>
@@ -142,7 +129,7 @@ function Post(props) {
               })}
             </CardContent>
             <CardMedia>
-              <Spotify wide link={props.post.spotifylink} />
+              <Spotify wide link={props.post.link} />
             </CardMedia>
             <CardActions className={css.cardActions}>
               <Rating
@@ -151,7 +138,22 @@ function Post(props) {
                 max={5}
                 precision={1}
                 onChange={(event, newValue) => {
+                  if (newValue == null)
+                  {
+                    setRSCore(rScore-value);
+                    setRLikes(rLikes-1);
+                  }
+                  else
+                  {
+                    setRSCore(rScore+newValue);
+                    setRLikes(rLikes+1);
+                  }
                   setValue(newValue);
+                  // send to backend
+                  axios.put('http://localhost:8000/posts/rate/'+props.post._id+
+                            '?current_user='+loggedInUser+
+                            '&score='+(newValue?newValue:0))
+                  .then(res => console.log(res));
                 }}
                 onChangeActive={(event, newHover) => {
                   setHover(newHover);
@@ -160,7 +162,7 @@ function Post(props) {
               />
               {/* {<Box sx={{ ml: 2, mr: 1 }}>{labels[hover !== -1 ? hover : value]}</Box>
               } */}
-              {<Chip sx={{ml:1}} label={props.post.ratingscore} variant="outlined" />}
+              {<Chip sx={{ml:1}} label={(rScore/rLikes)?(rScore/rLikes).toFixed(1):'0.0'} variant="outlined" />}
               {<ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
@@ -175,19 +177,19 @@ function Post(props) {
               <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 <Divider sx={{mb:1}} component="li" />
                 {/* for loop the comments */}
-                {comments.map(function({username,profilelink,comment},i){
+                {comments.map(function([user,comment],i){
                   return (
                   <React.Fragment>
                     {i>0 && <Divider variant="inset" component="li" />}
                     <ListItem alignItems="center" sx={{padding: 0}}>
                       <ListItemAvatar>
-                        {<IconButton href={profilelink} size="small"> <Avatar {...stringAvatar(username)} /></IconButton>}
+                        {<IconButton href="" size="small"> <StringAvatar name={user} /></IconButton>}
                       </ListItemAvatar>
                       <ListItemText
                         secondary={
                           <React.Fragment>
-                            {<Link sx={{ display: 'inline', mr: 1 }} href={profilelink} underline="none" color="inherit" variant="h6">
-                              {username}
+                            {<Link sx={{ display: 'inline', mr: 1 }} href="" underline="none" color="inherit" variant="h6">
+                              {user}
                             </Link>}
                             {comment}
                           </React.Fragment>

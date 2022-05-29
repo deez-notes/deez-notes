@@ -7,6 +7,8 @@ import SendIcon from "@mui/icons-material/Send";
 import { Cancel } from "@mui/icons-material";
 import axios from "axios";
 
+import NavBar from './NavBar'
+
 function Create()
 {
 
@@ -76,9 +78,10 @@ function Create()
     };
 
     return <div>
-        <br></br>
+        <NavBar />
         {/* still need to add dynamically changing text */}
-        <Paper rounded elevation={10} className={css.background}>
+        <Box sx={{ width: '100%', display:"flex", justifyContent:"center", alignItems:"center" }}>
+        <Paper rounded elevation={10} sx={{width:'50%', mt:2}}>
             <br/>
             <div className={css.exitbuttondiv}>
                 {/* Still need to implement routing to the feed */}
@@ -116,6 +119,7 @@ function Create()
             <br/>
 
         </Paper>
+        </Box>
     </div>
 }
 
