@@ -8,7 +8,9 @@ function Feed(props) {
     return (
         <div id={css.Profile}>
             <NavBar />
-            <PostStack show="feed" numCols={3} />
+            <PostStack  show="user" 
+                        user="amusedCheese1"
+                        numCols={3} />
         </div>
     )
 }

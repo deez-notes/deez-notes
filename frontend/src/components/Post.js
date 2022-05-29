@@ -58,11 +58,12 @@ function stringToColor(string) {
     return color;
   }
 function stringAvatar(name) {
+  name = String(name);
 return {
     sx: {
     bgcolor: stringToColor(name),
     },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    children: name[0]+name[name.length-1],
 };
 }
 
@@ -87,8 +88,10 @@ const ExpandMore = styled((props) => {
 
 // function will at some point need to have a Post class passed in containing data
 function Post(props) {
+  console.log(props.post.link)
   // rating
-  const [value, setValue] = React.useState(Number(props.post.userrating));
+  // const [value, setValue] = React.useState(Number(props.post.userrating));
+  const [value, setValue] = React.useState(0);
   const [hover, setHover] = React.useState(-1);
   // comment section expand
   const [expanded, setExpanded] = React.useState(false);
@@ -103,31 +106,31 @@ function Post(props) {
     if (commentRef.current.value.length > 0)
     {
       console.log("Comment: " + commentRef.current.value);
-      setComments([...comments, {'username':"TEST COMMENT",'profilelink':'#','comment':commentRef.current.value}]);
+      setComments([...comments, {'user':"TEST COMMENT",'comment':commentRef.current.value}]);
       commentRef.current.value = "";
       // send to backend
     }
   };
 
     return (
-        <Card className={css.card} variant="outlined" elevation="24" sx={{borderRadius: 2 }}>
+        <Card className={css.card} variant="outlined" sx={{borderRadius: 2 }}>
             <CardHeader 
             className={css.cardHeader}
-            avatar={<IconButton href={props.post.profilelink} size="small"> <Avatar {...stringAvatar(props.post.username)} /></IconButton>}
+            avatar={<IconButton href="" size="small"> <Avatar {...stringAvatar(props.post.user)} /></IconButton>}
             action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               }
-            title={<Link href={props.post.profilelink} underline="none" color="inherit">
-            {props.post.username}
+            title={<Link href="" underline="none" color="inherit">
+            {props.post.user}
           </Link>}
             titleTypographyProps={{variant:'h6'}}
             subheader={props.post.timestamp}
             />
             <CardContent className={css.cardContent}>
               <Typography variant="body2" color="text.secondary">
-              {props.post.caption}
+              {props.post.desc}
               </Typography>
             </CardContent>
             <CardContent className={css.cardTagsContent}>
@@ -142,7 +145,7 @@ function Post(props) {
               })}
             </CardContent>
             <CardMedia>
-              <Spotify wide link={props.post.spotifylink} />
+              <Spotify wide link={props.post.link} />
             </CardMedia>
             <CardActions className={css.cardActions}>
               <Rating
@@ -160,7 +163,7 @@ function Post(props) {
               />
               {/* {<Box sx={{ ml: 2, mr: 1 }}>{labels[hover !== -1 ? hover : value]}</Box>
               } */}
-              {<Chip sx={{ml:1}} label={props.post.ratingscore} variant="outlined" />}
+              {<Chip sx={{ml:1}} label={(props.post.score/props.post.likes).toFixed(1)} variant="outlined" />}
               {<ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
@@ -175,19 +178,19 @@ function Post(props) {
               <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 <Divider sx={{mb:1}} component="li" />
                 {/* for loop the comments */}
-                {comments.map(function({username,profilelink,comment},i){
+                {comments.map(function({user,comment},i){
                   return (
                   <React.Fragment>
                     {i>0 && <Divider variant="inset" component="li" />}
                     <ListItem alignItems="center" sx={{padding: 0}}>
                       <ListItemAvatar>
-                        {<IconButton href={profilelink} size="small"> <Avatar {...stringAvatar(username)} /></IconButton>}
+                        {<IconButton href="" size="small"> <Avatar {...stringAvatar(user)} /></IconButton>}
                       </ListItemAvatar>
                       <ListItemText
                         secondary={
                           <React.Fragment>
-                            {<Link sx={{ display: 'inline', mr: 1 }} href={profilelink} underline="none" color="inherit" variant="h6">
-                              {username}
+                            {<Link sx={{ display: 'inline', mr: 1 }} href="" underline="none" color="inherit" variant="h6">
+                              {user}
                             </Link>}
                             {comment}
                           </React.Fragment>
