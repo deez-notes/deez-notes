@@ -92,7 +92,7 @@ async def comment(id: str, current_user: str, comment: str):
 
 @router.put("/rate/{id}", response_description="Rate a post", response_model=PostModel)
 async def rate(id: str, current_user: str, score: float):
-    if (pastUserRating := await postDataDB.postRatings.find_one({"postID": id, "username":current_user})) is not None:
+    if (pastUserRating := await postDataDB.userRatings.find_one({"postID": id, "username":current_user})) is not None:
         # print("found prior rating")
         pastScore = pastUserRating["rating"]
         like_modifier = 0
@@ -100,7 +100,7 @@ async def rate(id: str, current_user: str, score: float):
             like_modifier = -1
         if not (score-pastScore):
             return await postDataDB.posts.find_one({"_id": id})
-        pastUserRating = await postDataDB.postRatings.update_one({"postID": id, "username":current_user}, {"$set": {"rating":score}})
+        pastUserRating = await postDataDB.userRatings.update_one({"postID": id, "username":current_user}, {"$set": {"rating":score}})
         # print("past score: ", pastScore, " new score: ", score)
         update_result = await postDataDB.posts.update_one({"_id": id}, {"$inc" : {"score": score - pastScore, "likes":like_modifier}})
     else:
@@ -122,6 +122,6 @@ async def rate(id: str, current_user: str, score: float):
 
 @router.get("/user_ratings/", response_description="Get a users past rating of a post", response_model=UserPostRatingModel)
 async def get_past_rating(username: str, postID: str):
-    if (postRating := await postDataDB.postRatings.find_one({"username": username, "postID": postID})) is not None:
+    if (postRating := await postDataDB.userRatings.find_one({"username": username, "postID": postID})) is not None:
         return postRating
     raise HTTPException(status_code=404, detail=f"rating of {postID} by {username} not found")
