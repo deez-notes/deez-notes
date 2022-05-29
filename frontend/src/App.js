@@ -4,7 +4,7 @@ import NavBar from './components/NavBar';
 import Home from './components/Home';
 import Create from './components/Create';
 import Error from './components/Error';
-import Profile from './components/Profile2';
+import Profile from './components/ProfileOLD';
 import Feed from './components/Feed';
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
