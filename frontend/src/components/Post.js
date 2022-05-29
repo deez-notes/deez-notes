@@ -88,11 +88,13 @@ const ExpandMore = styled((props) => {
 
 // function will at some point need to have a Post class passed in containing data
 function Post(props) {
-  console.log(props.post.link)
+  // console.log(props.post.link)
   // rating
   // const [value, setValue] = React.useState(Number(props.post.userrating));
   const [value, setValue] = React.useState(0);
   const [hover, setHover] = React.useState(-1);
+  const [rScore, setRSCore] = React.useState(props.post.score);
+  const [rLikes, setRLikes] = React.useState(props.post.likes);
   // comment section expand
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
@@ -106,7 +108,7 @@ function Post(props) {
     if (commentRef.current.value.length > 0)
     {
       console.log("Comment: " + commentRef.current.value);
-      setComments([...comments, {'user':"TEST COMMENT",'comment':commentRef.current.value}]);
+      setComments([...comments, ["TEST_USER",commentRef.current.value]]);
       commentRef.current.value = "";
       // send to backend
     }
@@ -154,6 +156,16 @@ function Post(props) {
                 max={5}
                 precision={1}
                 onChange={(event, newValue) => {
+                  if (newValue == null)
+                  {
+                    setRSCore(rScore-value);
+                    setRLikes(rLikes-1);
+                  }
+                  else
+                  {
+                    setRSCore(rScore+newValue);
+                    setRLikes(rLikes+1);
+                  }
                   setValue(newValue);
                 }}
                 onChangeActive={(event, newHover) => {
@@ -163,7 +175,7 @@ function Post(props) {
               />
               {/* {<Box sx={{ ml: 2, mr: 1 }}>{labels[hover !== -1 ? hover : value]}</Box>
               } */}
-              {<Chip sx={{ml:1}} label={(props.post.score/props.post.likes).toFixed(1)} variant="outlined" />}
+              {<Chip sx={{ml:1}} label={(rScore/rLikes).toFixed(1)} variant="outlined" />}
               {<ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
@@ -178,7 +190,7 @@ function Post(props) {
               <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 <Divider sx={{mb:1}} component="li" />
                 {/* for loop the comments */}
-                {comments.map(function({user,comment},i){
+                {comments.map(function([user,comment],i){
                   return (
                   <React.Fragment>
                     {i>0 && <Divider variant="inset" component="li" />}
