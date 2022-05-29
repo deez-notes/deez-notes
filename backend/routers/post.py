@@ -6,7 +6,7 @@ from typing import List, Union
 # from pydantic import Field
 import pprint
 from models.general import idAndUsernameDependency
-from models.postModel import PostModel, UpdatePostModel
+from models.postModel import PostModel, UpdatePostModel, UserPostRatingModel, UpdateUserPostRatingModel
 from settings import client
 
 postDataDB = client.postData
@@ -88,16 +88,32 @@ async def comment(id: str, current_user: str, comment: str):
     raise HTTPException(status_code=404, detail=f"post {id} not found")
 
 @router.put("/rate/{id}", response_description="Rate a post", response_model=PostModel)
-async def comment(id: str, score: float):
-    
-    update_result = await postDataDB.posts.update_one({"_id": id}, {"$inc" : {"score": score, "likes": 1}})
+async def rate(id: str, current_user: str, score: float):
+    if (pastUserRating := await postDataDB.postRatings.find_one({"postID": id, "username":current_user})) is not None:
+        # print("found prior rating")
+        pastScore = pastUserRating["rating"]
+        pastUserRating = await postDataDB.postRatings.update_one({"postID": id, "username":current_user}, {"$set": {"rating":score}})
+        # print("past score: ", pastScore, " new score: ", score)
+        update_result = await postDataDB.posts.update_one({"_id": id}, {"$inc" : {"score": score - pastScore}})
+    else:
+        # print("user has not rated yet")
+        userRating = {"_id": str(ObjectId()),"username" : current_user, "postID": id, "rating":score}
+        userRating = jsonable_encoder(userRating)
+        new_userRating = await postDataDB.userRatings.insert_one(userRating)
+        update_result = await postDataDB.posts.update_one({"_id": id}, {"$inc" : {"score": score, "likes": 1}})
+
+
     if update_result.modified_count == 1:
-        if (
-            updated_post := await postDataDB.posts.find_one({"_id": id})
-        ) is not None:
+        if (updated_post := await postDataDB.posts.find_one({"_id": id})) is not None:
             return updated_post
 
     if (existing_post := await postDataDB.posts.find_one({"_id": id})) is not None:
         return existing_post
 
     raise HTTPException(status_code=404, detail=f"post {id} not found")
+
+@router.get("/user_ratings/", response_description="Get a users past rating of a post", response_model=UserPostRatingModel)
+async def get_past_rating(username: str, postID: str):
+    if (postRating := await postDataDB.postRatings.find_one({"username": username, "postID": postID})) is not None:
+        return postRating
+    raise HTTPException(status_code=404, detail=f"rating of {postID} by {username} not found")

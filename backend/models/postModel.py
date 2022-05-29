@@ -16,7 +16,6 @@ class PostModel(BaseModel):
     likes: int = Field(default=0)
     score: float = Field(default=0)
     
-    
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
@@ -77,3 +76,37 @@ user: str
 timestamp: str
 
 """
+
+class UserPostRatingModel(BaseModel):
+    id: str = Field(default=None, alias="_id")
+    username: str = Field(...)
+    postID: str = Field(...)
+    rating: float = Field(...)
+    
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+           "example": {
+                "username":"amusedCheese1",
+                "postID" : "628d9685744238dc01c97155",
+                "rating": 4.5
+            }
+        }
+
+class UpdateUserPostRatingModel(BaseModel):
+    id: Optional[str]
+    username: Optional[str]
+    postID: Optional[str]
+    rating: Optional[float]
+    
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+           "example": {
+                "username":"amusedCheese1",
+                "postID" : "628d9685744238dc01c97155",
+                "rating": 4.5
+            }
+        }
