@@ -2,6 +2,7 @@ from numpy import int32
 from pydantic import BaseModel, Field
 from bson import ObjectId
 from typing import List, Optional
+from datetime import datetime
 
 class PostModel(BaseModel):
     id: str = Field(default=None, alias="_id")
@@ -11,7 +12,7 @@ class PostModel(BaseModel):
     desc: str = Field(...)
     tags: List = Field(...)
     user: str = Field(...)
-    timestamp: str = Field(...)
+    date: Optional[datetime]
     comments: List[List]= Field(...)
     likes: int = Field(default=0)
     score: float = Field(default=0)
@@ -27,10 +28,12 @@ class PostModel(BaseModel):
                 "desc" : 'wowza',
                 "tags" : ["omg"],
                 "user" : "amusedCheese1",
-                "timestamp" : "17:16:47",
+                "date" : "05/12/22",
                 "comments": [["amusedCheese1", "wow I love this"], ["holisticMussel9", "omg same"], ["grumpyMoth43", "etc"]]
             }
         }
+
+
 
 class UpdatePostModel(BaseModel):
     title: Optional[str]
@@ -42,7 +45,7 @@ class UpdatePostModel(BaseModel):
     tags: Optional[List]
     comments: Optional[List[List]]
     user: Optional[str]
-    timestamp: Optional[str]
+    date: Optional[datetime]
     
     class Config:
         arbitrary_types_allowed = True
@@ -57,7 +60,7 @@ class UpdatePostModel(BaseModel):
                 "desc" : 'wowza',
                 "tags" : ["omg"],
                 "user" : "amusedCheese1",
-                "timestamp" : "17:16:47",
+                "date" : "05/28/22",
                 "comments": [["amusedCheese1", "wow I love this"], ["holisticMussel9", "omg same"], ["grumpyMoth43", "etc"]]
             }
         }
