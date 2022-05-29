@@ -49,14 +49,28 @@ function Create()
             "title" : titleRef.current.value,
             "artist" : artistRef.current.value,
             "link" : linkRef.current.value,
+            "rating" : 69.69,
             "desc" : descRef.current.value,
             "tags" : tags,
+            "comments" : ["", "", ""],
             "user" : "amusedCheese1",
             "timestamp" : time
+
+            /*
+            title: str = Field(...)
+            artist: str = Field(...)
+            link: str = Field(...)
+            rating: float = Field()
+            desc: str = Field(...)
+            tags: List = Field(...)
+            comments: List = Field()
+            user: str = Field(...)
+            timestamp: str
+            */
         };
 
         console.log(postData);
-        axios.post('http://localhost:8000/createpost', postData)
+        axios.post('http://localhost:8000/posts/createpost', postData)
       .then(res => console.log(res))
         // reset form?
     };

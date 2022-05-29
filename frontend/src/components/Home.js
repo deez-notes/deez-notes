@@ -1,11 +1,75 @@
 import React from 'react'
-import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Button, Grid, FormControl, Paper, TextField, Typography } from "@mui/material";
 import css from '../styles/Home.module.scss';
-import NavBar from "./NavBar"
+import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react";
+import axios from 'axios';
 
 function Home() {
-    return (
 
+    const navigate = useNavigate();
+
+    const HandleSubmit = async (event) => {
+        event.preventDefault();
+
+        if (user === "" || password === "") {
+            alert("No input was provided!");
+            return;
+        }
+
+        let userData = {
+            username: user,
+            password: password,
+        }
+
+        try {
+            const response = await axios.post('http://localhost:8000/auth/login', userData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "accept": "application/json"
+                },
+                withCredentials: true
+            });
+            console.log(response);
+            setUser("");
+            setPassword("");
+            localStorage.setItem('userData', user);
+            navigate("/feed", {
+                state: {
+                    username: user
+                }
+            });
+        } catch (err) {
+            console.log("failure to login");
+            alert("Invalid username or password!");
+        }
+
+
+        // const response = await axios.post('http://localhost:8000/auth/login', userData, {
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Accept": "application/json"
+        //     },
+        //     withCredentials: true
+        // });
+        // console.log(response);
+    }
+
+    const HandleAccountNavigate = (event) => {
+        event.preventDefault();
+        navigate("/account");
+    }
+
+    const HandleFeedNavigate = (event) => {
+        event.preventDefault();
+        navigate("/feed");
+    }
+
+    const [user, setUser] = useState("");
+    const [password, setPassword] = useState("");
+
+
+    return (
 
 
         <div id={css.Home}>
@@ -15,10 +79,15 @@ function Home() {
             <Typography variant="h3">Deez Notes</Typography>
             <div className={css.signInContainer}>
                 <Paper elevation={10} className={css.signInForm}>
-                    <Typography className={css.formTitle} variant="h4">Sign in here!</Typography>
-                    <TextField className={css.input} label="Username" placeholder='Enter your username!' fullWidth required />
-                    <TextField className={css.input} label="Password" placeholder='Enter your password!' type="password" fullWidth required />
-                    <Button type='submit' color='primary'>Sign In</Button>
+                    <FormControl>
+                        <Typography className={css.formTitle} variant="h4">Sign in here!</Typography>
+                        <TextField className={css.input} label="Username" placeholder='Enter your username!' value={user}
+                            onChange={(e) => setUser(e.target.value)} fullWidth required />
+                        <TextField className={css.input} label="Password" placeholder='Enter your password!' type="password"
+                            value={password} onChange={(e) => setPassword(e.target.value)} fullWidth required />
+                        <Button type='submit' color='primary' onClick={HandleSubmit}>Sign In</Button>
+                        <Button onClick={HandleAccountNavigate} color='primary'>Create Account </Button>
+                    </FormControl>
                 </Paper>
             </div>
         </div >
