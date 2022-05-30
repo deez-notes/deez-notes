@@ -33,7 +33,7 @@ export default function Profile() {
     // Data
     const show = "SHOW POSTS";
     const hide = "HIDE POSTS"
-    const [showPost, updateShow ] = useState(false);
+    const [showPost, updateShow ] = useState(true);
     const [TempFName, changeTempFName ] = useState('');
     const [TempLName, changeTempLName ] = useState('');
     const [TempUser, changeTempUser] = useState('');
@@ -132,9 +132,8 @@ export default function Profile() {
   }, []);
   return (
       <>
-    {/* <NavBar /> */}
+    <NavBar />
     
-    <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -194,11 +193,11 @@ export default function Profile() {
               {
               showPost ? (
                 <div class="style fade-in">
-                  <PostStack numCols={2} numPosts={3} show="user" user={localStorage.getItem('userData')}/>
+                  <PostStack numCols={2} numPosts={4} show="user" user={localStorage.getItem('userData')}/>
                 </div>
                 ) : (
                   <div class="style fade-out">
-                    <PostStack numCols={2} numPosts={3} show="user" user={localStorage.getItem('userData')}/>
+                    <PostStack numCols={2} numPosts={4} show="user" user={localStorage.getItem('userData')}/>
                   </div>
                 )
                 }
@@ -377,7 +376,6 @@ export default function Profile() {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
 </>
   );
 }

@@ -47,10 +47,10 @@ function NavBar() {
           <Button color='inherit' onClick={HandleCreateNavigate}>Create</Button>
           {/* <Button color='inherit'>Favorites</Button> */}
           <Button color='inherit' onClick={HandleProfileNavigate}>Profile</Button>
-          <Button color='inherit' onClick={HandleLogOut}>Log out</Button>
           <IconButton size='small' edge='start' color='inherit' aria-label='avatar' onClick={HandleProfileNavigate}>
             <StringAvatar name={localStorage.getItem('userData')} />
           </IconButton>
+          <Button color='inherit' onClick={HandleLogOut}>Log out</Button>
         </Stack>
       </Toolbar>
     </AppBar>
