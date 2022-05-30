@@ -36,6 +36,10 @@ function Account() {
             "last_name": lastName,
         };
 
+        let profileData = {
+            "username": user,
+        }
+
         let existing = null;
         axios.get(`http://localhost:8000/users/?user=${user}`)
             .then((response) => {
@@ -56,7 +60,20 @@ function Account() {
                     },
                     withCredentials: true
                 });
+
+                const profileResponse = await axios.post('http://localhost:8000/profiles/', profileData, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    withCredentials: true
+                });
+                setUser("");
+                setPassword("");
+                setFirstName("");
+                setLastName("");
                 console.log(response);
+                console.log(profileResponse);
                 console.log("It works!")
                 navigate("/");
             } catch (err) {
