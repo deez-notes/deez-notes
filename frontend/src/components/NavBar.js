@@ -15,7 +15,6 @@ function NavBar() {
   const HandleHomeNavigate = (event) => {
     event.preventDefault();
     // navigate("/feed");
-    console.log("hii");
     window.location.href = "http://localhost:3001/feed";
   }
 
