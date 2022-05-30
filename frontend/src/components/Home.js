@@ -9,6 +9,20 @@ function Home() {
 
     const navigate = useNavigate();
 
+
+    const [user, setUser] = useState("");
+    const [password, setPassword] = useState("");
+
+    useEffect(() => {
+        checkLogin();
+    }, []);
+
+    const checkLogin = () => {
+        if ((localStorage.getItem('userData') !== 'null')) {
+            navigate("/feed");
+        }
+    }
+
     const HandleSubmit = async (event) => {
         event.preventDefault();
 
@@ -64,9 +78,6 @@ function Home() {
         event.preventDefault();
         navigate("/feed");
     }
-
-    const [user, setUser] = useState("");
-    const [password, setPassword] = useState("");
 
 
     return (
