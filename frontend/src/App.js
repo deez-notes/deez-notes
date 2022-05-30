@@ -7,6 +7,8 @@ import Error from './components/Error';
 import Profile from './components/Profile';
 import Feed from './components/Feed';
 import Account from './components/Account'
+// Temp
+import Test from './components/Test';
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
@@ -46,6 +48,8 @@ function App() {
               <Route path="/feed" element={<Feed show="feed" />} />
               <Route path="/feed/:tags" element={<Feed show="tag" />} />
               <Route path="/account" element={<Account />} />
+              {/* temp */}
+              <Route path="/test" element={<Test />} />
               <Route path="*" element={<Error />} />
             </Routes>
           </Router>
