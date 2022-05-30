@@ -5,7 +5,7 @@ from typing import List, Union
 
 from bson import ObjectId
 from models.general import idAndUsernameDependency
-from models.userModel import UserModel, UpdateUserModel
+from models.userModel import UserModel, UpdateUserModel, ReturnUserModel
 from hash import get_password_hash
 from settings import client
 
@@ -27,7 +27,7 @@ async def create_user(user: UserModel = Body(...)):
  
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
 
-@router.get("/", response_description="Get Users", response_model=Union[List[UserModel], UserModel])
+@router.get("/", response_description="Get Users", response_model=Union[List[ReturnUserModel], ReturnUserModel])
 async def get_user(commons: idAndUsernameDependency = Depends()):
     # print(commons.objId, commons.user)
     if(commons.objId):
@@ -52,6 +52,11 @@ async def update_user(commons: idAndUsernameDependency = Depends(), user: Update
 
     filter = {"_id": commons.objId} if commons.objId else {"username": commons.user}
     user = {k: v for k, v in user.dict().items() if v is not None}
+    
+    # print("password" in user)
+    if ("password" in user):
+        user["hashed_password"] = get_password_hash(user["password"])
+
     if len(user) >= 1:
         update_result = await userDataDB.users.update_one(filter, {"$set": user})
 
