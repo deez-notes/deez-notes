@@ -19,20 +19,24 @@ import css from '../styles/Profile.module.scss';
 import '../styles/scrollBar.css'
 import PostPopper from './PostPopper.js'
 import FollowersDialog from './FollowersDialog.js'
+import { useSearchParams } from 'react-router-dom';
 
 const theme = createTheme();
 
 
 
 export default function Profile() {
-
-
+    
+  
     // other
     
-
+    const pageUser = String(window.location.href).substring(30);
     // Data
     const show = "SHOW POSTS";
-    const hide = "HIDE POSTS"
+    const hide = "HIDE POSTS";
+    
+    const [realUser, updateRealUser ] = useState(false);
+    const [isOwner, updateIsOwner ] = useState(false);
     const [showPost, updateShow ] = useState(true);
     const [TempFName, changeTempFName ] = useState('');
     const [TempLName, changeTempLName ] = useState('');
@@ -50,10 +54,12 @@ export default function Profile() {
     const [User, changeUser] = useState('');
     const [Pass, changePass] = useState('');
     const [Bio, changeBio ] = useState('');
-    const [Song, changeSong] = useState('https://open.spotify.com/track/5ihDGnhQgMA0F0tk9fNLlA?si=4472348a63dd4f83');
+    //const [Song, changeSong] = useState('https://open.spotify.com/track/5ihDGnhQgMA0F0tk9fNLlA?si=4472348a63dd4f83');
+    const [Song, changeSong] = useState('');
     const [Following, changeFollowing ] = useState([]);
     const [Followers, changeFollowers ] = useState([]);
 
+    
     
 
     const UpdateProfile= (e) => {
@@ -97,7 +103,7 @@ export default function Profile() {
     };
     
     const updateShowPost =() => {
-
+      console.log(pageUser);
       updateShow(!showPost);
     }
     const HandleProfileChange = () => {
@@ -114,9 +120,11 @@ export default function Profile() {
 
 
     };
-
+    
+  
   useEffect(() => {
-    axios.get("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData'))).then(res => {
+    // axios.get("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData'))).then(res => {
+      axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
       changeFName(res.data.first_name);
       changeLName(res.data.last_name);
       changeUser(res.data.username)
@@ -124,14 +132,26 @@ export default function Profile() {
       changeFollowing(res.data.following);
       changeFollowers(res.data.followers);
       
+      
     });
-    axios.get("http://localhost:8000/profiles/?user=" + String(localStorage.getItem('userData'))).then(res => {
+    axios.get("http://localhost:8000/profiles/?user=" + pageUser).then(res => {
       changeBio(res.data.bio);
       changeSong(res.data.favorite_song);
     });
+   
+    axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
+      updateRealUser(true);
+    });
+    if (pageUser === String(localStorage.getItem('userData')))
+    {
+        updateIsOwner(true);
+    }
+    
   }, []);
   return (
     <div>
+      
+       { realUser? (<div> 
       <NavBar />
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
@@ -192,11 +212,11 @@ export default function Profile() {
               {
               showPost ? (
                 <div class="style fade-in">
-                  <PostStack numCols={2} numPosts={4} show="user" user={localStorage.getItem('userData')}/>
+                  <PostStack numCols={2} numPosts={4} show="user" user={pageUser}/>
                 </div>
                 ) : (
                   <div class="style fade-out">
-                    <PostStack numCols={2} numPosts={4} show="user" user={localStorage.getItem('userData')}/>
+                    <PostStack numCols={2} numPosts={4} show="user" user={pageUser}/>
                   </div>
                 )
                 }
@@ -271,12 +291,29 @@ export default function Profile() {
             </Typography>
 
               
-
-            <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26, mb:3}} component="h1">
-              Favorite Song
+            
+            {String(Song) === '' ?
+            (
+              <div> 
+                <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26, mb:7}} component="h1">
+              Favorite Song: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>None</Box>
             </Typography>
 
-            <Spotify link={Song} />
+              </div>
+            )
+
+            :
+            (
+              <div>
+              <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26, mb:3}} component="h1">
+              Favorite Song
+              </Typography>
+              <Spotify link={Song} />
+              </div>
+            )
+          
+            }
+            
 
 
 
@@ -289,7 +326,7 @@ export default function Profile() {
                 multiline
                 rows={5}
                 helperText='Biography'
-                disabled='true'
+                disabled={true}
                 
               />
 
@@ -300,6 +337,7 @@ export default function Profile() {
                 variant="contained"
                 sx={{ mt: 4, mb: 2 }}
                 onClick={HandleProfileChange}
+                disabled = {!isOwner}
               >
                 Edit
               </Button>
@@ -375,6 +413,17 @@ export default function Profile() {
           </Box>
         </Grid>
       </Grid>
+        
+      </div> ) : (<div>
+        
+        
+        <Typography> Error 404 : {String(realUser)} user </Typography>
+         </div>) }
+
+
+
+            
   </div>);
+
   
 }
