@@ -15,7 +15,7 @@ function NavBar() {
   const HandleHomeNavigate = (event) => {
     event.preventDefault();
     // navigate("/feed");
-    window.location.href = "http://localhost:3001/feed";
+    window.location.href = "http://localhost:3000/feed";
   }
 
   const HandleCreateNavigate = (event) => {
@@ -26,6 +26,7 @@ function NavBar() {
   const HandleProfileNavigate = (event) => {
     event.preventDefault();
     navigate("/profile/" + localStorage.getItem('userData'));
+    window.location.href = "http://localhost:3000/" + "profile/" + localStorage.getItem('userData');
   }
 
   const HandleLogOut = (event) => {
@@ -122,7 +123,7 @@ function SearchBar({ placeholder, data }) {
       tags = tags.filter(word => word.length > 0);
       let tagString = constructTagString(tags);
       // navigate('/feed/'+tagString, {replace: true});
-      window.location.href = "http://localhost:3001/feed/" + tagString;
+      window.location.href = "http://localhost:3000/feed/" + tagString;
     }
   };
 
