@@ -4,17 +4,17 @@ import css from "../styles/Feed.module.scss";
 import NavBar from "./NavBar";
 import PostStack from "./PostStack"
 
-
-
 function Feed(props) {
     const [tags, setTags] = useState('feed');
 
     useEffect(() => {
+        // if (props.)
         let currentUrl = window.location.href.split('/');
-        let tags = currentUrl[currentUrl.length-1];
-        setTags(tags);
-    });
-    if (tags === "feed")
+        let tagString = '?' + currentUrl[currentUrl.length-1];
+        setTags(tagString);
+        console.log("tag string: " + tagString);
+    }, []);
+    if (tags === "?feed")
     {
         console.log("FEEEEEEED");
         return <div id={css.Profile}>

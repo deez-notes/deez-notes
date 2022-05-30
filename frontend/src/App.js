@@ -44,7 +44,7 @@ function App() {
               <Route path="/create" element={<Create />} />
               <Route path="/profile/:userName" element={<Profile />} />
               <Route path="/feed" element={<Feed show="feed" />} />
-              <Route path="/feed/:tags" element={<Feed show="all" />} />
+              <Route path="/feed/:tags" element={<Feed show="tag" />} />
               <Route path="/account" element={<Account />} />
               <Route path="*" element={<Error />} />
             </Routes>
