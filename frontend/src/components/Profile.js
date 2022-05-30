@@ -246,7 +246,6 @@ export default function Profile() {
       
             
           
-          <FollowersDialog/>
           
           
           </Box>
@@ -293,7 +292,8 @@ export default function Profile() {
               {/* {User} */}
             {/* </Typography> */}
 
-              
+          <FollowersDialog/>
+             <br/> 
             
             {String(Song) === '' ?
             (
