@@ -19,6 +19,7 @@ import css from '../styles/Profile.module.scss';
 import '../styles/scrollBar.css'
 import PostPopper from './PostPopper.js'
 import FollowersDialog from './FollowersDialog.js'
+import { NotAccessibleSharp } from '@mui/icons-material';
 
 
 
@@ -57,6 +58,7 @@ export default function Profile() {
     const [Song, changeSong] = useState('');
     const [Following, changeFollowing ] = useState([]);
     const [Followers, changeFollowers ] = useState([]);
+    const [isFollowing, setIsFollowing] = useState(false);
 
     
     
@@ -119,7 +121,22 @@ export default function Profile() {
 
 
     };
+
+    const handleFollow = () => {
+      axios.put("http://localhost:8000/users/follow?current_username=" + localStorage.getItem('userData') + "&to_follow=" + pageUser).then(res => {
+        console.log("unfollowing " + pageUser);
+        window.location.reload();
+      });
+    };
     
+    const handleUnfollow = () => {
+      // http://localhost:8000/users/unfollow?current_username=amusedCheese1&to_unfollow=amusedGnu3
+      axios.put("http://localhost:8000/users/unfollow?current_username=" + localStorage.getItem('userData') + "&to_unfollow=" + pageUser).then(res => {
+        console.log("unfollowing " + pageUser);
+        window.location.reload();
+      });
+    };
+
   useEffect(() => {
     console.log("useEffect activated")
     // axios.get("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData'))).then(res => {
@@ -146,6 +163,21 @@ export default function Profile() {
     if (pageUser === String(localStorage.getItem('userData')))
     {
         updateIsOwner(true);
+    }
+    else
+    {
+      // check if logged in user is following the user we are at
+      axios.get("http://localhost:8000/users/?user=" + localStorage.getItem('userData')).then(res => {
+        let following = res.data.following;
+        for (let i=0; i<following.length; i++)
+        {
+          if (following[i] === pageUser)
+          {
+            setIsFollowing(true);
+            break;
+          }
+        }
+      })
     }
     
   }, []);
@@ -278,6 +310,37 @@ export default function Profile() {
               {/* First Name: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>{FName}</Box> */}
               {FName} {LName}
             </Typography>
+            <br/>
+
+            {isOwner ? (<p></p>) : (isFollowing ? 
+            (
+              <Button variant="outlined" sx={{
+                color: "white",
+                background: "red",
+                border: "red",
+                '&:hover': {
+                  background: "red",
+                  border: "red"
+
+                }
+              }} onClick={handleUnfollow}>UNFOLLOW</Button>
+            ) : 
+              (
+                <Button variant="contained" sx={{
+                  color: "white",
+                  background: "green",
+                  border: "green",
+                  '&:hover': {
+                    background: "green",
+                    border: "green"
+                  }
+                }} onClick={handleFollow}>FOLLOW</Button>
+              )
+              
+              
+                
+              )
+            }
 
             {/* <Typography sx={{fontSize: 35,color:"#222222", mt:1, mb:1}}>&#10165;</Typography> */}
             
@@ -286,6 +349,7 @@ export default function Profile() {
             </Typography> */}
 
             <Typography sx={{fontSize: 35, color:"#222222", mt:1, mb:1}}>&#10165;</Typography>
+
 
             {/* <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 21, mb:7}} component="h1"> */}
               {/* Username: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>{User}</Box> */}
