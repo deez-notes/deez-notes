@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
+import StringAvatar from './StringAvatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -43,9 +44,7 @@ function SimpleDialog(props) {
         {emails.map((email) => (
           <ListItem button onClick={() => handleListItemClick(email)} key={email}>
             <ListItemAvatar>
-              <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                <PersonIcon />
-              </Avatar>
+              <StringAvatar name={email} />
             </ListItemAvatar>
             <ListItemText primary={email} />
           </ListItem>
@@ -99,9 +98,7 @@ function SimpleDialog2(props) {
         {emails2.map((email) => (
           <ListItem button onClick={() => handleListItemClick2(email)} key={email}>
             <ListItemAvatar>
-              <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                <PersonIcon />
-              </Avatar>
+              <StringAvatar name={email} />
             </ListItemAvatar>
             <ListItemText primary={email} />
           </ListItem>
