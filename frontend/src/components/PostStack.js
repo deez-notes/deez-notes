@@ -47,7 +47,7 @@ class PostStack extends Component {
             let postContent = [];
             for (let j=0; j<this.state.posts.length; j+=this.state.numCols)
             {
-                if (j+i < this.state.posts.length)
+                if (j+i < Math.min(this.state.posts.length,this.state.numPosts))
                     postContent.push(<Post post={this.state.posts[j+i]} />);
 
             }
