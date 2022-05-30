@@ -36,9 +36,13 @@ class PostStack extends Component {
         else if (this.state.show === "user")
             geturl += '?user='+this.state.user;
         else if (this.state.show === "tag")
-            geturl += '?q='+this.state.tag;
+        {
+            console.log("YEEEEEEEEEHAWWWWWWWWWW");
+            geturl += this.state.tag;
+        }   
         else if (this.state.show === "all")
             geturl += '';
+        console.log("URL: "+ geturl);
         const res = await axios.get(geturl);
         // console.log(res.data);
         // console.log(geturl);

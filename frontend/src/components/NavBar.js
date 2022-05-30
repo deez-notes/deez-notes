@@ -73,6 +73,8 @@ function NavBar() {
 
 
 function SearchBar({ placeholder, data }) {
+  const navigate = useNavigate();
+
   console.log(data);
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
@@ -97,6 +99,28 @@ function SearchBar({ placeholder, data }) {
     setWordEntered("");
   };
 
+  const constructTagString = (tags) => {
+    let res = '?';
+    for (let i=0; i<tags.length; i++)
+    {
+        res += 'qtag='+tags[i];
+        if (i !== tags.length-1)
+            res += '&';
+    }
+    return res;
+  }
+
+  const searchByTag = () => {
+    // assuming multiple tags are searched via csv
+    console.log(wordEntered);
+    if (wordEntered !== "")
+    {
+      let tags = wordEntered.split(',');
+      tags = tags.filter(word => word.length > 0);
+      navigate('/feed/'+constructTagString(tags));
+    }
+  };
+
   return (
     <div className={css.search}>
       <div className={css.searchInputs}>
@@ -107,11 +131,12 @@ function SearchBar({ placeholder, data }) {
           onChange={handleFilter}
         />
         <div className={css.searchIcon}>
-          {filteredData.length === 0 ? (
-            <Search />
+          {/* {filteredData.length === 0 ? (
+            <Search id="searchBtn" onClick={searchByTag}/>
           ) : (
             <Close id="clearBtn" onClick={clearInput} />
-          )}
+          )} */}
+            <Search id="searchBtn" onClick={searchByTag}/>
         </div>
       </div>
       {filteredData.length !== 0 && (
