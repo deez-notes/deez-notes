@@ -1,5 +1,18 @@
 #! /bin/bash
-echo "Running Deez Notes!"
+
+function handler()
+{
+    echo "                                 "
+    echo "          Cleaning up!           "
+    echo "================================="
+    kill -s SIGINT $PID
+    ps ax | grep -E "uvicorn|from multiprocessing" | grep -v grep | awk '{print "kill -2 " $1}' | sh
+    echo "Thank you for running Deez Notes!"
+    exit
+}
+trap handler exit
+echo "================================="
+echo "      Running Deez Notes!        "
 
 if [ ! -d "log/" ]
 then
@@ -22,20 +35,15 @@ then
     exit
 fi
 
+
 cd backend
 uvicorn backend:app --reload &> ../log/backend_out.txt &
 PID=$!
 cd ../frontend
 npm start &> ../log/frontend_out.txt &
 PID2=$!
+
 wait $PID2
 
-handler()
-{
-    echo "Cleaning up"
-    kill -s SIGINT $PID
-    ps ax | grep -E "uvicorn|from multiprocessing" | grep -v grep | awk '{print "kill -2 " $1}' | sh
-}
+trap handler SIGINT SIGKILL
 
-trap handler SIGINT
-echo "Thank you for running Deez Notes!"

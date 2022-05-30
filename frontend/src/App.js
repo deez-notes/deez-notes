@@ -42,7 +42,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/create" element={<Create />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/:userName" element={<Profile />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/account" element={<Account />} />
               <Route path="*" element={<Error />} />

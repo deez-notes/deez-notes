@@ -14,7 +14,7 @@ userDataDB = client.accountData
 router = APIRouter(prefix="/users",
     tags=["users"],)
 
-@router.post("/", response_description="Create a new user", response_model=UserModel)
+@router.post("/", response_description="Create a new user", response_model=ReturnUserModel)
 async def create_user(user: UserModel = Body(...)):
     if (not user.id):
         user.id = str(ObjectId())
@@ -45,7 +45,7 @@ async def get_user(commons: idAndUsernameDependency = Depends()):
         users = await userDataDB.users.find().to_list(None)
         return users
 
-@router.put("/", response_description="Update a user (username, password, or both)", response_model=UserModel)
+@router.put("/", response_description="Update a user (username, password, or both)", response_model=ReturnUserModel)
 async def update_user(commons: idAndUsernameDependency = Depends(), user: UpdateUserModel = Body(...)):
     if(not commons.objId and not commons.user):
         return HTTPException(status_code=400, detail=f"no input given")
