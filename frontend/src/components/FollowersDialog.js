@@ -38,7 +38,7 @@ function SimpleDialog(props) {
   }, []);
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle sx={{textAlign:'center' }}>Followers</DialogTitle>
+      <DialogTitle sx={{textAlign:'center' }}>{emails.length} Followers</DialogTitle>
       <hr/>
       <List sx={{ pt: 0, pl:5, pr: 8 }}>
         {emails.map((email) => (
@@ -92,7 +92,7 @@ function SimpleDialog2(props) {
   }, []);
   return (
     <Dialog onClose={handleClose2} open={open2}>
-      <DialogTitle sx={{textAlign:'center' }}>Following</DialogTitle>
+      <DialogTitle sx={{textAlign:'center' }}>{emails2.length} Following</DialogTitle>
       <hr/>
       <List sx={{ pt: 0, pl:5, pr: 8 }}>
         {emails2.map((email) => (
@@ -156,22 +156,21 @@ export default function FollowersDialog() {
          <Button className= "button" variant="outlined" onClick={handleClickOpen}
           sx={{
             width: '13em',
-            borderColor: '#f3f7f9',
-            color: '#f3f7f9',
+            borderColor: '#3b7b9a',
+            color: '#3b7b9a',
             borderWidth: '3px',
             display: 'inline',
-            margin: '4em',
-            
+            margin: '1em',            
           }}
           > Followers </Button>
           <Button className= "button" variant="outlined" onClick={handleClickOpen2}
           sx={{
             width: '13em',
-            borderColor: '#f3f7f9',
-            color: '#f3f7f9',
+            borderColor: '#3b7b9a',
+            color: '#3b7b9a',
             borderWidth: '3px',
             display: 'inline',
-            margin: '4em',
+            margin: '1em',
             
           }}
           
