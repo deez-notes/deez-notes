@@ -100,13 +100,13 @@ function Post(props) {
         <Card className={css.card} variant="outlined" sx={{borderRadius: 2 }}>
             <CardHeader 
             className={css.cardHeader}
-            avatar={<IconButton href="" size="small"> <StringAvatar name={props.post.user}/></IconButton>}
+            avatar={<IconButton href={"/profile/"+props.post.user} size="small"> <StringAvatar name={props.post.user}/></IconButton>}
             action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
               }
-            title={<Link href="" underline="none" color="inherit">
+            title={<Link href={"/profile/"+props.post.user} underline="none" color="inherit">
             {props.post.user}
           </Link>}
             titleTypographyProps={{variant:'h6'}}
@@ -122,7 +122,7 @@ function Post(props) {
                 return (<Chip label={t} 
                               variant="outlined" 
                               component="a" 
-                              href=""
+                              href="" // TODO
                               size="small"
                               sx={{ mr: 0.3, mb: 0.5 }}
                               clickable />)
@@ -183,12 +183,12 @@ function Post(props) {
                     {i>0 && <Divider variant="inset" component="li" />}
                     <ListItem alignItems="center" sx={{padding: 0}}>
                       <ListItemAvatar>
-                        {<IconButton href="" size="small"> <StringAvatar name={user} /></IconButton>}
+                        {<IconButton href={"/profile/"+user} size="small"> <StringAvatar name={user} /></IconButton>}
                       </ListItemAvatar>
                       <ListItemText
                         secondary={
                           <React.Fragment>
-                            {<Link sx={{ display: 'inline', mr: 1 }} href="" underline="none" color="inherit" variant="h6">
+                            {<Link sx={{ display: 'inline', mr: 1 }} href={"/profile/"+user}  underline="none" color="inherit" variant="h6">
                               {user}
                             </Link>}
                             {comment}
