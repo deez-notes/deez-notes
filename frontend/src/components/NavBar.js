@@ -6,6 +6,7 @@ import css from '../styles/NavBar.module.scss';
 import { useNavigate } from "react-router-dom"
 import axios from "axios";
 import StringAvatar from './StringAvatar';
+import logo from "../dnlogo_w.png";
 
 function NavBar() {
 
@@ -13,7 +14,8 @@ function NavBar() {
 
   const HandleHomeNavigate = (event) => {
     event.preventDefault();
-    navigate("/feed");
+    // navigate("/feed");
+    window.location.href = "http://localhost:3001/feed";
   }
 
   const HandleCreateNavigate = (event) => {
@@ -50,7 +52,7 @@ function NavBar() {
     <AppBar position='sticky' className={css.appbar} sx={{ textAlign: 'center', paddingTop: '.25em', paddingBottom: '.25em', alignItems: 'center' }}>
       <Toolbar>
         <IconButton size='small' color='inherit' aria-label='logo'>
-          <img src="dnlogo_w.png" height="42em" onClick={HandleHomeNavigate} />
+          <img src={logo} height="42em" onClick={HandleHomeNavigate} />
         </IconButton>
 
         <div id={css.searchSpacing}>
@@ -73,6 +75,8 @@ function NavBar() {
 
 
 function SearchBar({ placeholder, data }) {
+  const navigate = useNavigate();
+
   console.log(data);
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
@@ -97,6 +101,31 @@ function SearchBar({ placeholder, data }) {
     setWordEntered("");
   };
 
+  const constructTagString = (tags) => {
+    let res = '';
+    for (let i=0; i<tags.length; i++)
+    {
+        res += 'qtag='+tags[i];
+        if (i !== tags.length-1)
+            res += '&';
+    }
+    return res;
+  }
+
+  const searchByTag = (event) => {
+    event.preventDefault();
+    // assuming multiple tags are searched via csv
+    console.log(wordEntered);
+    if (wordEntered !== "")
+    {
+      let tags = wordEntered.split(',');
+      tags = tags.filter(word => word.length > 0);
+      let tagString = constructTagString(tags);
+      // navigate('/feed/'+tagString, {replace: true});
+      window.location.href = "http://localhost:3001/feed/" + tagString;
+    }
+  };
+
   return (
     <div className={css.search}>
       <div className={css.searchInputs}>
@@ -107,11 +136,12 @@ function SearchBar({ placeholder, data }) {
           onChange={handleFilter}
         />
         <div className={css.searchIcon}>
-          {filteredData.length === 0 ? (
-            <Search />
+          {/* {filteredData.length === 0 ? (
+            <Search id="searchBtn" onClick={searchByTag}/>
           ) : (
             <Close id="clearBtn" onClick={clearInput} />
-          )}
+          )} */}
+            <Search id="searchBtn" onClick={searchByTag}/>
         </div>
       </div>
       {filteredData.length !== 0 && (
