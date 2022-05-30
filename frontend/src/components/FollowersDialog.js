@@ -18,7 +18,7 @@ import '../styles/scrollBar.css'
 import axios from "axios";
 
 var emails = ['nothing'];
-
+const pageUser = String(window.location.href).substring(30);
 function SimpleDialog(props) {
   const [Followers, setFollowers] = useState([]);
   const { onClose, selectedValue, open } = props;
@@ -31,7 +31,7 @@ function SimpleDialog(props) {
     onClose(value);
   };
   useEffect(() => {
-    axios.get("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData'))).then(res => {
+    axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
       setFollowers(res.data.followers);
       emails = Followers;
     });
@@ -85,7 +85,7 @@ function SimpleDialog2(props) {
     onClose2(value);
   };
   useEffect(() => {
-    axios.get("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData'))).then(res => {
+    axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
       setFollowers2(res.data.following);
       emails2 = Followers2;
     });
@@ -145,7 +145,7 @@ export default function FollowersDialog() {
 
 
   useEffect(() => {
-    axios.get("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData'))).then(res => {
+    axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
       emails = (res.data.followers);
       emails2 = (res.data.following);
     });
