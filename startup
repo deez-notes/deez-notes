@@ -1,6 +1,11 @@
 #! /bin/bash
 echo "Running Deez Notes!"
 
+if [ ! -d "log/" ]
+then
+    mkdir log
+fi
+
 output="$(lsof -i tcp:3000 | grep LISTEN)"
 if [[ ${#output} -ge 2 ]] 
 then
