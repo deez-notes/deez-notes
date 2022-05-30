@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Image1 from '../GiangTestImg.jpg' 
+import Image1 from '../STOPITGIANG.jpg' 
 import NavBar from "./NavBar"
 import PostStack from "./PostStack.js"
 import Spotify from 'react-spotify-embed';
@@ -266,30 +266,32 @@ export default function Profile() {
             <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
               <LibraryMusicIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              Your Profile
+            <Typography component="h1" variant="h4">
+              {User}'s Profile
             </Typography>
 
 
             {!EditProfile ? (
             <div>
             <Box component="span" color="#9E9E9E">
-            <br/>
-            <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26, mt:3}} component="h1">
-              First Name: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>{FName}</Box>
+            {/* <br/> */}
+            <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'normal', fontSize: 26, mt:3}} component="h1">
+              {/* First Name: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>{FName}</Box> */}
+              {FName} {LName}
             </Typography>
 
-            <Typography sx={{fontSize: 35,color:"#222222", mt:1, mb:1}}>&#10165;</Typography>
+            {/* <Typography sx={{fontSize: 35,color:"#222222", mt:1, mb:1}}>&#10165;</Typography> */}
             
-            <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26}} component="h1">
+            {/* <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26}} component="h1">
               Last Name: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>{LName}</Box>
-            </Typography>
+            </Typography> */}
 
             <Typography sx={{fontSize: 35, color:"#222222", mt:1, mb:1}}>&#10165;</Typography>
 
-            <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 26, mb:7}} component="h1">
-              Username: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>{User}</Box>
-            </Typography>
+            {/* <Typography margin="normal" sx={{ color:"#222222", fontWeight: 'bold', fontSize: 21, mb:7}} component="h1"> */}
+              {/* Username: <Box sx={{ color:"#BCBCBC", fontWeight: 'light'}} display='inline'>{User}</Box> */}
+              {/* {User} */}
+            {/* </Typography> */}
 
               
             
