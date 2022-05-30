@@ -26,15 +26,22 @@ class PostStack extends Component {
         let geturl='http://localhost:8000/posts/';
         if (this.state.show === "feed")
         {
-            ;
-            // geturl += '?user='+this.state.user;
+            const loggedInUser = localStorage.getItem('userData');
+            const usr = await axios.get('http://localhost:8000/users/?user='+loggedInUser);
+            // console.log(usr.data);
+            geturl += '?quser='+loggedInUser; // show own posts
+            for (let i=0; i<usr.data.following.length; i++)
+                geturl+= '&quser='+usr.data.following[i]
         }
         else if (this.state.show === "user")
             geturl += '?user='+this.state.user;
         else if (this.state.show === "tag")
             geturl += '?q='+this.state.tag;
+        else if (this.state.show === "all")
+            geturl += '';
         const res = await axios.get(geturl);
         // console.log(res.data);
+        // console.log(geturl);
         this.setState({posts: res.data});
     }
 
@@ -66,7 +73,7 @@ class PostStack extends Component {
 PostStack.defaultProps = {
     numCols: 3,
     numPosts: 12,
-    show: "feed", // "feed" (following), "user", "tag"
+    show: "feed", // "feed" (following, uses logged in user), "user", "tag", "all"
     user: "",
     tag: "",
 
