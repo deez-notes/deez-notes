@@ -1,0 +1,12 @@
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [11682] using watchgod
+INFO:     Started server process [11686]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:51694 - "GET /posts/?user=amusedCheese1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51694 - "GET /posts/?user=amusedCheese1 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [11686]
+INFO:     Stopping reloader process [11682]

@@ -1,0 +1,36 @@
+#! /bin/bash
+echo "Running Deez Notes!"
+
+output="$(lsof -i tcp:3000 | grep LISTEN)"
+if [[ ${#output} -ge 2 ]] 
+then
+    echo "Port 3000 (where the frontend would like to run) already taken. Please free the port then run again."
+    echo "run the command: lsof -i tcp:3000 to see which process is using that port"
+    exit
+fi
+
+output="$(lsof -i tcp:8000 | grep LISTEN)"
+if [[ ${#output} -ge 2 ]] 
+then
+    echo "Port 8000 (where the backend would like to run) already taken. Please free the port then run again."
+    echo "run the command: lsof -i tcp:8000 to see which process is using that port"
+    exit
+fi
+
+cd backend
+uvicorn backend:app --reload &> ../log/backend_out.txt &
+PID=$!
+cd ../frontend
+npm start &> ../log/frontend_out.txt &
+PID2=$!
+wait $PID2
+
+handler()
+{
+    echo "Cleaning up"
+    kill -s SIGINT $PID
+    ps ax | grep -E "uvicorn|from multiprocessing" | grep -v grep | awk '{print "kill -2 " $1}' | sh
+}
+
+trap handler SIGINT
+echo "Thank you for running Deez Notes!"
