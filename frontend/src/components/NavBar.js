@@ -33,7 +33,7 @@ function NavBar() {
   }
 
   return (
-    <AppBar position='sticky' sx={{ textAlign: 'center', paddingTop: '.25em', paddingBottom: '.25em', alignItems: 'center' }}>
+    <AppBar position='sticky' className={css.appbar} sx={{ textAlign: 'center', paddingTop: '.25em', paddingBottom: '.25em', alignItems: 'center' }}>
       <Toolbar>
         <IconButton size='small' color='inherit' aria-label='logo'>
           <img src="dnlogo_w.png" height="42em" onClick={HandleHomeNavigate} />
