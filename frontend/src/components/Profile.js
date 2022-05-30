@@ -131,9 +131,8 @@ export default function Profile() {
     });
   }, []);
   return (
-      <>
-    <NavBar />
-    
+    <div>
+      <NavBar />
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -376,6 +375,6 @@ export default function Profile() {
           </Box>
         </Grid>
       </Grid>
-</>
-  );
+  </div>);
+  
 }
