@@ -34,7 +34,7 @@ async def create_post(post: PostModel = Body(...)):
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_post)
 
 @router.get("/", response_description="Get/list posts", response_model=Union[List[PostModel], PostModel])
-async def get_post(commons: idAndUsernameDependency = Depends(), q: Union[List[str], None] = Query(default=None)):
+async def get_post(commons: idAndUsernameDependency = Depends(), qtag: Union[List[str], None] = Query(default=None), quser: Union[List[str], None] = Query(default=None)):
     # print(commons.objId, commons.user)
     if(commons.objId):
         # print("searching by id")
@@ -45,10 +45,13 @@ async def get_post(commons: idAndUsernameDependency = Depends(), q: Union[List[s
         # print("searching by user")
         posts = await postDataDB.posts.find({"user": commons.user}).sort([("date", -1)]).to_list(None)
         return posts
-    elif (q):
+    elif (qtag):
         # print("searching by tags")
-        # print(q)
-        posts = await postDataDB.posts.find({"tags": {"$all": q}}).sort([("date", -1)]).to_list(None)
+        # print(qtag)
+        posts = await postDataDB.posts.find({"tags": {"$all": qtag}}).sort([("date", -1)]).to_list(None)
+        return posts
+    elif (quser):
+        posts = await postDataDB.posts.find({"user": {"$in": quser}}).sort([("date", -1)]).to_list(None)
         return posts
     else:
         # print("list all")
