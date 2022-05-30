@@ -1,10 +1,10 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Stack, Button } from "@mui/material";
 import { Search, Close } from "@material-ui/icons";
 import TestData from '../TestData.json';
 import css from '../styles/NavBar.module.scss';
 import { useNavigate } from "react-router-dom"
-
+import axios from "axios";
 import StringAvatar from './StringAvatar';
 
 function NavBar() {
@@ -23,7 +23,7 @@ function NavBar() {
 
   const HandleProfileNavigate = (event) => {
     event.preventDefault();
-    navigate("/profile");
+    navigate("/profile/" + localStorage.getItem('userData'));
   }
 
   const HandleLogOut = (event) => {
@@ -31,7 +31,21 @@ function NavBar() {
     localStorage.setItem('userData', null);
     navigate("/");
   }
+  const [theData, changeTheData ] = useState([]);
+  const [once, setOnce ] = useState(true);
+  
+  if (once)
+  {
+    axios.get("http://localhost:8000/users/"). then(res => {
+    changeTheData(res.data);
+    setOnce(false);
+  })
+  }
 
+  
+  
+
+  
   return (
     <AppBar position='sticky' sx={{ textAlign: 'center', paddingTop: '.25em', paddingBottom: '.25em', alignItems: 'center' }}>
       <Toolbar>
@@ -40,7 +54,7 @@ function NavBar() {
         </IconButton>
 
         <div id={css.searchSpacing}>
-          <SearchBar placeholder="Search..." data={TestData} />
+          <SearchBar placeholder="Search..." data={theData} /> 
         </div>
 
         <Stack direction='row' spacing={2}>
@@ -59,10 +73,12 @@ function NavBar() {
 
 
 function SearchBar({ placeholder, data }) {
+  console.log(data);
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
   const handleFilter = (event) => {
+    
     const searchWord = event.target.value;
     setWordEntered(searchWord);
     const newFilter = data.filter((value) => {
@@ -102,7 +118,7 @@ function SearchBar({ placeholder, data }) {
         <div className={css.dataResult}>
           {filteredData.slice(0, 10).map((value, key) => {
             return (
-              <a className={css.dataItem} href={value.link} target="_blank">
+              <a className={css.dataItem} href={String("http://localhost:3000/profile/") + value.username} target="_blank">
                 <p>{value.username} </p>
               </a>
             );

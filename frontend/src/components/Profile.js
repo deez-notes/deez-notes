@@ -19,9 +19,7 @@ import css from '../styles/Profile.module.scss';
 import '../styles/scrollBar.css'
 import PostPopper from './PostPopper.js'
 import FollowersDialog from './FollowersDialog.js'
-import { useSearchParams } from 'react-router-dom';
 
-const theme = createTheme();
 
 
 
@@ -29,7 +27,8 @@ export default function Profile() {
     
   
     // other
-    
+    //var str = "localhost:3000/profile/";
+    //var pos = str.search() + 
     const pageUser = String(window.location.href).substring(30);
     // Data
     const show = "SHOW POSTS";
@@ -121,8 +120,8 @@ export default function Profile() {
 
     };
     
-  
   useEffect(() => {
+    console.log("useEffect activated")
     // axios.get("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData'))).then(res => {
       axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
       changeFName(res.data.first_name);
@@ -131,6 +130,7 @@ export default function Profile() {
       changePass(res.data.password);
       changeFollowing(res.data.following);
       changeFollowers(res.data.followers);
+      console.log("useEffect activated2")
       
       
     });
@@ -141,6 +141,7 @@ export default function Profile() {
    
     axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
       updateRealUser(true);
+      console.log("useEffect activated2")
     });
     if (pageUser === String(localStorage.getItem('userData')))
     {
@@ -372,7 +373,7 @@ export default function Profile() {
               <TextField
                 margin="normal"
                 fullWidth
-                label={Pass}
+                label="**********"
                 helperText='Password'
                 onChange={event => {changeTempPass(event.target.value)}}
 
@@ -417,7 +418,7 @@ export default function Profile() {
       </div> ) : (<div>
         
         
-        <Typography> Error 404 : {String(realUser)} user </Typography>
+        <Typography> Error 404 : {String(realUser)} user {pageUser} </Typography>
          </div>) }
 
 
