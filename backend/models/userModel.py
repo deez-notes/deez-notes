@@ -38,7 +38,7 @@ class UserModel(BaseModel):
                 "username": "Red",
                 "password" : '1234',
                 "first_name": "Alex",
-                "last_name": "Konas"
+                "last_name": "Konas",
             }
         }
 
@@ -57,6 +57,27 @@ class UpdateUserModel(BaseModel):
            "example": {
                 "username": "Red",
                 "password" : '1234',
+                "first_name": "Alex",
+                "last_name": "Konas"
+            }
+        }
+
+class ReturnUserModel(BaseModel):
+    id: str = Field(default=None, alias="_id")
+    username: str = Field(...)
+    first_name: str = Field(default=None)
+    last_name: str = Field(default=None)
+    followers: List = Field(default=[])
+    following: List = Field(default=[])
+
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+           "example": {
+                "username": "Red",
                 "first_name": "Alex",
                 "last_name": "Konas"
             }
