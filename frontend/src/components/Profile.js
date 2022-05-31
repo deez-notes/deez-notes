@@ -19,6 +19,7 @@ import css from '../styles/Profile.module.scss';
 import '../styles/scrollBar.css'
 import PostPopper from './PostPopper.js'
 import FollowersDialog from './FollowersDialog.js'
+import Error from './Error.js'
 
 
 
@@ -29,12 +30,13 @@ export default function Profile() {
     // other
     //var str = "localhost:3000/profile/";
     //var pos = str.search() + 
+    
     const pageUser = String(window.location.href).substring(30);
     // Data
     const show = "SHOW POSTS";
     const hide = "HIDE POSTS";
-    
-    const [realUser, updateRealUser ] = useState(false);
+    const [countMeter, updateCountMeter ] = useState(0);
+    const [realUser, updateRealUser ] = useState(true);
     const [isOwner, updateIsOwner ] = useState(false);
     const [showPost, updateShow ] = useState(true);
     const [TempFName, changeTempFName ] = useState('');
@@ -139,10 +141,16 @@ export default function Profile() {
       changeSong(res.data.favorite_song);
     });
    
+    updateCountMeter(countMeter+1);
     axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
       updateRealUser(true);
       console.log("useEffect activated2")
-    });
+    }).catch(
+      function (error) {
+        updateRealUser(false);
+        return Promise.reject(error)
+      }
+    )
     if (pageUser === String(localStorage.getItem('userData')))
     {
         updateIsOwner(true);
@@ -419,8 +427,8 @@ export default function Profile() {
         
       </div> ) : (<div>
         
-        
-        <Typography> Error 404 : {String(realUser)} user {pageUser} </Typography>
+        <Error/>
+        {/* <Typography> Error 404 : {String(realUser)} user {pageUser} </Typography> */}
          </div>) }
 
 
