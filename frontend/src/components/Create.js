@@ -61,7 +61,7 @@ function Create()
             "rating" : 69.69,
             "desc" : descRef.current.value,
             "tags" : tags,
-            "user" : "amusedCheese1",
+            "user" : localStorage.getItem('userData'),
             // "date" : pst,
             "comments" : [["", ""], ["",""], ["",""]]
             
