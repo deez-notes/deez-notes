@@ -10,6 +10,7 @@ class PostStack extends Component {
     constructor(props)
     {
         super(props);
+        console.log("this.props.tag === " + this.props.tag);
         this.state = {
             posts: [],
             numCols: this.props.numCols,
@@ -23,6 +24,7 @@ class PostStack extends Component {
 
     async getPosts() // fetch posts from backend based on type
     {
+        console.log("this.state.show === " + this.state.show);
         let geturl='http://localhost:8000/posts/';
         if (this.state.show === "feed")
         {
@@ -36,15 +38,32 @@ class PostStack extends Component {
         else if (this.state.show === "user")
             geturl += '?user='+this.state.user;
         else if (this.state.show === "tag")
-            geturl += '?q='+this.state.tag;
+        {
+            console.log("YEEEEEEEEEHAWWWWWWWWWW");
+            geturl += this.state.tag;
+        }   
         else if (this.state.show === "all")
             geturl += '';
+        console.log("URL: "+ geturl);
         const res = await axios.get(geturl);
         // console.log(res.data);
-        // console.log(geturl);
         this.setState({posts: res.data});
     }
 
+    componentDidMount()
+    {
+        console.log("1) componentDidMount inside PostStack");
+        if (this.state.show === "tag")
+        {
+            console.log(window.location.href);
+            let urlArray = window.location.href.split('/');
+            let tagString = urlArray[urlArray.length-1];
+            axios.get('http://localhost:8000/posts/?' + tagString).then((res) => {
+                this.setState({posts: res.data});
+            });
+        }
+        
+    }
     render() {
         console.log(this.state.posts)
         // console.log();
@@ -73,7 +92,7 @@ class PostStack extends Component {
 PostStack.defaultProps = {
     numCols: 3,
     numPosts: 12,
-    show: "feed", // "feed" (following, uses logged in user), "user", "tag", "all"
+    // show: "feed", // "feed" (following, uses logged in user), "user", "tag", "all"
     user: "",
     tag: "",
 

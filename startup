@@ -40,10 +40,8 @@ cd backend
 uvicorn backend:app --reload &> ../log/backend_out.txt &
 PID=$!
 cd ../frontend
-npm start &> ../log/frontend_out.txt &
-PID2=$!
-
-wait $PID2
+npm start &> ../log/frontend_out.txt
+# PID2=$!
 
 trap handler SIGINT SIGKILL
 

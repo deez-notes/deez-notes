@@ -44,8 +44,15 @@ function Create()
         console.log("Desc: " + descRef.current.value);
         console.log(tags);
         let date = new Date();
-        let time = date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0') + ":" +  date.getSeconds().toString().padStart(2, '0');
-        console.log(time);
+        let pst = date.toLocaleString('en-US', {
+            timeZone: 'America/Los_Angeles',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          });
+
+        // let time = date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0') + ":" +  date.getSeconds().toString().padStart(2, '0');
+        console.log(pst);
 
         let postData = {
             "title" : titleRef.current.value,
@@ -54,9 +61,10 @@ function Create()
             "rating" : 69.69,
             "desc" : descRef.current.value,
             "tags" : tags,
-            "comments" : ["", "", ""],
-            "user" : "amusedCheese1",
-            "timestamp" : time
+            "user" : localStorage.getItem('userData'),
+            // "date" : pst,
+            "comments" : [["", ""], ["",""], ["",""]]
+            
 
             /*
             title: str = Field(...)
@@ -83,10 +91,6 @@ function Create()
         <Box sx={{ width: '100%', display:"flex", justifyContent:"center", alignItems:"center" }}>
         <Paper rounded elevation={10} sx={{width:'50%', mt:2}}>
             <br/>
-            <div className={css.exitbuttondiv}>
-                {/* Still need to implement routing to the feed */}
-                <Cancel className={css.exitbtn}/>
-            </div>
             <Typography variant="h3">Create a Post</Typography>
             
             <div className={css.song}>
