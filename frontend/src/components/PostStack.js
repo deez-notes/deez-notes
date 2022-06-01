@@ -91,7 +91,7 @@ class PostStack extends Component {
 
 PostStack.defaultProps = {
     numCols: 3,
-    numPosts: 12,
+    numPosts: 24,
     // show: "feed", // "feed" (following, uses logged in user), "user", "tag", "all"
     user: "",
     tag: "",
