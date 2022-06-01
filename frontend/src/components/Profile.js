@@ -406,7 +406,11 @@ export default function Profile() {
               />
 
             </Box>
-            <Button
+
+            {
+              (pageUser === String(localStorage.getItem('userData'))) ?
+              (<div>
+                <Button
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -416,6 +420,11 @@ export default function Profile() {
               >
                 Edit
               </Button>
+                </div>)
+                :
+                (<div>  </div>)
+            }
+            
             </div>
             ) : (
             <Box component="form" noValidate onSubmit={UpdateProfile} sx={{ mt: 1 }}>

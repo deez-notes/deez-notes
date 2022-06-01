@@ -85,11 +85,14 @@ function Create()
         // reset form?
     };
 
-    return <div>
+    return <div className={css.background}>
         <NavBar />
         {/* still need to add dynamically changing text */}
+        <br/>
+        <br/>
+        <br/>
         <Box sx={{ width: '100%', display:"flex", justifyContent:"center", alignItems:"center" }}>
-        <Paper rounded elevation={10} sx={{width:'50%', mt:2}}>
+        <Paper rounded elevation={10} sx={{width:'50%', mt:2, mb:10}}>
             <br/>
             <Typography variant="h3">Create a Post</Typography>
             
@@ -124,7 +127,9 @@ function Create()
 
         </Paper>
         </Box>
-    </div>
+
+       
+            </div>
 }
 
 export default Create;
