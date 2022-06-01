@@ -4,11 +4,8 @@ import { useNavigate } from "react-router-dom"
 import css from '../styles/Error.module.scss';
 import Image1 from '../STOPITGIANG.jpg' 
 import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import logo from "../dnlogo_w.png"
 
+import StripBar from "./StripBar"
 import NavBar from "./NavBar"
 
 function Error()
@@ -17,14 +14,7 @@ function Error()
 
     return (
         <>
-        {/* <NavBar/> */}
-        <AppBar position='sticky' className={css.appbar} sx={{ textAlign: 'center', paddingTop: '.25em', paddingBottom: '.25em', alignItems: 'center' }}>
-        <Toolbar>
-          <IconButton size='small' color='inherit' aria-label='logo' href="http://localhost:3000/">
-            <img src={logo} height="42em"  />
-          </IconButton>
-        </Toolbar>
-        </AppBar>
+        <StripBar />
             
         <br/>
         <div id={css.title}>Uh Oh! This Page Doesn't Exist!</div>

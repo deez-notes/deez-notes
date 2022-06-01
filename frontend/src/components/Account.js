@@ -136,6 +136,8 @@ import axios, { Axios } from "axios";
 import { ArrowBack } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom"
 
+import StripBar from "./StripBar"
+
 const theme = createTheme();
 
 export default function Account() {
@@ -217,9 +219,8 @@ export default function Account() {
   return (
 
       <>
-      
-      
-      
+      <StripBar />
+    
       <div className={css.color}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />

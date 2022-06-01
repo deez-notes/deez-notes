@@ -4,7 +4,7 @@ import css from '../styles/Home.module.scss';
 import { useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react";
 import axios from 'axios';
-
+import StripBar from "./StripBar"
 
 function Home() {
 
@@ -80,11 +80,10 @@ function Home() {
         navigate("/feed");
     }
 
-
     return (
-
-
         <div id={css.Home}>
+            <StripBar />
+            <br/>
             <div>
                 <img src="dn.svg" alt="" width="220vw" height="150rem" />
             </div>
@@ -94,7 +93,8 @@ function Home() {
 
                 </div>
                 <div className={css.imageContainer}>
-                    <Typography variant="h4">Share your taste of music! Taste the sweetness of Deez Notes!</Typography>
+                    <Typography variant="h4">Share your taste of music! </Typography>
+                    <Typography variant="h5">Taste the sweetness of Deez Notes! </Typography>
                     <img className={css.landingImage} src="landing.png"></img>
                 </div>
                 <div className={css.signInContainer}>
