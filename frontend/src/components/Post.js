@@ -203,7 +203,7 @@ function Post(props) {
                 <Box sx={{ display: 'flex', alignItems: 'flex-end'}}>
                   <TextField  inputRef={commentRef}
                               id="input-comment" 
-                              label="Enter your comment bro." 
+                              label="Enter your comment." 
                               size="small" 
                               variant="standard"
                               defaultValue=""

@@ -291,7 +291,7 @@ export default function Profile() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <Avatar sx={{ mb: 6, bgcolor: 'primary.main' }}>
               <LibraryMusicIcon />
             </Avatar>
             <Typography component="h1" variant="h4">

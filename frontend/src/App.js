@@ -47,6 +47,7 @@ function App() {
               <Route path="/profile/:userName" element={<Profile />} />
               <Route path="/feed" element={<Feed show="feed" />} />
               <Route path="/feed/:tags" element={<Feed show="tag" />} />
+              <Route path="/feed/all" element={<Feed show="all" />} />
               <Route path="/account" element={<Account />} />
               {/* temp */}
               <Route path="/test" element={<Test />} />
