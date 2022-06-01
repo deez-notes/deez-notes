@@ -103,10 +103,12 @@ async def rate(id: str, current_user: str, score: float):
         like_modifier = 0
         if (not score):
             like_modifier = -1
+        if (not pastScore):
+            like_modifier = 1
         if not (score-pastScore):
             return await postDataDB.posts.find_one({"_id": id})
         pastUserRating = await postDataDB.userRatings.update_one({"postID": id, "username":current_user}, {"$set": {"rating":score}})
-        # print("past score: ", pastScore, " new score: ", score)
+        print("past score: ", pastScore, " new score: ", score, " like_modifer: ", like_modifier)
         update_result = await postDataDB.posts.update_one({"_id": id}, {"$inc" : {"score": score - pastScore, "likes":like_modifier}})
     else:
         # print("user has not rated yet")
@@ -122,6 +124,18 @@ async def rate(id: str, current_user: str, score: float):
 
     if (existing_post := await postDataDB.posts.find_one({"_id": id})) is not None:
         return existing_post
+
+    raise HTTPException(status_code=404, detail=f"post {id} not found")
+
+@router.delete("/", response_description="Delete a post")
+async def delete_post(id:str):
+    if(not id):
+        return HTTPException(status_code=400, detail=f"no id given")
+    delete_post = await postDataDB.posts.delete_one({"_id": id})
+    delete_review = await postDataDB.userRatings.delete_many({"postID": id})
+
+    if delete_post.deleted_count == 1:
+        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
 
     raise HTTPException(status_code=404, detail=f"post {id} not found")
 
