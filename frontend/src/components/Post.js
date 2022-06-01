@@ -18,7 +18,6 @@ import Link from '@mui/material/Link';
 import Rating from '@mui/material/Rating';
 import Chip from '@mui/material/Chip';
 
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import StarIcon from '@material-ui/icons/Star';
 
 import { styled } from '@mui/material/styles';
@@ -37,6 +36,8 @@ import TextField from '@mui/material/TextField';
 import Send from '@material-ui/icons/Send';
 
 import Spotify from 'react-spotify-embed';
+
+import PostDialog from './PostDialog'
 
 // Helper Function to generate Rating System
 // https://mui.com/material-ui/react-rating/
@@ -103,9 +104,7 @@ function Post(props) {
             className={css.cardHeader}
             avatar={<IconButton href={"/profile/"+props.post.user} size="small"> <StringAvatar name={props.post.user}/></IconButton>}
             action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
+                <PostDialog post_op={props.post.user} post_id={props.post._id} />
               }
             title={<Link href={"/profile/"+props.post.user} underline="none" color="inherit">
             {props.post.user}
