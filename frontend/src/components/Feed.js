@@ -20,7 +20,6 @@ function Feed(props) {
     }, []);
     if (tags === "?feed")
     {
-        console.log("FEEEEEEED");
         return <div id={css.Profile}>
         <NavBar />
         <Box sx={{width:'100%', mt:2}}>
@@ -34,9 +33,23 @@ function Feed(props) {
         <div style={{height:15}} />
         </div>
     }
+    else if (tags === "?all")
+    {
+        return <div id={css.Profile}>
+        <NavBar />
+        <Box sx={{width:'100%', mt:2}}>
+            <Typography variant="h4">
+                All Posts
+            </Typography>
+        </Box>
+        <PostStack  show={props.show} 
+                    user=""
+                    numCols={3} />
+        <div style={{height:15}} />
+        </div>
+    }
     else
     {
-        console.log("TAGS");
         return <div id={css.Profile}>
         <NavBar/>
         <Box sx={{width:'100%', mt:2}}>
