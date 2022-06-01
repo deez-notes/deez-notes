@@ -37,6 +37,17 @@ function Create()
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
+        // WE GOTTA CHECK IF THE USER EVEN PUT ANYTHING
+        if (titleRef.current.value === '' || artistRef.current.value === '' || linkRef.current.value === '' || descRef.current.value === '')
+        {
+            window.alert("FILL OUT ALL FIELDS!");
+            return;
+        }
+        if (!/^(spotify:|https:\/\/[a-z]+\.spotify\.com\/)/.test(linkRef.current.value))
+        {
+            window.alert("INVALID SPOTIFY LINK");
+            return;
+        }
         // send stuff to the backend
         console.log("Title: " + titleRef.current.value);
         console.log("Artist: " + artistRef.current.value);
@@ -81,7 +92,14 @@ function Create()
 
         console.log(postData);
         axios.post('http://localhost:8000/posts/createpost', postData)
-      .then(res => console.log(res))
+      .then(res => {
+        window.alert("Post created!");
+        titleRef.current.value = "";
+        artistRef.current.value = "";
+        linkRef.current.value = "";
+        descRef.current.value = "";
+        setTags([]);
+      });
         // reset form?
     };
 
