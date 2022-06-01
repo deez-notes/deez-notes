@@ -38,10 +38,10 @@ import Send from '@material-ui/icons/Send';
 
 import Spotify from 'react-spotify-embed';
 
-// Helper Functions to generate Rating System
+// Helper Function to generate Rating System
 // https://mui.com/material-ui/react-rating/
 
-// Helper Functions to expand Comment Section
+// Helper Function to expand Comment Section
 // https://mui.com/material-ui/react-card/#complex-interaction
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -55,9 +55,6 @@ const ExpandMore = styled((props) => {
 }));
 
 
-
-
-
 // function will at some point need to have a Post class passed in containing data
 function Post(props) {
   // console.log(props.post)
@@ -68,6 +65,10 @@ function Post(props) {
   const [hover, setHover] = React.useState(-1);
   const [rScore, setRSCore] = React.useState(props.post.score);
   const [rLikes, setRLikes] = React.useState(props.post.likes);
+  // get users past rating
+  axios.get('http://localhost:8000/posts/user_ratings/?username='+loggedInUser+
+            '&postID='+props.post._id)
+    .then(res => setValue(res.data.rating?res.data.rating:0));
   // comment section expand
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
@@ -122,7 +123,7 @@ function Post(props) {
                 return (<Chip label={t} 
                               variant="outlined" 
                               component="a" 
-                              href="" // TODO
+                              href={"/feed/qtag="+t}
                               size="small"
                               sx={{ mr: 0.3, mb: 0.5 }}
                               clickable />)

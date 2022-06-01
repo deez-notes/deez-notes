@@ -8,6 +8,7 @@ import { Cancel } from "@mui/icons-material";
 import axios from "axios";
 
 import NavBar from './NavBar'
+import { useNavigate } from "react-router-dom";
 
 function Create()
 {
@@ -20,6 +21,7 @@ function Create()
     const [tags, setTags] = useState([]);
     const tagRef = useRef();
     
+    const navigate = useNavigate();
 
     const handleTagSubmit = (e) => {
         e.preventDefault();
@@ -37,6 +39,17 @@ function Create()
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
+        // WE GOTTA CHECK IF THE USER EVEN PUT ANYTHING
+        if (titleRef.current.value === '' || artistRef.current.value === '' || linkRef.current.value === '' || descRef.current.value === '')
+        {
+            window.alert("FILL OUT ALL FIELDS!");
+            return;
+        }
+        if (!/^(spotify:|https:\/\/[a-z]+\.spotify\.com\/)/.test(linkRef.current.value))
+        {
+            window.alert("INVALID SPOTIFY LINK");
+            return;
+        }
         // send stuff to the backend
         console.log("Title: " + titleRef.current.value);
         console.log("Artist: " + artistRef.current.value);
@@ -81,15 +94,20 @@ function Create()
 
         console.log(postData);
         axios.post('http://localhost:8000/posts/createpost', postData)
-      .then(res => console.log(res))
+      .then(res => {
+        navigate("/feed");
+      });
         // reset form?
     };
 
-    return <div>
+    return <div className={css.background}>
         <NavBar />
         {/* still need to add dynamically changing text */}
+        <br/>
+        <br/>
+        <br/>
         <Box sx={{ width: '100%', display:"flex", justifyContent:"center", alignItems:"center" }}>
-        <Paper rounded elevation={10} sx={{width:'50%', mt:2}}>
+        <Paper rounded elevation={10} sx={{width:'50%', mt:2, mb:10}}>
             <br/>
             <Typography variant="h3">Create a Post</Typography>
             
@@ -124,7 +142,9 @@ function Create()
 
         </Paper>
         </Box>
-    </div>
+
+       
+            </div>
 }
 
 export default Create;

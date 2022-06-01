@@ -28,7 +28,6 @@ class PostModel(BaseModel):
                 "desc" : 'wowza',
                 "tags" : ["omg"],
                 "user" : "amusedCheese1",
-                "date" : "05/12/22",
                 "comments": [["amusedCheese1", "wow I love this"], ["holisticMussel9", "omg same"], ["grumpyMoth43", "etc"]]
             }
         }
@@ -60,7 +59,6 @@ class UpdatePostModel(BaseModel):
                 "desc" : 'wowza',
                 "tags" : ["omg"],
                 "user" : "amusedCheese1",
-                "date" : "05/28/22",
                 "comments": [["amusedCheese1", "wow I love this"], ["holisticMussel9", "omg same"], ["grumpyMoth43", "etc"]]
             }
         }

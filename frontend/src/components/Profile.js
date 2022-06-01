@@ -213,10 +213,8 @@ export default function Profile() {
         >
         <Grid item md={9} ml={13}  elevation = {6} square>
         <Box className = "scrollbar-hidden"
-
-  
             sx={{
-              my: 15, // 10
+              my: 10, // 10
               mx: 30,
               backgroundColor: 'transparent',
               display: 'flex',
@@ -224,14 +222,11 @@ export default function Profile() {
               alignItems: 'center',
             }}
           > 
-
-
-            
             <Button className= "button" variant="outlined"  onClick={updateShowPost}
             sx={{
               width: '20em',
-              borderColor: '#f3f7f9',
-              color: '#f3f7f9',
+              // borderColor: '#f3f7f9',
+              // color: '#f3f7f9',
               borderWidth: '3px',
               
             }}
@@ -245,7 +240,7 @@ export default function Profile() {
             <Box className = "scrollbar-hidden"
               sx={{
                 
-                height: '680px',
+                height: '100%',
                 overflowY: 'auto',
             }}
             
@@ -253,19 +248,17 @@ export default function Profile() {
               {
               showPost ? (
                 <div class="style fade-in">
-                  <PostStack numCols={2} numPosts={4} show="user" user={pageUser}/>
+                  <PostStack numCols={2} numPosts={8} show="user" user={pageUser}/>
                 </div>
                 ) : (
                   <div class="style fade-out">
-                    <PostStack numCols={2} numPosts={4} show="user" user={pageUser}/>
+                    <PostStack numCols={2} numPosts={8} show="user" user={pageUser}/>
                   </div>
                 )
                 }
 
             </Box>
-            
-            
-            
+           
           </Box>
           <Box sx={{
             
@@ -283,11 +276,7 @@ export default function Profile() {
             
           }}
           > Hi </Button> */}
-      
-            
-          
-          
-          
+
           </Box>
         </Grid>
         
@@ -324,10 +313,10 @@ export default function Profile() {
             (
               <Button variant="outlined" sx={{
                 color: "white",
-                background: "red",
+                background: "#d32f2f",
                 border: "red",
                 '&:hover': {
-                  background: "red",
+                  background: "#d32f2f",
                   border: "red"
 
                 }
@@ -344,9 +333,7 @@ export default function Profile() {
                   }
                 }} onClick={handleFollow}>FOLLOW</Button>
               )
-              
-              
-                
+             
               )
             }
 
@@ -389,10 +376,6 @@ export default function Profile() {
           
             }
             
-
-
-
-
             <TextField
                 sx={{mt:6}}
                 margin="normal"
@@ -406,7 +389,11 @@ export default function Profile() {
               />
 
             </Box>
-            <Button
+
+            {
+              (pageUser === String(localStorage.getItem('userData'))) ?
+              (<div>
+                <Button
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -416,6 +403,11 @@ export default function Profile() {
               >
                 Edit
               </Button>
+                </div>)
+                :
+                (<div>  </div>)
+            }
+            
             </div>
             ) : (
             <Box component="form" noValidate onSubmit={UpdateProfile} sx={{ mt: 1 }}>
