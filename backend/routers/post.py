@@ -26,6 +26,8 @@ class PostDependency():
 async def create_post(post: PostModel = Body(...)):
     if (not post.id):
         post.id = str(ObjectId())
+    if not post.link:
+        post.link = "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT?si=f4cd9de0fb424305"
     post.date = datetime.utcnow()
     post = jsonable_encoder(post)
     new_post = await postDataDB.posts.insert_one(post)
