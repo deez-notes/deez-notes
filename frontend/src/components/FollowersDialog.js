@@ -16,10 +16,12 @@ import { blue } from '@mui/material/colors';
 import {useEffect, useState} from 'react'
 import '../styles/scrollBar.css'
 import axios from "axios";
-
+import { bottomNavigationClasses } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 var emails = ['nothing'];
 const pageUser = String(window.location.href).substring(30);
 function SimpleDialog(props) {
+  let navigate = useNavigate();
   const [Followers, setFollowers] = useState([]);
   const { onClose, selectedValue, open } = props;
 
@@ -28,7 +30,9 @@ function SimpleDialog(props) {
   };
 
   const handleListItemClick = (value) => {
-    onClose(value);
+    console.log(value);
+    navigate('/profile/' + value);
+    window.location.reload();
   };
   useEffect(() => {
     axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
@@ -74,6 +78,7 @@ SimpleDialog.propTypes = {
 var emails2 = ['nothing'];
 
 function SimpleDialog2(props) {
+  let navigate = useNavigate();
   const [Followers2, setFollowers2] = useState([]);
   const { onClose2, selectedValue2, open2 } = props;
 
@@ -82,7 +87,8 @@ function SimpleDialog2(props) {
   };
 
   const handleListItemClick2 = (value) => {
-    onClose2(value);
+    navigate('/profile/' + value);
+    window.location.reload();
   };
   useEffect(() => {
     axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
