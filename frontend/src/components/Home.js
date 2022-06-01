@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
+
 function Home() {
 
     const navigate = useNavigate();
@@ -84,22 +85,32 @@ function Home() {
 
 
         <div id={css.Home}>
-            <div id="logo-container">
-                <img src="dn.svg" alt="" width="220vw" />
+            <div>
+                <img src="dn.svg" alt="" width="220vw" height="150rem" />
             </div>
-            <Typography variant="h3">Deez Notes</Typography>
-            <div className={css.signInContainer}>
-                <Paper elevation={10} className={css.signInForm}>
-                    <FormControl>
-                        <Typography className={css.formTitle} variant="h4">Sign in here!</Typography>
-                        <TextField className={css.input} label="Username" placeholder='Enter your username!' value={user}
-                            onChange={(e) => setUser(e.target.value)} fullWidth required />
-                        <TextField className={css.input} label="Password" placeholder='Enter your password!' type="password"
-                            value={password} onChange={(e) => setPassword(e.target.value)} fullWidth required />
-                        <Button type='submit' color='primary' onClick={HandleSubmit}>Sign In</Button>
-                        <Button onClick={HandleAccountNavigate} color='primary'>Create Account </Button>
-                    </FormControl>
-                </Paper>
+            <Typography variant="h3" id={css.title}>Deez Notes</Typography>
+            <div className={css.landingContainer}>
+                <div className={css.description}>
+
+                </div>
+                <div className={css.imageContainer}>
+                    <Typography variant="h4">Share your taste of music! Taste the sweetness of Deez Notes!</Typography>
+                    <img className={css.landingImage} src="landing.png"></img>
+                </div>
+                <div className={css.signInContainer}>
+                    <Paper elevation={10} className={css.signInForm}>
+                        <FormControl>
+                            <Typography className={css.formTitle} variant="h4">Sign in here!</Typography>
+                            <TextField className={css.input} label="Username" placeholder='Enter your username!' value={user}
+                                onChange={(e) => setUser(e.target.value)} fullWidth required />
+                            <TextField className={css.input} label="Password" placeholder='Enter your password!' type="password"
+                                value={password} onChange={(e) => setPassword(e.target.value)} fullWidth required />
+                            <Button type='submit' color='primary' onClick={HandleSubmit}>Sign In</Button>
+                            <Button onClick={HandleAccountNavigate} color='primary'>Create Account </Button>
+                        </FormControl>
+                    </Paper>
+                </div>
+
             </div>
         </div >
     )
