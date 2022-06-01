@@ -108,7 +108,7 @@ async def rate(id: str, current_user: str, score: float):
         if not (score-pastScore):
             return await postDataDB.posts.find_one({"_id": id})
         pastUserRating = await postDataDB.userRatings.update_one({"postID": id, "username":current_user}, {"$set": {"rating":score}})
-        print("past score: ", pastScore, " new score: ", score, " like_modifer: ", like_modifier)
+        # print("past score: ", pastScore, " new score: ", score, " like_modifer: ", like_modifier)
         update_result = await postDataDB.posts.update_one({"_id": id}, {"$inc" : {"score": score - pastScore, "likes":like_modifier}})
     else:
         # print("user has not rated yet")
