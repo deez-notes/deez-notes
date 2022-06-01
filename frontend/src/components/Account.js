@@ -128,6 +128,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
 import css from '../styles/Account.module.scss';
 import { useState } from "react"
 import { Paper } from "@mui/material"
@@ -211,10 +212,15 @@ export default function Account() {
             }
         }
     }
+    document.body.style = 'background: white;';
 
   return (
+
+      <>
+      
+      
+      
       <div className={css.color}>
-    <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -225,13 +231,15 @@ export default function Account() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
+          </Avatar> */}
+          <div className={css.fadeText}>
+          <Typography variant="h3">
             Create an Account
           </Typography>
-          <Box component="form" noValidate onSubmit={handleOnSubmit} sx={{ mt: 3 }}>
+          </div>
+          <Box component="form" noValidate onSubmit={handleOnSubmit} sx={{ mt: 6 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -280,12 +288,12 @@ export default function Account() {
                   value={password} onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Button
               type="submit"
@@ -295,9 +303,9 @@ export default function Account() {
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="center">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="http://localhost:3000/" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -305,7 +313,7 @@ export default function Account() {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
     </div>
+    </>
   );
 }
