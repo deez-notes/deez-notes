@@ -76,7 +76,7 @@ function Create()
             "tags" : tags,
             "user" : localStorage.getItem('userData'),
             // "date" : pst,
-            "comments" : [["", ""], ["",""], ["",""]]
+            "comments" : []
             
 
             /*
