@@ -122,7 +122,7 @@ function Post(props) {
                 return (<Chip label={t} 
                               variant="outlined" 
                               component="a" 
-                              href="" // TODO
+                              href={"/feed/qtag="+t}
                               size="small"
                               sx={{ mr: 0.3, mb: 0.5 }}
                               clickable />)
