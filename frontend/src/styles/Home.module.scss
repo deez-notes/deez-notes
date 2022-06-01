@@ -5,10 +5,38 @@ $background: #A5DEF1;
 }
 
 
+.landingContainer {
+    display: grid;
+    grid-template-columns: 30rem 65rem;
+    grid-template-rows: 25% 25% 25% 25%;
+}
+
+.landingImage {
+    height: 20rem;
+    width: 20rem;
+}
+
+.description {
+    height: 15rem;
+    width: 40rem;
+}
+
+.imageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 7.5rem;
+    width: 40rem;
+}
+
 .signInContainer {
     display: flex;
     justify-content: center;
     padding-top: 3rem;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 2;
 }
 
 .formTitle {
