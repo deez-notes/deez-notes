@@ -8,6 +8,7 @@ import { Cancel } from "@mui/icons-material";
 import axios from "axios";
 
 import NavBar from './NavBar'
+import { useNavigate } from "react-router-dom";
 
 function Create()
 {
@@ -20,6 +21,7 @@ function Create()
     const [tags, setTags] = useState([]);
     const tagRef = useRef();
     
+    const navigate = useNavigate();
 
     const handleTagSubmit = (e) => {
         e.preventDefault();
@@ -93,12 +95,7 @@ function Create()
         console.log(postData);
         axios.post('http://localhost:8000/posts/createpost', postData)
       .then(res => {
-        window.alert("Post created!");
-        titleRef.current.value = "";
-        artistRef.current.value = "";
-        linkRef.current.value = "";
-        descRef.current.value = "";
-        setTags([]);
+        navigate("/feed");
       });
         // reset form?
     };
