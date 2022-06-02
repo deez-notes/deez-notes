@@ -63,9 +63,9 @@ function PostDialogP(props) {
         // bandaid fix for not being able to delete post if user not rate
         axios.put('http://localhost:8000/posts/rate/'+post_id+
                             '?current_user='+(localStorage.getItem('userData'))+
-                            '&score='+(5))
+                            '&score='+(5)).then(
         axios.delete('http://localhost:8000/posts?id='+post_id)
-        .then(res => console.log(res));
+        .then(res => console.log(res)));
       window.location.reload();
     };
 
