@@ -106,7 +106,7 @@ export default function Profile() {
     };
     
     const updateShowPost =() => {
-      console.log(pageUser);
+      // console.log(pageUser);
       updateShow(!showPost);
     }
     const HandleProfileChange = () => {
@@ -140,7 +140,7 @@ export default function Profile() {
     };
 
   useEffect(() => {
-    console.log("useEffect activated")
+    // console.log("useEffect activated")
     // axios.get("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData'))).then(res => {
       axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
       changeFName(res.data.first_name);
@@ -149,7 +149,7 @@ export default function Profile() {
       changePass(res.data.password);
       changeFollowing(res.data.following);
       changeFollowers(res.data.followers);
-      console.log("useEffect activated2")
+      // console.log("useEffect activated2")
       
       
     });
@@ -161,7 +161,7 @@ export default function Profile() {
     updateCountMeter(countMeter+1);
     axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
       updateRealUser(true);
-      console.log("useEffect activated2")
+      // console.log("useEffect activated2")
     }).catch(
       function (error) {
         updateRealUser(false);

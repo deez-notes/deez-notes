@@ -10,7 +10,7 @@ class PostStack extends Component {
     constructor(props)
     {
         super(props);
-        console.log("this.props.tag === " + this.props.tag);
+        // console.log("this.props.tag === " + this.props.tag);
         this.state = {
             posts: [],
             numCols: this.props.numCols,
@@ -24,7 +24,7 @@ class PostStack extends Component {
 
     async getPosts() // fetch posts from backend based on type
     {
-        console.log("this.state.show === " + this.state.show);
+        // console.log("this.state.show === " + this.state.show);
         let geturl='http://localhost:8000/posts/';
         if (this.state.show === "feed")
         {
@@ -39,12 +39,11 @@ class PostStack extends Component {
             geturl += '?user='+this.state.user;
         else if (this.state.show === "tag")
         {
-            console.log("YEEEEEEEEEHAWWWWWWWWWW");
             geturl += this.state.tag;
         }   
         else if (this.state.show === "all")
             geturl += '';
-        console.log("URL: "+ geturl);
+        // console.log("URL: "+ geturl);
         const res = await axios.get(geturl);
         // console.log(res.data);
         this.setState({posts: res.data});
@@ -52,10 +51,10 @@ class PostStack extends Component {
 
     componentDidMount()
     {
-        console.log("1) componentDidMount inside PostStack");
+        // console.log("1) componentDidMount inside PostStack");
         if (this.state.show === "tag")
         {
-            console.log(window.location.href);
+            // console.log(window.location.href);
             let urlArray = window.location.href.split('/');
             let tagString = urlArray[urlArray.length-1];
             axios.get('http://localhost:8000/posts/?' + tagString).then((res) => {
@@ -65,7 +64,7 @@ class PostStack extends Component {
         
     }
     render() {
-        console.log(this.state.posts)
+        // console.log(this.state.posts)
         // console.log();
         let stackContent = [];
         for (let i=0; i<this.state.numCols; i++)

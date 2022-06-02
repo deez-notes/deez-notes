@@ -83,7 +83,7 @@ function Post(props) {
     e.preventDefault();
     if (commentRef.current.value.length > 0)
     {
-      console.log("Comment: " + commentRef.current.value);
+      // console.log("Comment: " + commentRef.current.value);
       setComments([...comments, [loggedInUser,commentRef.current.value]]);
       // send to backend
       axios.put('http://localhost:8000/posts/comment/'+props.post._id+

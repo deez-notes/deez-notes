@@ -77,6 +77,7 @@ function NavBar() {
 function SearchBar({ placeholder, data }) {
   const navigate = useNavigate();
 
+  // console.log(data);
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
@@ -113,7 +114,9 @@ function SearchBar({ placeholder, data }) {
   const searchByTag = (event) => {
     event.preventDefault();
     // assuming multiple tags are searched via csv
-    if (wordEntered !== "") {
+    // console.log(wordEntered);
+    if (wordEntered !== "")
+    {
       let tags = wordEntered.split(',');
       tags = tags.filter(word => word.length > 0);
       let tagString = constructTagString(tags);
