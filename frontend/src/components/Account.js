@@ -141,180 +141,180 @@ import StripBar from "./StripBar"
 const theme = createTheme();
 
 export default function Account() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [user, setUser] = useState("");
-    const [password, setPassword] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
-    const HandleBackNavigation = async (event) => {
-        event.preventDefault();
+  const HandleBackNavigation = async (event) => {
+    event.preventDefault();
+    navigate("/");
+  }
+
+  const handleOnSubmit = async (event) => {
+    event.preventDefault();
+
+    if (user === "" || password === "" || firstName === "" || lastName === "") {
+      alert("Not all fields were completed!");
+      return;
+    }
+
+
+    let userData = {
+      "username": user,
+      "password": password,
+      "first_name": firstName,
+      "last_name": lastName,
+    };
+
+    let profileData = {
+      "username": user,
+    }
+
+    let existing = null;
+    axios.get(`http://localhost:8000/users/?user=${user}`)
+      .then((response) => {
+        existing = response.data;
+        console.log(existing);
+        alert("This username already exists!");
+        return;
+      }).catch(() => {
+        console.log("This user doesn't exist!");
+      })
+
+    if (existing === null) {
+      try {
+        const response = await axios.post('http://localhost:8000/users/', userData, {
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          withCredentials: true
+        });
+
+        const profileResponse = await axios.post('http://localhost:8000/profiles/', profileData, {
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          withCredentials: true
+        });
+        setUser("");
+        setPassword("");
+        setFirstName("");
+        setLastName("");
+        console.log(response);
+        console.log(profileResponse);
+        console.log("It works!")
         navigate("/");
+      } catch (err) {
+        console.log("boo");
+      }
     }
-
-    const handleOnSubmit = async (event) => {
-        event.preventDefault();
-
-        if (user === "" || password === "" || firstName === "" || lastName === "") {
-            alert("Not all fields were completed!");
-            return;
-        }
-
-
-        let userData = {
-            "username": user,
-            "password": password,
-            "first_name": firstName,
-            "last_name": lastName,
-        };
-
-        let profileData = {
-            "username": user,
-        }
-
-        let existing = null;
-        axios.get(`http://localhost:8000/users/?user=${user}`)
-            .then((response) => {
-                existing = response.data;
-                console.log(existing);
-                alert("This username already exists!");
-                return;
-            }).catch(() => {
-                console.log("This user doesn't exist!");
-            })
-
-        if (existing === null) {
-            try {
-                const response = await axios.post('http://localhost:8000/users/', userData, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
-                    },
-                    withCredentials: true
-                });
-
-                const profileResponse = await axios.post('http://localhost:8000/profiles/', profileData, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
-                    },
-                    withCredentials: true
-                });
-                setUser("");
-                setPassword("");
-                setFirstName("");
-                setLastName("");
-                console.log(response);
-                console.log(profileResponse);
-                console.log("It works!")
-                navigate("/");
-            } catch (err) {
-                console.log("boo");
-            }
-        }
-    }
-    document.body.style = 'background: white;';
+  }
+  document.body.style = 'background: white;';
 
   return (
 
-      <>
+    <>
       <StripBar />
-    
+
       <div className={css.color}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar> */}
-          <div className={css.fadeText}>
-          <Typography variant="h3">
-            Create an Account
-          </Typography>
-          </div>
-          <Box component="form" noValidate onSubmit={handleOnSubmit} sx={{ mt: 6 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  value={firstName} onChange={(e) => setFirstName(e.target.value)}
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  value={lastName} onChange={(e) => setLastName(e.target.value)}
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="username"
-                  name="email"
-                  autoComplete="email"
-                  value={user}
-                  onChange={(e) => setUser(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={password} onChange={(e) => setPassword(e.target.value)}
-                />
-              </Grid>
-              {/* <Grid item xs={12}>
+            <div className={css.fadeText}>
+              <Typography variant="h3">
+                Create an Account
+              </Typography>
+            </div>
+            <Box component="form" noValidate onSubmit={handleOnSubmit} sx={{ mt: 6 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    autoComplete="given-name"
+                    name="firstName"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    value={firstName} onChange={(e) => setFirstName(e.target.value)}
+                    autoFocus
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    value={lastName} onChange={(e) => setLastName(e.target.value)}
+                    autoComplete="family-name"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    label="Username"
+                    name="email"
+                    autoComplete="email"
+                    value={user}
+                    onChange={(e) => setUser(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                    value={password} onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Grid>
+                {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid> */}
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="center">
-              <Grid item>
-                <Link href="http://localhost:3000/" variant="body2">
-                  Already have an account? Sign in
-                </Link>
               </Grid>
-            </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign Up
+              </Button>
+              <Grid container justifyContent="center">
+                <Grid item>
+                  <Link href="http://localhost:3000/" variant="body2">
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </div>
+        </Container>
+      </div>
     </>
   );
 }
