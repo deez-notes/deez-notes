@@ -83,7 +83,7 @@ function Home() {
     return (
         <div id={css.Home}>
             <StripBar />
-            <br/>
+            <br />
             <div>
                 <img src="dnlogo.png" alt="" width="160vw" height="160vw" />
             </div>
@@ -93,8 +93,8 @@ function Home() {
 
                 </div>
                 <div className={css.imageContainer}>
-                    <Typography variant="h4">Share your taste of music! </Typography>
-                    <Typography variant="h5">Taste the sweetness of Deez Notes! </Typography>
+                    <Typography variant="h4">Share your taste of music. </Typography>
+                    <Typography variant="h5">One note can say a thousand words.</Typography>
                     <img className={css.landingImage} src="landing.png"></img>
                 </div>
                 <div className={css.signInContainer}>
