@@ -85,7 +85,7 @@ function Home() {
             <StripBar />
             <br/>
             <div>
-                <img src="dn.svg" alt="" width="220vw" height="150rem" />
+                <img src="dnlogo.png" alt="" width="160vw" height="160vw" />
             </div>
             <Typography variant="h3" id={css.title}>Deez Notes</Typography>
             <div className={css.landingContainer}>
