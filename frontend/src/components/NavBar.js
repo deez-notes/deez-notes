@@ -147,7 +147,7 @@ function SearchBar({ placeholder, data }) {
         <div className={css.dataResult}>
           {filteredData.slice(0, 10).map((value, key) => {
             return (
-              <a className={css.dataItem} href={String("http://localhost:3000/profile/") + value.username} target="_blank">
+              <a className={css.dataItem} href={String("http://localhost:3000/profile/") + value.username}>
                 <p>{value.username} </p>
               </a>
             );

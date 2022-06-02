@@ -69,7 +69,8 @@ function Post(props) {
   // get users past rating
   axios.get('http://localhost:8000/posts/user_ratings/?username='+loggedInUser+
             '&postID='+props.post._id)
-    .then(res => setValue(res.data.rating?res.data.rating:0));
+    .then(res => setValue(res.data.rating?res.data.rating:0))
+    .catch(err => setValue(0));
   // comment section expand
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
@@ -181,7 +182,7 @@ function Post(props) {
                   return (
                   <React.Fragment>
                     {i>0 && <Divider variant="inset" component="li" />}
-                    <ListItem alignItems="center" sx={{padding: 0}}>
+                    <ListItem alignItems="center" sx={{padding: 0}} key={user+comment}>
                       <ListItemAvatar>
                         {<IconButton href={"/profile/"+user} size="small"> <StringAvatar name={user} /></IconButton>}
                       </ListItemAvatar>
