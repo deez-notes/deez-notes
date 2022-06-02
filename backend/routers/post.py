@@ -132,7 +132,9 @@ async def delete_post(id:str):
     if(not id):
         return HTTPException(status_code=400, detail=f"no id given")
     delete_post = await postDataDB.posts.delete_one({"_id": id})
-    delete_review = await postDataDB.userRatings.delete_many({"postID": id})
+    ratings = await postDataDB.userRatings.find({"postID": id})
+    if (ratings):
+        delete_review = await postDataDB.userRatings.delete_many({"postID": id})
 
     if delete_post.deleted_count == 1:
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
