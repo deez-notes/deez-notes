@@ -1,5 +1,5 @@
 import React from 'react';
-import {useRef, useState} from 'react';
+import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
@@ -18,120 +18,124 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 const pageUser = String(window.location.href).substring(30);
 
 function PostDialogP(props) {
-    let navigate = useNavigate();
-    const { onClose, open, post_op, post_id} = props;
+  let navigate = useNavigate();
+  const { onClose, open, post_op, post_id } = props;
 
-    const handleClose = () => {
-        onClose();
-      };
-
-    const handleProfileClick = () => {
-      navigate('/profile/' + post_op);
-      window.location.reload();
-    };
-
-    return (
-      <Dialog onClose={handleClose} open={open}>
-        <List sx={{ pt: 0, pl:5, pr: 8 }}>
-            <ListItem >
-                <ListItemText primary={'ID: '+post_id} />
-            </ListItem>
-            <ListItem button onClick={() => handleProfileClick()}>
-              <ListItemText primary="Go to OP's profile." />
-            </ListItem>
-        </List>
-      </Dialog>
-    );
-  }
-
-  PostDialogP.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-    post_op: PropTypes.string.isRequired,
-    post_id: PropTypes.string.isRequired,
+  const handleClose = () => {
+    onClose();
   };
 
-  function PostDialogOP(props) {
-    let navigate = useNavigate();
-    const { onClose, open, post_id} = props;
-  
-    const handleClose = () => {
-        onClose();
-      };
-
-    const handleDeletePost = () => {
-        // bandaid fix for not being able to delete post if user not rate
-        axios.put('http://localhost:8000/posts/rate/'+post_id+
-                            '?current_user='+(localStorage.getItem('userData'))+
-                            '&score='+(5)).then(
-        axios.delete('http://localhost:8000/posts?id='+post_id)
-        .then(res => console.log(res)));
-      window.location.reload();
-    };
-
-    return (
-      <Dialog onClose={handleClose} open={open}>
-        <List sx={{ pt: 0, pl:5, pr: 8 }}>
-            <ListItem>
-                <ListItemText primary={'ID: '+post_id} />
-            </ListItem>
-            <ListItem button onClick={() => handleDeletePost()}>
-              <ListItemText primary="Delete post." />
-            </ListItem>
-        </List>
-      </Dialog>
-    );
-  }
-
-  PostDialogOP.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-    post_id: PropTypes.string.isRequired,
+  const handleProfileClick = () => {
+    navigate('/profile/' + post_op);
+    window.location.reload();
   };
 
-  export default function PostDialog(props) {
-    const [open, setOpen] = React.useState(false);
-    const [open2, setOpen2] = React.useState(false);
-  
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
-  
-    const handleClickOpen2 = () => {
-      setOpen2(true);
-    };
-  
-    const handleClose2 = () => {
-      setOpen2(false);
-    };
-  
-    let dialog = null;
-    if (props.post_op === localStorage.getItem('userData'))
-        dialog = handleClickOpen2;
-    else
-        dialog = handleClickOpen;
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <List sx={{ pt: 0, pl: 5, pr: 8 }}>
+        <ListItem >
+          <ListItemText primary={'ID: ' + post_id} />
+        </ListItem>
+        <ListItem button onClick={() => handleProfileClick()}>
+          <ListItemText primary="Go to OP's profile." />
+        </ListItem>
+      </List>
+    </Dialog>
+  );
+}
 
-    return (
-      <div>
-        <IconButton aria-label="settings" onClick={dialog}>
-                  <MoreVertIcon />
-                </IconButton>
+PostDialogP.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  post_op: PropTypes.string.isRequired,
+  post_id: PropTypes.string.isRequired,
+};
 
-        <PostDialogP
-          open={open}
-          post_op = {props.post_op}
-          onClose={handleClose}
-          post_id={props.post_id}
-        />
-        <PostDialogOP
-          open={open2}
-          onClose={handleClose2}
-          post_id={props.post_id}
-        />
-      </div>
-    );
-  }
+function PostDialogOP(props) {
+  let navigate = useNavigate();
+  const { onClose, open, post_id } = props;
+
+  const handleClose = () => {
+    onClose();
+  };
+
+  const handleDeletePost = () => {
+    // bandaid fix for not being able to delete post if user not rate
+    // axios.put('http://localhost:8000/posts/rate/' + post_id +
+    //   '?current_user=' + (localStorage.getItem('userData')) +
+    //   '&score=' + (5)).then(
+    //     axios.delete('http://localhost:8000/posts/?id=' + post_id)
+    //       .then(res => console.log(res)));
+    axios.delete(`http://localhost:8000/posts/?id=${post_id}`)
+      .then((res) => {
+        console.log(res);
+      });
+    window.location.reload();
+  };
+
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <List sx={{ pt: 0, pl: 5, pr: 8 }}>
+        <ListItem>
+          <ListItemText primary={'ID: ' + post_id} />
+        </ListItem>
+        <ListItem button onClick={() => handleDeletePost()}>
+          <ListItemText primary="Delete post." />
+        </ListItem>
+      </List>
+    </Dialog>
+  );
+}
+
+PostDialogOP.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  post_id: PropTypes.string.isRequired,
+};
+
+export default function PostDialog(props) {
+  const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpen2 = () => {
+    setOpen2(true);
+  };
+
+  const handleClose2 = () => {
+    setOpen2(false);
+  };
+
+  let dialog = null;
+  if (props.post_op === localStorage.getItem('userData'))
+    dialog = handleClickOpen2;
+  else
+    dialog = handleClickOpen;
+
+  return (
+    <div>
+      <IconButton aria-label="settings" onClick={dialog}>
+        <MoreVertIcon />
+      </IconButton>
+
+      <PostDialogP
+        open={open}
+        post_op={props.post_op}
+        onClose={handleClose}
+        post_id={props.post_id}
+      />
+      <PostDialogOP
+        open={open2}
+        onClose={handleClose2}
+        post_id={props.post_id}
+      />
+    </div>
+  );
+}

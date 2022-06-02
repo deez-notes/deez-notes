@@ -34,21 +34,20 @@ function NavBar() {
     localStorage.setItem('userData', null);
     navigate("/");
   }
-  const [theData, changeTheData ] = useState([]);
-  const [once, setOnce ] = useState(true);
-  
-  if (once)
-  {
-    axios.get("http://localhost:8000/users/"). then(res => {
-    changeTheData(res.data);
-    setOnce(false);
-  })
+  const [theData, changeTheData] = useState([]);
+  const [once, setOnce] = useState(true);
+
+  if (once) {
+    axios.get("http://localhost:8000/users/").then(res => {
+      changeTheData(res.data);
+      setOnce(false);
+    })
   }
 
-  
-  
 
-  
+
+
+
   return (
     <AppBar position='sticky' className={css.appbar} sx={{ textAlign: 'center', paddingTop: '.25em', paddingBottom: '.25em', alignItems: 'center' }}>
       <Toolbar>
@@ -57,7 +56,7 @@ function NavBar() {
         </IconButton>
 
         <div id={css.searchSpacing}>
-          <SearchBar placeholder="Search..." data={theData} /> 
+          <SearchBar placeholder="Search..." data={theData} />
         </div>
 
         <Stack direction='row' spacing={2}>
@@ -78,12 +77,11 @@ function NavBar() {
 function SearchBar({ placeholder, data }) {
   const navigate = useNavigate();
 
-  console.log(data);
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
   const handleFilter = (event) => {
-    
+
     const searchWord = event.target.value;
     setWordEntered(searchWord);
     const newFilter = data.filter((value) => {
@@ -104,11 +102,10 @@ function SearchBar({ placeholder, data }) {
 
   const constructTagString = (tags) => {
     let res = '';
-    for (let i=0; i<tags.length; i++)
-    {
-        res += 'qtag='+tags[i];
-        if (i !== tags.length-1)
-            res += '&';
+    for (let i = 0; i < tags.length; i++) {
+      res += 'qtag=' + tags[i];
+      if (i !== tags.length - 1)
+        res += '&';
     }
     return res;
   }
@@ -116,13 +113,11 @@ function SearchBar({ placeholder, data }) {
   const searchByTag = (event) => {
     event.preventDefault();
     // assuming multiple tags are searched via csv
-    console.log(wordEntered);
-    if (wordEntered !== "")
-    {
+    if (wordEntered !== "") {
       let tags = wordEntered.split(',');
       tags = tags.filter(word => word.length > 0);
       let tagString = constructTagString(tags);
-      navigate('/feed/'+tagString);
+      navigate('/feed/' + tagString);
       window.location.reload();
     }
   };
@@ -142,7 +137,7 @@ function SearchBar({ placeholder, data }) {
           ) : (
             <Close id="clearBtn" onClick={clearInput} />
           )} */}
-            <Search id="searchBtn" onClick={searchByTag}/>
+          <Search id="searchBtn" onClick={searchByTag} />
         </div>
       </div>
       {filteredData.length !== 0 && (
