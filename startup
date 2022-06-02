@@ -5,7 +5,8 @@ function handler()
     echo "                                 "
     echo "          Cleaning up!           "
     echo "================================="
-    kill -s SIGINT $PID
+    kill -2 $PID
+    wait
     ps ax | grep -E "uvicorn|from multiprocessing" | grep -v grep | awk '{print "kill -9 " $1}' | sh
     echo "Thank you for running Deez Notes!"
     exit
