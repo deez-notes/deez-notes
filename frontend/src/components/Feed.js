@@ -16,7 +16,7 @@ function Feed(props) {
         let currentUrl = window.location.href.split('/');
         let tagString = '?' + currentUrl[currentUrl.length-1];
         setTags(tagString);
-        console.log("tag string: " + tagString);
+        // console.log("tag string: " + tagString);
     }, []);
     if (tags === "?feed")
     {

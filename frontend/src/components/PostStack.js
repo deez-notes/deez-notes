@@ -5,7 +5,12 @@ import Post from './Post';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Typography from "@mui/material/Typography"
+import { grey } from '@mui/material/colors';
+
+
 import { Button } from '@mui/material'
+
 class PostStack extends Component {
     constructor(props)
     {
@@ -66,6 +71,33 @@ class PostStack extends Component {
     render() {
         // console.log(this.state.posts)
         // console.log();
+        if (this.state.posts.length == 0 && this.state.show === "feed")
+            return (
+                <Box sx={{width:'100%', mt:2}}>
+                <Typography variant="h5" color={grey[700]}>
+                    Your feed is currently empty!
+                </Typography>
+                <Typography variant="h6" color={grey[600]}>
+                    Follow more users or search for tags.
+                </Typography>
+                </Box>
+            )
+        else if (this.state.posts.length == 0 && this.state.show === "tag")
+            return (
+                <Box sx={{width:'100%', mt:2}}>
+                <Typography variant="h6" color={grey[700]}>
+                    No music here!
+                </Typography>
+                </Box>
+            )
+        else if (this.state.posts.length == 0 && this.state.show === "user")
+            return (
+                <Box sx={{width:'100%', mt:2}}>
+                    <Typography variant="h6" color={grey[700]}>
+                        {this.state.user} has no posts!
+                    </Typography>
+                </Box>
+            )
         let stackContent = [];
         for (let i=0; i<this.state.numCols; i++)
         {
