@@ -7,12 +7,13 @@ Deez Notes is a social media platform for sharing songs you love with your frien
 ## Key Features
   1. Create an account, log in, and log out
   2. Create posts with tags
-  3. Comment or rate posts
+  3. Comment on and rate posts
   4. Search posts by tag
   5. Search for other users and view their profiles
   6. Follow or unfollow other users
   7. View a feed of posts from users you follow
   8. Update your profile to change information or add more
+  9. Delete your posts
 
 ## Running the Application
 
