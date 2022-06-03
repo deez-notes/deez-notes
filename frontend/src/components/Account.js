@@ -174,7 +174,7 @@ export default function Account() {
     }
 
     let existing = null;
-    axios.get(`http://localhost:8000/users/?user=${user}`)
+    await axios.get(`http://localhost:8000/users/?user=${user}`)
       .then((response) => {
         existing = response.data;
         console.log(existing);
