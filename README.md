@@ -39,4 +39,24 @@ Clone the repository:
 
 ##### `cd deez-notes`
 
-insert how to do it
+Initalization
+```
+cd backend
+pip3 install -r requirements.txt
+cd ..
+cd frontend
+npm i
+cd ..
+```
+
+Running the Program
+- In one terminal window run these commands to start the backend
+```
+cd backend
+uvicorn backend:app --reload
+```
+- In another run these commands to start the frontend
+```
+cd frontend
+npm start
+```

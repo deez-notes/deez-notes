@@ -40,7 +40,7 @@ function Create()
     const handleOnSubmit = (e) => {
         e.preventDefault();
         // WE GOTTA CHECK IF THE USER EVEN PUT ANYTHING
-        if (titleRef.current.value === '' || artistRef.current.value === '' || linkRef.current.value === '' || descRef.current.value === '')
+        if (linkRef.current.value === '' || descRef.current.value === '')
         {
             window.alert("FILL OUT ALL FIELDS!");
             return;
@@ -51,11 +51,6 @@ function Create()
             return;
         }
         // send stuff to the backend
-        console.log("Title: " + titleRef.current.value);
-        console.log("Artist: " + artistRef.current.value);
-        console.log("Link: " + linkRef.current.value);
-        console.log("Desc: " + descRef.current.value);
-        console.log(tags);
         let date = new Date();
         let pst = date.toLocaleString('en-US', {
             timeZone: 'America/Los_Angeles',
@@ -68,8 +63,8 @@ function Create()
         console.log(pst);
 
         let postData = {
-            "title" : titleRef.current.value,
-            "artist" : artistRef.current.value,
+            "title" : "",
+            "artist" : "",
             "link" : linkRef.current.value,
             "rating" : 69.69,
             "desc" : descRef.current.value,
@@ -111,10 +106,10 @@ function Create()
             <br/>
             <Typography variant="h3">Create a Post</Typography>
             
-            <div className={css.song}>
+            {/* <div className={css.song}>
                 <TextField inputRef={titleRef} fullWidth id="song-title" label="Song Title" variant="outlined"/>
                 <TextField inputRef={artistRef} fullWidth id="song-artist" label="Artist" variant="outlined"/>
-            </div>
+            </div> */}
             <div className={css.descriptionBox}>
                 <TextField inputRef={linkRef} fullWidth multiline id="link" label="Spotify Link" variant="outlined"/>
             </div>
