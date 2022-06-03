@@ -1,0 +1,6 @@
+#! /bin/sh
+
+npm i
+cd backend
+pip3 install -r requirements.txt --exists-action i
+cd ..
