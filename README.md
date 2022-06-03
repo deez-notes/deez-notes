@@ -1,1 +1,27 @@
-# deez-notes
+# CS35L Final Project: Deez Notes
+
+## Description
+
+Deez Notes is a social media platform for sharing songs you love with your friends. Users can post songs and follow each other to see other users' posts.
+
+## Key Features
+  1. Create an account, log in, and log out
+  2. Create posts with tags
+  3. Comment or rate posts
+  4. Search posts by tag
+  5. Search for other users and view their profiles
+  6. Follow or unfollow other users
+  7. View a feed of posts from users you follow
+  8. Update your profile to change information or add more
+
+## Running the Application
+
+Clone the Repository:
+
+##### `git clone https://github.com/deez-notes/deez-notes.git`
+
+##### `cd deez-notes`
+
+Run Webapp
+
+##### `./startup`
