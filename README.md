@@ -15,7 +15,7 @@ Deez Notes is a social media platform for sharing songs you love with your frien
   8. Update your profile to change information or add more
   9. Delete your posts
 
-## Running the Application
+## Running the Application on POSIX
 
 Clone the repository:
 
@@ -30,3 +30,13 @@ Initialize npm and install dependencies:
 Run webapp
 
 ##### `./startup`
+
+## Running the Application on Windows
+
+Clone the repository:
+
+##### `git clone https://github.com/deez-notes/deez-notes.git`
+
+##### `cd deez-notes`
+
+insert how to do it
