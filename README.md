@@ -16,12 +16,16 @@ Deez Notes is a social media platform for sharing songs you love with your frien
 
 ## Running the Application
 
-Clone the Repository:
+Clone the repository:
 
 ##### `git clone https://github.com/deez-notes/deez-notes.git`
 
 ##### `cd deez-notes`
 
-Run Webapp
+Initialize npm and install dependencies:
+
+##### `./initialize`
+
+Run webapp
 
 ##### `./startup`
