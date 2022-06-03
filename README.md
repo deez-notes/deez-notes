@@ -3,6 +3,7 @@
 ## Description
 
 Deez Notes is a social media platform for sharing songs you love with your friends. Users can post songs and follow each other to see other users' posts.
+[Final Presentation Slides](https://docs.google.com/presentation/d/1cnw10erzFvxEA0wO7GezE7An-rWZCICFqS-IWicw0Wk/edit?usp=sharing)
 
 ## Key Features
   1. Create an account, log in, and log out
