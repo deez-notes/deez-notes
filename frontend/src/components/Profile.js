@@ -139,56 +139,132 @@ export default function Profile() {
       });
     };
 
-  useEffect(() => {
-    // console.log("useEffect activated")
-    // axios.get("http://localhost:8000/users/?user=" + String(localStorage.getItem('userData'))).then(res => {
-      axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
+
+
+// 1 & 4 > 2 > 5
+// 3
+
+
+useEffect(() => {
+  
+  //1
+  axios.get("http://localhost:8000/users/?user=" + pageUser)
+  .then(res => {
+      updateRealUser(true);
       changeFName(res.data.first_name);
       changeLName(res.data.last_name);
       changeUser(res.data.username)
       changePass(res.data.password);
       changeFollowing(res.data.following);
       changeFollowers(res.data.followers);
-      // console.log("useEffect activated2")
-      
-      
-    });
-    axios.get("http://localhost:8000/profiles/?user=" + pageUser).then(res => {
-      changeBio(res.data.bio);
-      changeSong(res.data.favorite_song);
-    });
-   
-    updateCountMeter(countMeter+1);
-    axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
-      updateRealUser(true);
-      // console.log("useEffect activated2")
-    }).catch(
+      axios.get("http://localhost:8000/profiles/?user=" + pageUser)
+      .then(res => {
+        changeBio(res.data.bio);
+        changeSong(res.data.favorite_song);
+    })
+    .catch(
       function (error) {
-        updateRealUser(false);
+        console.log("Not found user within /Profile")
         return Promise.reject(error)
       }
-    )
-    if (pageUser === String(localStorage.getItem('userData')))
+    );
+  })
+  .catch(
+      function (error) {
+        updateRealUser(false);
+        console.log("Not found user within /Users")
+        return Promise.reject(error)
+      }
+  );
+
+  if (pageUser === String(localStorage.getItem('userData')))
     {
         updateIsOwner(true);
     }
-    else
-    {
-      // check if logged in user is following the user we are at
-      axios.get("http://localhost:8000/users/?user=" + localStorage.getItem('userData')).then(res => {
-        let following = res.data.following;
-        for (let i=0; i<following.length; i++)
-        {
-          if (following[i] === pageUser)
-          {
-            setIsFollowing(true);
-            break;
-          }
-        }
-      })
-    }
     
-  }, []);
+  else
+  {
+    // check if logged in user is following the user we are at
+    axios.get("http://localhost:8000/users/?user=" + localStorage.getItem('userData'))
+    .then(res => {
+      let following = res.data.following;
+      for (let i=0; i<following.length; i++)
+      {
+        if (following[i] === pageUser)
+        {
+          setIsFollowing(true);
+          break;
+        }
+      }
+    })
+    .catch(
+      function (error) {
+        updateRealUser(false);
+        console.log("Logined-in-user not found within database")
+        return Promise.reject(error)
+      }
+    )
+  }
+
+
+  
+}, []);
+
+
+
+  // useEffect(() => {
+  //   // 1
+  //     axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
+  //     changeFName(res.data.first_name);
+  //     changeLName(res.data.last_name);
+  //     changeUser(res.data.username)
+  //     changePass(res.data.password);
+  //     changeFollowing(res.data.following);
+  //     changeFollowers(res.data.followers);
+  //   });
+
+  //   // 2
+  //   axios.get("http://localhost:8000/profiles/?user=" + pageUser).then(res => {
+  //     changeBio(res.data.bio);
+  //     changeSong(res.data.favorite_song);
+  //   });
+   
+  //   // 3
+  //   updateCountMeter(countMeter+1);
+
+  //   //4
+  //   axios.get("http://localhost:8000/users/?user=" + pageUser).then(res => {
+  //     updateRealUser(true);
+  //   }).catch(
+  //     function (error) {
+  //       updateRealUser(false);
+  //       return Promise.reject(error)
+  //     }
+  //   )
+
+  //   //5
+  //   if (pageUser === String(localStorage.getItem('userData')))
+  //   {
+  //       updateIsOwner(true);
+  //   }
+    
+  //   else
+  //   {
+  //     // check if logged in user is following the user we are at
+  //     axios.get("http://localhost:8000/users/?user=" + localStorage.getItem('userData')).then(res => {
+  //       let following = res.data.following;
+  //       for (let i=0; i<following.length; i++)
+  //       {
+  //         if (following[i] === pageUser)
+  //         {
+  //           setIsFollowing(true);
+  //           break;
+  //         }
+  //       }
+  //     })
+  //   }
+    
+  // }, []);
   return (
     <div>
       
